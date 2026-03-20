@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #0d0d1a;
+  color: white;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* スクロールバー */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #0d0d1a; }
+::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
+
+/* コードブロック */
+.code-block {
+  background: #0d0d1a;
+  border: 1px solid #0f3460;
+  border-radius: 10px;
+  padding: 18px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #a8ff78;
+  overflow-x: auto;
+  white-space: pre;
+  tab-size: 2;
+}
+
+/* コメント行の色 */
+.code-block .comment { color: #6b8e6b; }
+
+/* 紙吹雪パーティクル */
+.confetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: fall 1.4s ease-out forwards;
+}
