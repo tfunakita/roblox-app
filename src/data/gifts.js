@@ -16,7 +16,7 @@ export const gifts = [
     videoId: null,
     pdfUrl: '/assets/pdfs/fps-scripts.pdf',
     linkedVideoTitle: '第1回動画の最後で発表しています！',
-    linkedVideoUrl: 'YOUR_YOUTUBE_URL', // ← ここに動画URLを入れる
+    linkedVideoUrl: 'https://youtu.be/mM_ICFs0DCs',
   },
   {
     id: 'gift_002',
