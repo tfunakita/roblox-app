@@ -195,7 +195,7 @@ export default function PortalPage() {
               ) : viewGift.type === 'pdf' && viewGift.pdfUrl ? (
                 <div className="text-center py-8">
                   <div className="text-5xl mb-4">📄</div>
-                  <a href={viewGift.pdfUrl} target="_blank" rel="noreferrer"
+                  <a href={import.meta.env.BASE_URL + viewGift.pdfUrl.replace(/^\//, '')} target="_blank" rel="noreferrer"
                     className="bg-[#00a2ff] hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl inline-block transition-colors">
                     📥 PDFをダウンロード
                   </a>
