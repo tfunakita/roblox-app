@@ -145,7 +145,7 @@ export default function PortalPage() {
               {modal.linkedVideoTitle && (
                 <p className="text-gray-500 text-xs mt-2">
                   💡 キーワードは「{modal.linkedVideoTitle}」で発表中
-                  {modal.linkedVideoUrl && (
+                  {modal.linkedVideoUrl && modal.linkedVideoUrl !== 'YOUR_YOUTUBE_URL' && (
                     <a href={modal.linkedVideoUrl} target="_blank" rel="noreferrer"
                       className="text-[#00a2ff] ml-1">→ 動画を見る</a>
                   )}
