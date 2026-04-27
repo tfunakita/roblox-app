@@ -71,4 +71,18 @@ export const gifts = [
     linkedVideoTitle: null,
     linkedVideoUrl: null,
   },
+  {
+    id: 'gift_006',
+    title: '本格ホラーゲーム制作用プロンプト集',
+    description: 'ライティング・敵AI・ジャンプスケアなど、怖すぎるRobloxホラーゲームが作れるAIプロンプトを全3スライドで公開！',
+    type: 'slides',
+    emoji: '👻',
+    status: 'locked',
+    keyword: 'ホラー',
+    videoId: null,
+    slidesUrl: '/assets/horror-prompt-guide.html',
+    pdfUrl: null,
+    linkedVideoTitle: null,
+    linkedVideoUrl: null,
+  },
 ]
