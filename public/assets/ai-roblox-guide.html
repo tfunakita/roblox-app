@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI×Roblox 爆速制作ガイド</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', 'Hiragino Maru Gothic Pro', 'BIZ UDPGothic', sans-serif;
+    background: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .presentation {
+    width: 900px;
+    position: relative;
+  }
+
+  .slide {
+    display: none;
+    width: 900px;
+    min-height: 560px;
+    border-radius: 32px;
+    padding: 48px 56px;
+    position: relative;
+    overflow: hidden;
+    animation: slideIn 0.4s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  }
+
+  .slide.active { display: flex; flex-direction: column; justify-content: center; }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: scale(0.92) translateY(20px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ── slide themes ── */
+  .s1  { background: linear-gradient(135deg, #ff6b9d 0%, #ff8e53 100%); }
+  .s2  { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+  .s3  { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+  .s4  { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+  .s5  { background: linear-gradient(135deg, #f7971e 0%, #ffd200 100%); }
+  .s6  { background: linear-gradient(135deg, #f953c6 0%, #b91d73 100%); }
+  .s7  { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+  .s8  { background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%); }
+  .s9  { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+  .s10 { background: linear-gradient(135deg, #ff6b9d 0%, #c44dff 80%, #4facfe 100%); }
+
+  /* deco circles */
+  .slide::before, .slide::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  .slide::before { width: 320px; height: 320px; background: white; top: -80px; right: -80px; }
+  .slide::after  { width: 200px; height: 200px; background: white; bottom: -60px; left: -40px; }
+
+  /* ── slide number ── */
+  .slide-num {
+    position: absolute;
+    top: 20px; right: 28px;
+    font-size: 13px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 1px;
+  }
+
+  /* ── tag / badge ── */
+  .tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.3);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    backdrop-filter: blur(6px);
+  }
+
+  /* ── headings ── */
+  h1 {
+    font-size: 52px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.15;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-size: 36px;
+    font-weight: 900;
+    color: white;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  }
+  .sub {
+    font-size: 18px;
+    color: rgba(255,255,255,0.88);
+    line-height: 1.7;
+    font-weight: 700;
+  }
+
+  /* ── emoji big ── */
+  .emoji-big {
+    font-size: 72px;
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.2));
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(-50%) rotate(-4deg); }
+    50%      { transform: translateY(calc(-50% - 12px)) rotate(4deg); }
+  }
+
+  /* ── cards grid ── */
+  .cards {
+    display: grid;
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .cards.cols2 { grid-template-columns: 1fr 1fr; }
+  .cards.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .card {
+    background: rgba(255,255,255,0.22);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 18px 20px;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    transition: transform 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card .icon { font-size: 32px; margin-bottom: 8px; }
+  .card strong { display: block; font-size: 16px; font-weight: 900; margin-bottom: 4px; }
+  .card p { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+
+  /* ── steps ── */
+  .steps { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.25);
+  }
+  .step-num {
+    min-width: 36px; height: 36px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-body strong { display: block; font-size: 15px; font-weight: 900; }
+  .step-body span { font-size: 13px; opacity: 0.88; }
+
+  /* ── code block ── */
+  .code-box {
+    background: rgba(0,0,0,0.3);
+    border-radius: 16px;
+    padding: 16px 20px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: #fff;
+    margin-top: 14px;
+    border: 2px solid rgba(255,255,255,0.15);
+    line-height: 1.7;
+  }
+  .code-box .comment { color: #a8d8a8; }
+  .code-box .kw { color: #ffdd77; }
+  .code-box .fn { color: #88ddff; }
+
+  /* ── tip box ── */
+  .tip {
+    background: rgba(255,255,255,0.2);
+    border-left: 5px solid rgba(255,255,255,0.7);
+    border-radius: 0 14px 14px 0;
+    padding: 12px 16px;
+    color: white;
+    font-size: 14px;
+    margin-top: 12px;
+    font-weight: 700;
+  }
+
+  /* ── flow ── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .flow-box {
+    background: rgba(255,255,255,0.25);
+    border-radius: 14px;
+    padding: 12px 16px;
+    color: white;
+    font-weight: 900;
+    font-size: 14px;
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.3);
+    flex: 1;
+    min-width: 100px;
+  }
+  .flow-box .fi { font-size: 24px; display: block; margin-bottom: 4px; }
+  .flow-arrow { font-size: 22px; color: rgba(255,255,255,0.7); flex-shrink: 0; }
+
+  /* ── highlight list ── */
+  .hlist { list-style: none; margin-top: 10px; display: flex; flex-direction: column; gap: 10px; }
+  .hlist li {
+    background: rgba(255,255,255,0.2);
+    border-radius: 14px;
+    padding: 11px 18px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  /* ── nav ── */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+    justify-content: center;
+  }
+  .btn {
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.4);
+    color: white;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 10px 28px;
+    border-radius: 50px;
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s;
+  }
+  .btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
+  .btn:disabled { opacity: 0.3; cursor: default; transform: none; }
+
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 2px solid rgba(255,255,255,0.4);
+  }
+  .dot.active { background: white; transform: scale(1.3); }
+
+  /* big center emoji for title */
+  .hero-emoji {
+    font-size: 90px;
+    text-align: center;
+    display: block;
+    animation: float2 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.25));
+  }
+  @keyframes float2 {
+    0%,100% { transform: translateY(0) rotate(-3deg) scale(1); }
+    50%      { transform: translateY(-16px) rotate(3deg) scale(1.05); }
+  }
+
+  /* stars deco */
+  .stars {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .star {
+    position: absolute;
+    color: white;
+    opacity: 0.25;
+    font-size: 18px;
+    animation: twinkle 2s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%,100% { opacity: 0.1; transform: scale(0.8); }
+    50%      { opacity: 0.4; transform: scale(1.2); }
+  }
+</style>
+</head>
+<body>
+
+<div class="presentation">
+
+  <!-- SLIDE 1 -->
+  <div class="slide s1 active">
+    <div class="stars">
+      <span class="star" style="top:15%;left:8%;animation-delay:0s">✦</span>
+      <span class="star" style="top:70%;left:15%;animation-delay:0.5s">✧</span>
+      <span class="star" style="top:20%;left:55%;animation-delay:1s">★</span>
+      <span class="star" style="top:80%;left:70%;animation-delay:0.3s">✦</span>
+    </div>
+    <span class="slide-num">01 / 10</span>
+    <div style="text-align:center;width:100%">
+      <span class="hero-emoji">🤖🎮</span>
+      <h1 style="text-align:center;font-size:46px;margin-top:16px">AI×Roblox<br>爆速制作ガイド</h1>
+      <p class="sub" style="text-align:center;margin-top:10px">AIを使ってRobloxゲームを<br>めちゃくちゃ速く作る方法！</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 -->
+  <div class="slide s2">
+    <span class="slide-num">02 / 10</span>
+    <span class="tag">🌟 WHY AI?</span>
+    <h2>AIで何が変わるの？</h2>
+    <div class="cards cols2">
+      <div class="card">
+        <div class="icon">⚡</div>
+        <strong>制作スピード10倍</strong>
+        <p>コード・アセット・アイデアを爆速で生成。数時間の作業が数分に！</p>
+      </div>
+      <div class="card">
+        <div class="icon">💡</div>
+        <strong>アイデア無限生成</strong>
+        <p>ゲームコンセプト・ストーリー・キャラ名を即座に100案出せる</p>
+      </div>
+      <div class="card">
+        <div class="icon">🐛</div>
+        <strong>バグ修正サポート</strong>
+        <p>Luaのエラーを貼り付けるだけで解決策を提案してくれる</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎨</div>
+        <strong>テクスチャ自動生成</strong>
+        <p>AI画像生成でオリジナルテクスチャを秒速で作成</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 -->
+  <div class="slide s3">
+    <span class="slide-num">03 / 10</span>
+    <span class="tag">🛠️ TOOLS</span>
+    <h2>使えるAIツール一覧</h2>
+    <div class="cards cols3">
+      <div class="card">
+        <div class="icon">🤖</div>
+        <strong>Claude / ChatGPT</strong>
+        <p>Luaスクリプト生成・デバッグ・設計相談に最強</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎨</div>
+        <strong>Midjourney / DALL-E</strong>
+        <p>テクスチャ・UI・スプラッシュ画像を一瞬で生成</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎵</div>
+        <strong>Suno / Udio</strong>
+        <p>BGM・効果音をプロンプトだけで無限に作れる</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧊</div>
+        <strong>Meshy / Shap-E</strong>
+        <p>テキストから3Dモデルを自動生成（.obj対応）</p>
+      </div>
+      <div class="card">
+        <div class="icon">✍️</div>
+        <strong>Gemini</strong>
+        <p>ゲームの世界観・ストーリー・ダイアログ生成に◎</p>
+      </div>
+      <div class="card">
+        <div class="icon">🔧</div>
+        <strong>GitHub Copilot</strong>
+        <p>Studio内でリアルタイムにコード補完してくれる</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 -->
+  <div class="slide s4">
+    <span class="slide-num">04 / 10</span>
+    <span class="tag">💻 CODE</span>
+    <h2>AIでLuaスクリプトを爆速生成</h2>
+    <p class="sub" style="font-size:15px">このプロンプトをそのまま使おう👇</p>
+    <div class="code-box">
+      <span class="comment">-- AIへのプロンプト例</span><br>
+      <span class="kw">"Roblox Studio用のLuaスクリプトを書いて。</span><br>
+      <span class="kw"> プレイヤーがパーツに触れたら</span><br>
+      <span class="kw"> スピードが2倍になり、5秒後に元に戻る。</span><br>
+      <span class="kw"> ServerScriptService に入れる前提で。"</span>
+    </div>
+    <div class="tip">
+      💡 ポイント：「どこに入れるか」「何をトリガーにするか」を必ず伝えよう！
+    </div>
+    <div class="tip" style="margin-top:8px">
+      🔁 エラーが出たら「このエラーを直して：[エラー文]」と貼るだけでOK
+    </div>
+  </div>
+
+  <!-- SLIDE 5 -->
+  <div class="slide s5">
+    <span class="slide-num">05 / 10</span>
+    <span class="tag">🎨 TEXTURE</span>
+    <h2>AI画像生成でテクスチャ作成</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>プロンプトを書く</strong>
+          <span>「seamless texture, stone wall, pixel art, 512x512」など</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Midjourney / DALL-E で生成</strong>
+          <span>--tile オプションでシームレスなテクスチャになる！</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Roblox Studio にインポート</strong>
+          <span>Toolbox → My Images から使用、DecalやSurfaceAppearanceに適用</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>完成！</strong>
+          <span>全工程10分以内で完成するよ✨</span>
+        </div>
+      </div>
+    </div>
+    <div class="emoji-big" style="top:28px;transform:none;animation:float 3s ease-in-out infinite">🖼️</div>
+  </div>
+
+  <!-- SLIDE 6 -->
+  <div class="slide s6">
+    <span class="slide-num">06 / 10</span>
+    <span class="tag">🧊 3D MODEL</span>
+    <h2>AI 3Dモデル生成ガイド</h2>
+    <div class="cards cols2">
+      <div class="card">
+        <div class="icon">🧊</div>
+        <strong>Meshy.ai</strong>
+        <p>テキストや画像から3Dモデルを生成。.obj形式でエクスポートしてBlenderで調整後にインポート</p>
+      </div>
+      <div class="card">
+        <div class="icon">🟠</div>
+        <strong>Blender + AI</strong>
+        <p>BlenderにAIアドオン (Dream Textures等) を追加してテクスチャを自動生成できる</p>
+      </div>
+      <div class="card">
+        <div class="icon">🎮</div>
+        <strong>Roblox AI機能</strong>
+        <p>Studio内のAI生成機能（ベータ）でテクスチャや簡単なモデルを直接生成可能</p>
+      </div>
+      <div class="card">
+        <div class="icon">✨</div>
+        <strong>ローポリ に変換</strong>
+        <p>Instant Meshes等でポリゴン数を削減。Robloxは軽いモデルがパフォーマンス◎</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 7 -->
+  <div class="slide s7">
+    <span class="slide-num">07 / 10</span>
+    <span class="tag">⚡ WORKFLOW</span>
+    <h2>爆速制作フロー</h2>
+    <p class="sub" style="font-size:14px;margin-bottom:12px">ゲーム1本を1週間で完成させるワークフロー</p>
+    <div class="flow">
+      <div class="flow-box"><span class="fi">💡</span>AIでアイデア出し</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box"><span class="fi">🗺️</span>マップ設計</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box"><span class="fi">🤖</span>Luaコード生成</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box"><span class="fi">🎨</span>テクスチャ生成</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box"><span class="fi">🎵</span>BGM生成</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box"><span class="fi">🚀</span>公開！</div>
+    </div>
+    <div class="tip" style="margin-top:20px">
+      🎯 各ステップでAIを活用すれば、1人でもプロレベルのゲームが作れる！
+    </div>
+    <div class="tip" style="margin-top:8px">
+      📅 目安：アイデア出し1日 / 実装3日 / テスト&調整2日 / 公開1日
+    </div>
+  </div>
+
+  <!-- SLIDE 8 -->
+  <div class="slide s8">
+    <span class="slide-num">08 / 10</span>
+    <span class="tag">🎯 PROMPTS</span>
+    <h2>使えるプロンプト集</h2>
+    <ul class="hlist">
+      <li>🗺️ <span>「Robloxのオブスタコースゲームのマップレイアウトを提案して。難易度3段階で」</span></li>
+      <li>⚔️ <span>「RPGの戦闘システムをLuaで実装して。HP・MP・攻撃・魔法の基本コード」</span></li>
+      <li>🏆 <span>「リーダーボードをDataStoreServiceで保存・表示するスクリプトを書いて」</span></li>
+      <li>🎨 <span>「cute kawaii anime style, game UI button, pink gradient, no background, PNG」</span></li>
+      <li>🧸 <span>「キャラクター名を20個考えて。日本語っぽいファンタジー世界観で」</span></li>
+    </ul>
+  </div>
+
+  <!-- SLIDE 9 -->
+  <div class="slide s9">
+    <span class="slide-num">09 / 10</span>
+    <span class="tag">💎 TIPS</span>
+    <h2>爆速Tips & コツ</h2>
+    <div class="cards cols2">
+      <div class="card">
+        <div class="icon">🔄</div>
+        <strong>反復を恐れない</strong>
+        <p>AIの出力が微妙でも「もっとシンプルに」「このパーツだけ修正して」と続けよう</p>
+      </div>
+      <div class="card">
+        <div class="icon">📋</div>
+        <strong>テンプレを作る</strong>
+        <p>よく使うプロンプトをメモ帳に保存。毎回ゼロから書かなくていい</p>
+      </div>
+      <div class="card">
+        <div class="icon">🧩</div>
+        <strong>小さく分割する</strong>
+        <p>大きなシステムをAIに頼む時は機能ごとに分割して頼むと精度UP</p>
+      </div>
+      <div class="card">
+        <div class="icon">🤝</div>
+        <strong>AIを先生にする</strong>
+        <p>「このコードを解説して」でLuaの勉強にもなる。理解しながら速く作れる！</p>
+      </div>
+    </div>
+    <div class="tip">
+      ⚠️ AIのコードは必ずStudioでテストしよう。100%正しいわけじゃないので確認が大切！
+    </div>
+  </div>
+
+  <!-- SLIDE 10 -->
+  <div class="slide s10">
+    <div class="stars">
+      <span class="star" style="top:10%;left:5%;animation-delay:0s;font-size:24px">🌟</span>
+      <span class="star" style="top:75%;left:10%;animation-delay:0.7s;font-size:20px">⭐</span>
+      <span class="star" style="top:20%;right:12%;animation-delay:1.2s;font-size:22px">✨</span>
+      <span class="star" style="top:65%;right:8%;animation-delay:0.4s;font-size:18px">🌟</span>
+    </div>
+    <span class="slide-num">10 / 10</span>
+    <div style="text-align:center;width:100%">
+      <span class="hero-emoji">🚀✨</span>
+      <h2 style="text-align:center;font-size:40px;margin-top:16px">さあ、作り始めよう！</h2>
+      <p class="sub" style="text-align:center;font-size:16px;margin-top:12px">
+        AIは「完璧に作ってくれるツール」じゃなくて<br>
+        「あなたのアイデアを形にする相棒」✨<br><br>
+        まずは小さいゲームから試してみよう🎮
+      </p>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:24px;flex-wrap:wrap">
+        <div class="card" style="background:rgba(255,255,255,0.25);padding:12px 20px;border-radius:50px;font-weight:900;font-size:15px;color:white">
+          🤖 AIに話しかける
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.25);padding:12px 20px;border-radius:50px;font-weight:900;font-size:15px;color:white">
+          🎮 Studioを開く
+        </div>
+        <div class="card" style="background:rgba(255,255,255,0.25);padding:12px 20px;border-radius:50px;font-weight:900;font-size:15px;color:white">
+          🚀 作って公開！
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /presentation -->
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <button class="btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← 前へ</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="nextBtn" onclick="changeSlide(1)">次へ →</button>
+</div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const dotsContainer = document.getElementById('dots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  // build dots
+  slides.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function changeSlide(dir) {
+    const next = current + dir;
+    if (next >= 0 && next < total) goTo(next);
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') changeSlide(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   changeSlide(-1);
+  });
+</script>
+</body>
+</html>

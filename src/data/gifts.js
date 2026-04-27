@@ -57,4 +57,18 @@ export const gifts = [
     linkedVideoTitle: null,
     linkedVideoUrl: null,
   },
+  {
+    id: 'gift_005',
+    title: 'AI×Roblox 爆速制作ガイド',
+    description: 'ChatGPT・Claude・Midjourney などのAIを使ってRobloxゲームを爆速で作る方法を全10スライドで解説！',
+    type: 'slides',
+    emoji: '🤖',
+    status: 'public',
+    keyword: null,
+    videoId: null,
+    slidesUrl: '/assets/ai-roblox-guide.html',
+    pdfUrl: null,
+    linkedVideoTitle: null,
+    linkedVideoUrl: null,
+  },
 ]

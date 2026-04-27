@@ -3,8 +3,8 @@ import { gifts } from '../data/gifts'
 import { useUnlocked } from '../hooks/useUnlocked'
 import Confetti from '../components/Confetti'
 
-const TYPE_LABEL = { video: '動画', pdf: 'PDF', script: 'スクリプト' }
-const TYPE_ICON  = { video: '🎬', pdf: '📄', script: '💻' }
+const TYPE_LABEL = { video: '動画', pdf: 'PDF', script: 'スクリプト', slides: 'スライド' }
+const TYPE_ICON  = { video: '🎬', pdf: '📄', script: '💻', slides: '🤖' }
 
 export default function PortalPage() {
   const { isUnlocked, unlock } = useUnlocked()
@@ -172,11 +172,13 @@ export default function PortalPage() {
 
       {/* 特典表示モーダル */}
       {viewGift && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 px-4"
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 px-4 py-4"
           onClick={() => setViewGift(null)}>
-          <div className="bg-[#16213e] border border-[#0f3460] rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden"
+          <div
+            className={`bg-[#16213e] border border-[#0f3460] rounded-2xl shadow-2xl overflow-hidden flex flex-col
+              ${viewGift.type === 'slides' ? 'w-full max-w-4xl h-[90vh]' : 'w-full max-w-2xl'}`}
             onClick={e => e.stopPropagation()}>
-            <div className="p-5 border-b border-[#0f3460] flex justify-between items-center">
+            <div className="p-5 border-b border-[#0f3460] flex justify-between items-center flex-shrink-0">
               <div className="flex items-center gap-2">
                 <span className="text-2xl">{viewGift.emoji}</span>
                 <h3 className="text-white font-bold text-sm">{viewGift.title}</h3>
@@ -184,8 +186,14 @@ export default function PortalPage() {
               <button onClick={() => setViewGift(null)} className="text-gray-500 hover:text-white text-xl">✕</button>
             </div>
 
-            <div className="p-5">
-              {viewGift.type === 'video' && viewGift.videoId && viewGift.videoId !== 'YOUR_VIDEO_ID' && viewGift.videoId !== 'YOUR_VIDEO_ID_2' ? (
+            <div className={`${viewGift.type === 'slides' ? 'flex-1 min-h-0' : 'p-5'}`}>
+              {viewGift.type === 'slides' && viewGift.slidesUrl ? (
+                <iframe
+                  src={import.meta.env.BASE_URL + viewGift.slidesUrl.replace(/^\//, '')}
+                  className="w-full h-full border-0"
+                  title={viewGift.title}
+                />
+              ) : viewGift.type === 'video' && viewGift.videoId && viewGift.videoId !== 'YOUR_VIDEO_ID' && viewGift.videoId !== 'YOUR_VIDEO_ID_2' ? (
                 <div className="aspect-video rounded-xl overflow-hidden">
                   <iframe src={`https://www.youtube.com/embed/${viewGift.videoId}`}
                     className="w-full h-full"
