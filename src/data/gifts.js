@@ -85,4 +85,18 @@ export const gifts = [
     linkedVideoTitle: null,
     linkedVideoUrl: null,
   },
+  {
+    id: 'gift_007',
+    title: 'イタリアンブレインロット図鑑',
+    description: 'Tralalero TralalaからFrulli Fruttoまで！話題のイタリアンブレインロット11体の名前の由来・見た目・豆知識を全13スライドで完全解説！',
+    type: 'slides',
+    emoji: '🇮🇹',
+    status: 'public',
+    keyword: null,
+    videoId: null,
+    slidesUrl: '/assets/italian-brainrot-zukan.html',
+    pdfUrl: null,
+    linkedVideoTitle: null,
+    linkedVideoUrl: null,
+  },
 ]
