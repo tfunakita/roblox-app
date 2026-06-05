@@ -183,7 +183,31 @@ export default function PortalPage() {
                 <span className="text-2xl">{viewGift.emoji}</span>
                 <h3 className="text-white font-bold text-sm">{viewGift.title}</h3>
               </div>
-              <button onClick={() => setViewGift(null)} className="text-gray-500 hover:text-white text-xl">✕</button>
+              <div className="flex items-center gap-2">
+                {viewGift.landingUrl && (
+                  <a
+                    href={import.meta.env.BASE_URL + viewGift.landingUrl.replace(/^\//, '')}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={e => e.stopPropagation()}
+                    className="text-xs bg-green-800/60 hover:bg-green-700/70 text-green-300 border border-green-700/50 px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap"
+                  >
+                    📩 無料で受け取る
+                  </a>
+                )}
+                {viewGift.type === 'slides' && viewGift.slidesUrl && (
+                  <a
+                    href={import.meta.env.BASE_URL + viewGift.slidesUrl.replace(/^\//, '')}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={e => e.stopPropagation()}
+                    className="text-xs text-gray-500 hover:text-gray-300 transition-colors whitespace-nowrap"
+                  >
+                    ↗ 別タブで開く
+                  </a>
+                )}
+                <button onClick={() => setViewGift(null)} className="text-gray-500 hover:text-white text-xl ml-1">✕</button>
+              </div>
             </div>
 
             <div className={`${viewGift.type === 'slides' ? 'flex-1 min-h-0' : 'p-5'}`}>
