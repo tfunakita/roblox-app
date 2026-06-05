@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バズりやすいRobloxゲームの作り方ガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @media print {
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+      body { background: white; }
+      .container { box-shadow: none; }
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #e8edf2;
+      color: #1a1a2e;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 794px;
+      margin: 32px auto;
+      background: #ffffff;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+    }
+
+    /* ===== 表紙 ===== */
+    .cover {
+      background: linear-gradient(135deg, #0d0d1a 0%, #16213e 60%, #0f3460 100%);
+      color: white;
+      padding: 80px 60px 60px;
+      text-align: center;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,162,255,0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,162,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .cover-badge {
+      background: rgba(0,162,255,0.2);
+      border: 1px solid rgba(0,162,255,0.5);
+      color: #00a2ff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .cover h1 span { color: #00a2ff; }
+    .cover-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      position: relative;
+    }
+    .cover-channel {
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.5);
+      font-size: 12px;
+      position: relative;
+      width: 100%;
+    }
+
+    /* ===== 本文共通 ===== */
+    .content { padding: 48px 60px; }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 900;
+      color: #0f3460;
+      border-left: 4px solid #00a2ff;
+      padding: 8px 16px;
+      background: #f0f7ff;
+      margin: 40px 0 20px;
+      border-radius: 0 8px 8px 0;
+    }
+    h2:first-child { margin-top: 0; }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin: 28px 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h3::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #00a2ff;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    p { margin: 10px 0; font-size: 14px; }
+
+    ul, ol { padding-left: 20px; margin: 10px 0; }
+    li { font-size: 14px; margin: 6px 0; }
+
+    /* ===== 目次 ===== */
+    .toc {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin: 0 0 40px;
+    }
+    .toc-title {
+      font-size: 14px;
+      font-weight: 900;
+      color: #0f3460;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toc ol { counter-reset: toc; list-style: none; padding: 0; }
+    .toc ol li {
+      counter-increment: toc;
+      padding: 5px 0;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .toc ol li:last-child { border-bottom: none; }
+    .toc ol li a {
+      color: #0f3460;
+      text-decoration: none;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toc ol li a::before {
+      content: counter(toc) ".";
+      color: #00a2ff;
+      font-weight: 700;
+      min-width: 20px;
+    }
+    .toc ol li a:hover { color: #00a2ff; }
+
+    /* ===== ゲームループ図 ===== */
+    .loop-diagram {
+      background: linear-gradient(135deg, #0d0d1a, #16213e);
+      border-radius: 16px;
+      padding: 32px;
+      margin: 20px 0;
+      color: white;
+      text-align: center;
+    }
+    .loop-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .loop-step {
+      background: rgba(0,162,255,0.2);
+      border: 1px solid rgba(0,162,255,0.4);
+      color: #00a2ff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .loop-arrow { color: rgba(255,255,255,0.4); font-size: 18px; }
+    .loop-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .loop-title { font-size: 14px; font-weight: 700; color: white; margin-bottom: 4px; }
+
+    /* ===== ステップカード ===== */
+    .step-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 16px 0;
+      position: relative;
+    }
+    .step-num {
+      position: absolute;
+      top: -14px;
+      left: 20px;
+      background: #00a2ff;
+      color: white;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+    .step-title {
+      font-size: 15px;
+      font-weight: 900;
+      color: #0f3460;
+      margin-bottom: 16px;
+      margin-top: 4px;
+    }
+    .step-section {
+      margin: 12px 0;
+    }
+    .step-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+    .step-section-label.do { color: #059669; }
+    .step-section-label.note { color: #d97706; }
+    .step-section-label.check { color: #7c3aed; }
+    .step-section-content {
+      font-size: 13px;
+      color: #374151;
+      padding-left: 12px;
+      border-left: 2px solid #e2e8f0;
+    }
+    .step-section.do .step-section-content { border-color: #059669; }
+    .step-section.note .step-section-content { border-color: #d97706; background: #fffbeb; padding: 8px 12px; border-radius: 0 4px 4px 0; }
+    .step-section.check .step-section-content { border-color: #7c3aed; }
+
+    /* ===== ポイントカード ===== */
+    .point-card {
+      display: flex;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin: 10px 0;
+      background: #fafafa;
+      border: 1px solid #e2e8f0;
+    }
+    .point-icon { font-size: 20px; flex-shrink: 0; }
+    .point-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #0f3460; }
+    .point-body { font-size: 13px; color: #4b5563; }
+
+    /* ===== 間違い・正解 ===== */
+    .mistake-item {
+      margin: 12px 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .mistake-wrong {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: #dc2626;
+    }
+    .mistake-correct {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-top: none;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: #16a34a;
+    }
+
+    /* ===== チェックリスト ===== */
+    .checklist-section { margin: 20px 0; }
+    .checklist-subtitle {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      background: #f0f7ff;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 13px;
+    }
+    .checklist-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: #00a2ff;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    /* ===== 応用アイデア ===== */
+    .idea-card {
+      background: linear-gradient(135deg, #f0f7ff, #e8f4fd);
+      border: 1px solid #bfdbfe;
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 12px 0;
+    }
+    .idea-title { font-size: 14px; font-weight: 700; color: #1d4ed8; margin-bottom: 6px; }
+    .idea-body { font-size: 13px; color: #374151; }
+
+    /* ===== 次にやること ===== */
+    .next-card {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin: 12px 0;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+    }
+    .next-num {
+      width: 32px;
+      height: 32px;
+      background: #0f3460;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .next-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; color: #0f3460; }
+    .next-body { font-size: 13px; color: #4b5563; }
+
+    /* ===== CTAセクション ===== */
+    .cta-section {
+      background: linear-gradient(135deg, #0d0d1a, #16213e);
+      color: white;
+      padding: 40px 48px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta-section h2 {
+      color: white;
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      padding: 0;
+      margin: 0 0 12px;
+    }
+    .cta-section p { color: rgba(255,255,255,0.7); font-size: 14px; margin: 8px 0; }
+    .cta-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+    .cta-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+    .cta-btn-line { background: #06C755; color: white; }
+    .cta-btn-yt { background: #e2231a; color: white; }
+    .cta-note { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 16px; }
+
+    hr { border: none; border-top: 1px solid #e2e8f0; margin: 32px 0; }
+
+    .no-print-hint {
+      text-align: center;
+      padding: 12px;
+      font-size: 12px;
+      color: #9ca3af;
+      background: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 印刷ヒント -->
+<div class="no-print no-print-hint">
+  💡 このページをPDFで保存するには：ブラウザメニュー → 印刷 → 「PDFに保存」を選択してください
+</div>
+
+<div class="container">
+
+  <!-- 表紙 -->
+  <div class="cover">
+    <div class="cover-badge">🎁 YouTube視聴者限定 無料特典</div>
+    <div class="cover-emoji">🌱</div>
+    <h1>バズりやすい<br><span>Robloxゲーム</span>の<br>作り方ガイド</h1>
+    <p class="cover-sub">Grow a Garden風ゲームを一から作る<br>完全実践マニュアル</p>
+    <div class="cover-channel">
+      🧙‍♂️ ロブ爺のRoblox Studio講座 ｜ 2026年6月
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- 目次 -->
+    <div class="toc">
+      <div class="toc-title">📋 目次</div>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#overview">ゲームの全体像</a></li>
+        <li><a href="#steps">実践ステップ（11ステップ）</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">初心者がつまずきやすい点</a></li>
+        <li><a href="#ideas">応用アイデア</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+        <li><a href="#next">次にやること</a></li>
+      </ol>
+    </div>
+
+    <!-- 学べること -->
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>🌱 プレイヤーが毎日ログインしたくなるゲームループの設計</li>
+      <li>🛒 「種を買う→育てる→収穫する→売る」一周サイクルの実装</li>
+      <li>🔧 Toolbox・Part・ClickDetector の基本的な使い方</li>
+      <li>📊 Radar block でUIを自動表示するゾーン検知システム</li>
+      <li>⭐ 育成4段階とエフェクト演出で「中毒性」を生む方法</li>
+    </ul>
+
+    <!-- 全体像 -->
+    <h2 id="overview">🗺️ ゲームの全体像</h2>
+
+    <div class="loop-diagram">
+      <div class="loop-title">🔄 ゲームの基本ループ（中毒性の正体！）</div>
+      <div class="loop-label">この一周がスムーズに回るほど、プレイヤーは毎日戻ってくる</div>
+      <div class="loop-steps">
+        <span class="loop-step">💰 お金を持つ</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">🛒 種を買う</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">🌱 畑に植える</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">⏳ 育てる</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">✨ 収穫</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">💴 売る</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step">💰 また買う…</span>
+      </div>
+    </div>
+
+    <p><strong>制作ステップの流れ：</strong></p>
+    <p style="font-size:13px; color:#4b5563; background:#f8fafc; padding:16px; border-radius:8px; font-family: monospace; line-height:2;">
+      背景を作る → Shop設置 → 畑を作る → 家畜小屋を作る → GUI設置<br>
+      → 種購入システム → インベントリ → 種植えシステム → 育成システム → 収穫 → 売る
+    </p>
+
+    <!-- ステップ -->
+    <h2 id="steps">🔧 実践ステップ</h2>
+
+    <div class="step-card">
+      <div class="step-num">STEP 1</div>
+      <div class="step-title">背景を作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          Base のサイズを Studs で広げる。地面の Material を <strong>Grass</strong> に変える。Lighting → Atmosphere で空を朝っぽい柔らかい色に調整する。
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">
+          背景を作り込みすぎると時間がなくなります。まずはざっくりでOK。雰囲気が出たら次へ進みましょう。
+        </div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">「ここで農業をやりたい」と感じる世界観になっているか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 2</div>
+      <div class="step-title">Shopを設置する</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          Toolbox を開いて「Shop」と検索 → 農場っぽい建物を1つ選んでマップの端に置く → 位置とサイズを整える
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">この時点でコードや難しい設定は一切不要。あとでシステムをくっつけます。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">Shopがマップの端にあり、プレイヤーが近づきやすい配置になっているか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 3</div>
+      <div class="step-title">畑を作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          Part で土っぽい色の地面を作る（Material: SandStone または LeafyGrass）。
+          Toolbox で「Fence」と検索して柵を周りに配置する。
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">畑が広すぎるとシステム設置が大変に。プレイヤーが全体を見渡せるサイズが理想。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">畑エリアと外のエリアが柵で明確に区切られているか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 4</div>
+      <div class="step-title">家畜小屋を作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          Toolbox で「barn」または「Farm House」と検索 → 小屋を1つ持ってくる → Y軸で高さを調整して地面にめり込まないようにする → 畑の横に配置する
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">小屋の下に地面の Part を敷いておくと馴染みやすくなります。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">マップ全体が農場らしい雰囲気になっているか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 5</div>
+      <div class="step-title">GUIとインベントリを設置する</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          StarterGui → ScreenGui を作成 → Frame と TextButton を配置する。インベントリ用 Frame を画面左下あたりに置く。
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">見た目より機能を優先してシンプルに。デザインは後から整えられます。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">ゲームを起動したときに画面にGUIが表示されるか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 6</div>
+      <div class="step-title">種を買うシステムを作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          <ol>
+            <li>Shop 前に <strong>Radar block（透明な Part）</strong> を置く</li>
+            <li>Radar block を Invisible にして入口サイズに合わせる</li>
+            <li>ゾーンに入ったらUIを表示・離れたら消えるスクリプトを書く</li>
+            <li>購入ボタンを押したら種のデータがプレイヤーに渡るようにする</li>
+          </ol>
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">Radar block の範囲が広すぎると遠くでもUIが出てしまいます。Shop の入口ぴったりに合わせましょう。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">Shopに近づいたらUIが出て、離れたら消えるか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 7</div>
+      <div class="step-title">インベントリに種を表示する</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          インベントリ Frame に種の名前と所持数を表示する。種を購入するたびにリストが更新されるようにする。
+        </div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">種を買ったあとにインベントリに名前と数が表示されるか</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 8</div>
+      <div class="step-title">種を植えるシステムを作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          <ol>
+            <li>畑の Part に <strong>Radar block</strong> を設置する</li>
+            <li>畑エリアに入ると種の名前がUIに表示される</li>
+            <li>クリックしたら足元に<strong>茎（Part）</strong>が生成される</li>
+            <li>UIから種の名前が消えてインベントリの所持数が1つ減る</li>
+            <li><strong>植えた場所の座標を記録しておく（育成システムで使う！）</strong></li>
+          </ol>
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">畑の外では種植えUIは出ないように設定しましょう。植えた座標の記録を忘れずに！</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">畑エリアに入ったときだけUIが出るか。クリックで茎が生えてインベントリが減るか。</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 9</div>
+      <div class="step-title">育成システムを作る（4段階）</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          <ol>
+            <li>植えた茎が時間経過で <strong>4段階</strong> に成長するスクリプトを書く</li>
+            <li>各段階でサイズ（Scale）が変わる</li>
+            <li>最終段階で <strong>キラキラのエフェクト</strong> が出る</li>
+          </ol>
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">テスト中は成長時間を<strong>短め</strong>に設定して動作確認。リリース前にちょうどよい時間に伸ばします。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">茎が段階的にサイズアップするか。最終段階でエフェクトが出るか。</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 10</div>
+      <div class="step-title">収穫システムを作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          <ol>
+            <li>茎の Part に <strong>ClickDetector</strong> をくっつける</li>
+            <li>クリックされたら茎が消えてインベントリに野菜が追加される</li>
+            <li>収穫した瞬間に画面に野菜名が表示される</li>
+            <li>一定時間放置したら<strong>自動で消えるスクリプト</strong>を追加する</li>
+          </ol>
+        </div>
+      </div>
+      <div class="step-section note">
+        <div class="step-section-label note">⚠️ 注意点</div>
+        <div class="step-section-content">放置消滅の処理を入れておかないと、畑がいっぱいになって後から収穫できなくなります。</div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">育ちきった茎をクリックで収穫できるか。長時間放置で自動消滅するか。</div>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-num">STEP 11</div>
+      <div class="step-title">野菜を売るシステムを作る</div>
+      <div class="step-section do">
+        <div class="step-section-label do">✅ やること</div>
+        <div class="step-section-content">
+          <ol>
+            <li>Shop 前に戻ると野菜を売るUIが表示される</li>
+            <li>野菜の名前・数量・値段が一覧で出てくる</li>
+            <li>売るボタンを押すとお金がもらえる</li>
+            <li><strong>野菜ごとに値段を変えておく（レアな作物ほど高値に！）</strong></li>
+          </ol>
+        </div>
+      </div>
+      <div class="step-section check">
+        <div class="step-section-label check">🔍 確認ポイント</div>
+        <div class="step-section-content">Shopに近づくと売るUIが出るか。売ったら野菜がなくなってお金が増えるか。一周サイクルが完成しているか。</div>
+      </div>
+    </div>
+
+    <!-- 重要ポイント -->
+    <h2 id="points">⭐ 重要ポイント</h2>
+
+    <div class="point-card">
+      <div class="point-icon">⭐</div>
+      <div>
+        <div class="point-title">ゲームループが中毒性の核心</div>
+        <div class="point-body">「種を買う → 育てる → 収穫する → 売る」の一周がスムーズに回ることがプレイヤーをリピートさせます。Grow a Garden が100万人同時接続を達成したのもこのループが完成していたから。</div>
+      </div>
+    </div>
+
+    <div class="point-card">
+      <div class="point-icon">⭐</div>
+      <div>
+        <div class="point-title">Radar blockでゾーン検知</div>
+        <div class="point-body">透明な Part（Radar block）を使って Shop や畑のエリアを検知し、UIを自動表示します。これがゾーンシステムの基本で、何度も使うテクニックです。</div>
+      </div>
+    </div>
+
+    <div class="point-card">
+      <div class="point-icon">⭐</div>
+      <div>
+        <div class="point-title">育成の4段階で視覚的フィードバック</div>
+        <div class="point-body">サイズが段階的に変わることでプレイヤーは「育ってる！」を実感できます。最後のキラキラエフェクトが「収穫してください」のサインになります。</div>
+      </div>
+    </div>
+
+    <div class="point-card">
+      <div class="point-icon">⭐</div>
+      <div>
+        <div class="point-title">テスト中は成長時間を短く</div>
+        <div class="point-body">動作確認のために成長時間はまず短めに設定し、リリース前にバランス調整します。最初から長い時間に設定するとテストが面倒になります。</div>
+      </div>
+    </div>
+
+    <div class="point-card">
+      <div class="point-icon">⭐</div>
+      <div>
+        <div class="point-title">レアリティが継続動機を作る</div>
+        <div class="point-body">野菜ごとに値段を変えると、プレイヤーが「レアな作物を育てたい！」という目標を持ちます。これが毎日ログインする理由になります。</div>
+      </div>
+    </div>
+
+    <!-- つまずきポイント -->
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+
+    <div class="mistake-item">
+      <div class="mistake-wrong">❌ 畑に柵がなくエリアが不明確</div>
+      <div class="mistake-correct">✅ 柵で畑と外のエリアをはっきり区切る。あとのシステム設置がずっと楽になります</div>
+    </div>
+
+    <div class="mistake-item">
+      <div class="mistake-wrong">❌ Radar block が広すぎて遠くでもUIが表示される</div>
+      <div class="mistake-correct">✅ Radar block は Shop・畑の入口サイズにぴったり合わせる</div>
+    </div>
+
+    <div class="mistake-item">
+      <div class="mistake-wrong">❌ テスト時の短い成長時間のまま公開してしまう</div>
+      <div class="mistake-correct">✅ リリース前に成長時間を実際のプレイに合った長さに必ず調整する</div>
+    </div>
+
+    <div class="mistake-item">
+      <div class="mistake-wrong">❌ 茎に ClickDetector を入れ忘れて収穫できない</div>
+      <div class="mistake-correct">✅ 茎の Part の中に ClickDetector を追加してからスクリプトを書く</div>
+    </div>
+
+    <div class="mistake-item">
+      <div class="mistake-wrong">❌ 放置した野菜の自動消滅処理を忘れて畑がいっぱいに</div>
+      <div class="mistake-correct">✅ 一定時間後に茎が自動で消えるスクリプトを最初から入れておく</div>
+    </div>
+
+    <!-- 応用アイデア -->
+    <h2 id="ideas">🚀 応用アイデア</h2>
+
+    <div class="idea-card">
+      <div class="idea-title">💎 レア作物コレクション</div>
+      <div class="idea-body">低確率でしか育たない「激レア野菜」を追加する。収穫した瞬間に特別なエフェクトと音が出ると、SNSで「出た！」と共有されて口コミが広がります。</div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-title">🎄 季節イベント限定種</div>
+      <div class="idea-body">期間限定の種を追加して、毎シーズン新しい目標をプレイヤーに提供する。「今月しか育てられない野菜」がログイン動機を継続させます。</div>
+    </div>
+
+    <div class="idea-card">
+      <div class="idea-title">🐄 家畜システムの拡張</div>
+      <div class="idea-body">家畜小屋から卵が産まれる仕組みを追加する。種の育成と並行して進められる別ゲームループが生まれ、プレイ時間が自然と伸びます。</div>
+    </div>
+
+    <!-- チェックリスト -->
+    <h2 id="checklist">✅ チェックリスト</h2>
+
+    <div class="checklist-section">
+      <div class="checklist-subtitle">📋 実践前に確認すること</div>
+      <div class="checklist-item"><input type="checkbox"> Roblox Studio がインストールされていてログインできる</div>
+      <div class="checklist-item"><input type="checkbox"> Toolbox の検索が使える（Robloxアカウントへのサインインが必要）</div>
+      <div class="checklist-item"><input type="checkbox"> 動画を見ながら同時に作業できる環境がある</div>
+    </div>
+
+    <div class="checklist-section" style="margin-top:20px;">
+      <div class="checklist-subtitle">🔧 実践中に確認すること</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 3：畑エリアと外が柵でしっかり区切られている</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 6：Shop 前の Radar block が Invisible になっている</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 8：植えた座標がスクリプトに記録されている</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 9：テスト中の成長時間は短めに設定している</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 10：茎の Part の中に ClickDetector が入っている</div>
+      <div class="checklist-item"><input type="checkbox"> STEP 10：放置消滅スクリプトを追加している</div>
+    </div>
+
+    <div class="checklist-section" style="margin-top:20px;">
+      <div class="checklist-subtitle">🚀 実践後に確認すること</div>
+      <div class="checklist-item"><input type="checkbox"> 「種を買う → 育てる → 収穫する → 売る」の一周が実際に動くか</div>
+      <div class="checklist-item"><input type="checkbox"> 成長時間をリリース向けに調整したか</div>
+      <div class="checklist-item"><input type="checkbox"> レアな野菜の値段が普通の野菜より高くなっているか</div>
+      <div class="checklist-item"><input type="checkbox"> ゲームを公開してRobloxのゲームページリンクを取得したか</div>
+    </div>
+
+    <!-- 次にやること -->
+    <h2 id="next">🎯 次にやること</h2>
+
+    <div class="next-card">
+      <div class="next-num">1</div>
+      <div>
+        <div class="next-title">このガイドを見ながら今日中にSTEP4まで完成させる</div>
+        <div class="next-body">まず背景づくりを完成させましょう。「なんとなく農場っぽくなった」という達成感が次へのエネルギーになります。</div>
+      </div>
+    </div>
+
+    <div class="next-card">
+      <div class="next-num">2</div>
+      <div>
+        <div class="next-title">AIに相談しながらスクリプトを書く</div>
+        <div class="next-body">スクリプトが難しいと感じたら ChatGPT や Claude に「Robloxのスクリプトで〇〇を作りたい」と聞いてみましょう。コードの補助はAIが得意です。</div>
+      </div>
+    </div>
+
+    <div class="next-card">
+      <div class="next-num">3</div>
+      <div>
+        <div class="next-title">完璧じゃなくていいので公開してフィードバックをもらう</div>
+        <div class="next-body">まず出すことが大事。プレイヤーの反応を見て少しずつ改善するサイクルがプロへの最短ルートです。</div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>🧙‍♂️ ロブ爺のRoblox Studio講座</h2>
+    <p>Grow a Gardenにハマった経験があるあなたには、バズるゲームを感じる「センサー」がすでに備わっています。</p>
+    <p>「ゲームは作れたけどプレイヤーが集まらない」「もっとリピートされるゲームにしたい」と感じたら、ぜひ公式LINEをのぞいてみてください。</p>
+    <div class="cta-buttons">
+      <a href="YOUR_LINE_URL" class="cta-btn cta-btn-line">💬 公式LINEに参加する</a>
+      <a href="https://www.youtube.com/@robjii-roblox" target="_blank" class="cta-btn cta-btn-yt">▶ YouTubeを見る</a>
+    </div>
+    <div class="cta-note">※ LINEのURLは動画の概要欄からご確認ください</div>
+  </div>
+
+</div><!-- /container -->
+
+</body>
+</html>

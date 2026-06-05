@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>無料特典｜バズりやすいRobloxゲームの作り方ガイド</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0d0d1a;
+      color: white;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* グリッド背景 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(0,162,255,0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,162,255,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* グロー */
+    .glow-blue {
+      position: fixed;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,162,255,0.08), transparent 70%);
+      border-radius: 50%;
+      top: -100px; left: -100px;
+      pointer-events: none;
+    }
+    .glow-red {
+      position: fixed;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(226,35,26,0.06), transparent 70%);
+      border-radius: 50%;
+      bottom: -100px; right: -100px;
+      pointer-events: none;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* バッジ */
+    .badge {
+      display: inline-block;
+      background: rgba(226,35,26,0.2);
+      border: 1px solid rgba(226,35,26,0.5);
+      color: #ff6b6b;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+    }
+
+    /* ヒーロー */
+    .hero { text-align: center; margin-bottom: 56px; }
+    .hero-emoji { font-size: 80px; margin-bottom: 20px; }
+    .hero h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 20px;
+    }
+    .hero h1 span { color: #00a2ff; }
+    .hero-desc {
+      color: rgba(255,255,255,0.65);
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 540px;
+      margin: 0 auto 36px;
+    }
+
+    /* CTAボタン */
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #06C755, #04a545);
+      color: white;
+      font-size: 17px;
+      font-weight: 900;
+      padding: 18px 40px;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(6,199,85,0.3);
+      letter-spacing: 0.5px;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(6,199,85,0.4);
+    }
+    .cta-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+    }
+
+    /* 特典の中身プレビュー */
+    .preview {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 48px;
+    }
+    .preview-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #00a2ff;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 480px) {
+      .preview-grid { grid-template-columns: 1fr; }
+    }
+    .preview-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(0,162,255,0.06);
+      border: 1px solid rgba(0,162,255,0.15);
+      border-radius: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+    }
+    .preview-item-icon { font-size: 18px; flex-shrink: 0; }
+
+    /* 対象者 */
+    .for-who {
+      margin-bottom: 48px;
+    }
+    .for-who h2 {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 20px;
+      text-align: center;
+      color: white;
+    }
+    .for-who h2 span { color: #00a2ff; }
+    .for-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .for-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+    .for-item-icon { font-size: 22px; }
+
+    /* 受け取りステップ */
+    .steps-section {
+      margin-bottom: 56px;
+      text-align: center;
+    }
+    .steps-section h2 {
+      font-size: 18px;
+      font-weight: 900;
+      margin-bottom: 24px;
+    }
+    .steps-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .step-item {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-align: center;
+      min-width: 130px;
+    }
+    .step-num-badge {
+      background: #00a2ff;
+      color: white;
+      font-size: 11px;
+      font-weight: 900;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .step-icon { font-size: 24px; margin-bottom: 6px; }
+    .step-label { font-size: 12px; color: rgba(255,255,255,0.7); }
+    .step-arrow { color: rgba(255,255,255,0.3); font-size: 20px; }
+
+    /* CTA下部 */
+    .cta-bottom {
+      text-align: center;
+      padding: 48px 40px;
+      background: linear-gradient(135deg, #16213e, #0f3460);
+      border: 1px solid #0f3460;
+      border-radius: 24px;
+      margin-bottom: 40px;
+    }
+    .cta-bottom h2 {
+      font-size: 22px;
+      font-weight: 900;
+      margin-bottom: 12px;
+    }
+    .cta-bottom p {
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+      margin-bottom: 28px;
+      line-height: 1.8;
+    }
+
+    /* フッター */
+    .footer {
+      text-align: center;
+      color: rgba(255,255,255,0.3);
+      font-size: 12px;
+    }
+    .footer a { color: rgba(0,162,255,0.6); text-decoration: none; }
+
+    /* 強調数字 */
+    .highlight-stat {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 24px;
+      background: rgba(0,162,255,0.08);
+      border: 1px solid rgba(0,162,255,0.2);
+      border-radius: 12px;
+      margin: 8px;
+    }
+    .stat-num { font-size: 32px; font-weight: 900; color: #00a2ff; }
+    .stat-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+    .stats-row { display: flex; justify-content: center; flex-wrap: wrap; margin: 24px 0 36px; }
+  </style>
+</head>
+<body>
+
+<div class="glow-blue"></div>
+<div class="glow-red"></div>
+
+<div class="wrapper">
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="badge">🎁 YouTube視聴者限定 無料特典</div>
+    <div class="hero-emoji">🌱</div>
+    <h1>バズりやすい<br><span>Robloxゲーム</span>の<br>作り方ガイド</h1>
+    <p class="hero-desc">
+      Grow a Garden風ゲームを一から作る完全実践マニュアル。<br>
+      「種を買う→育てる→収穫する→売る」の中毒性あるゲームループを、<br>
+      11ステップで実装する方法をゼロから解説します。
+    </p>
+    <a href="YOUR_LINE_URL" class="cta-btn">💬 無料でガイドを受け取る</a>
+    <div class="cta-note">公式LINEに登録するとすぐにお届けします（完全無料）</div>
+  </div>
+
+  <!-- 数字 -->
+  <div class="stats-row">
+    <div class="highlight-stat">
+      <span class="stat-num">11</span>
+      <span class="stat-label">実践ステップ</span>
+    </div>
+    <div class="highlight-stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">重要ポイント</span>
+    </div>
+    <div class="highlight-stat">
+      <span class="stat-num">13</span>
+      <span class="stat-label">チェックリスト項目</span>
+    </div>
+  </div>
+
+  <!-- 特典の中身プレビュー -->
+  <div class="preview">
+    <div class="preview-title">📋 このガイドで学べること</div>
+    <div class="preview-grid">
+      <div class="preview-item">
+        <span class="preview-item-icon">🌱</span>
+        <span>毎日ログインしたくなる<br>ゲームループの設計</span>
+      </div>
+      <div class="preview-item">
+        <span class="preview-item-icon">🛒</span>
+        <span>種を買う→育てる→売る<br>一周サイクルの実装</span>
+      </div>
+      <div class="preview-item">
+        <span class="preview-item-icon">📊</span>
+        <span>Radar blockで<br>ゾーン検知UIを自動表示</span>
+      </div>
+      <div class="preview-item">
+        <span class="preview-item-icon">✨</span>
+        <span>育成4段階と<br>エフェクト演出の作り方</span>
+      </div>
+      <div class="preview-item">
+        <span class="preview-item-icon">❌</span>
+        <span>初心者がつまずく5つの<br>ポイントと解決策</span>
+      </div>
+      <div class="preview-item">
+        <span class="preview-item-icon">🚀</span>
+        <span>レア作物・季節イベントなど<br>応用アイデア3選</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- こんな人に -->
+  <div class="for-who">
+    <h2>こんな人に<span>ぴったり</span>です</h2>
+    <div class="for-list">
+      <div class="for-item">
+        <span class="for-item-icon">🎮</span>
+        <span>Grow a Garden にドハマりして「自分でも作りたい！」と思った人</span>
+      </div>
+      <div class="for-item">
+        <span class="for-item-icon">🌱</span>
+        <span>Roblox Studio は触ったことがあるけどゲームが完成したことがない人</span>
+      </div>
+      <div class="for-item">
+        <span class="for-item-icon">💡</span>
+        <span>プレイヤーが毎日戻ってくるゲームの仕組みを理解したい人</span>
+      </div>
+      <div class="for-item">
+        <span class="for-item-icon">🤖</span>
+        <span>AIと組み合わせてゲーム制作を効率化したい人</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 受け取りステップ -->
+  <div class="steps-section">
+    <h2>受け取り方法はかんたん3ステップ</h2>
+    <div class="steps-row">
+      <div class="step-item">
+        <div class="step-num-badge">1</div>
+        <div class="step-icon">💬</div>
+        <div class="step-label">LINEボタンを<br>タップ</div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-item">
+        <div class="step-num-badge">2</div>
+        <div class="step-icon">➕</div>
+        <div class="step-label">公式LINEを<br>友だち追加</div>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step-item">
+        <div class="step-num-badge">3</div>
+        <div class="step-icon">📄</div>
+        <div class="step-label">ガイドが<br>すぐ届く！</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA下部 -->
+  <div class="cta-bottom">
+    <h2>🎁 今すぐ無料で受け取る</h2>
+    <p>
+      Grow a Gardenにハマったあなたには、バズるゲームを感じる「センサー」がすでに備わっています。<br>
+      あとは、その感覚をRoblox Studioで形にするだけ。<br>
+      このガイドがその第一歩になります。
+    </p>
+    <a href="YOUR_LINE_URL" class="cta-btn">💬 無料でガイドを受け取る</a>
+    <div class="cta-note" style="margin-top:12px; font-size:12px; color:rgba(255,255,255,0.3);">
+      ※ 費用は一切かかりません。いつでも退会できます。
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <div class="footer">
+    <p>🧙‍♂️ ロブ爺のRoblox Studio講座</p>
+    <p style="margin-top:6px;">
+      <a href="https://www.youtube.com/@robjii-roblox" target="_blank">YouTube</a>
+      ｜
+      <a href="YOUR_LINE_URL">公式LINE</a>
+    </p>
+    <p style="margin-top:12px;">© 2026 ロブ爺のRoblox Studio講座</p>
+  </div>
+
+</div>
+
+</body>
+</html>
