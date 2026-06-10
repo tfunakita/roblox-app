@@ -1,7 +1,27 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { contents, categories } from '../data/contents'
+import { gifts } from '../data/gifts'
 import { useUnlocked } from '../hooks/useUnlocked'
 import ContentCard from '../components/ContentCard'
+
+function giftsToItems(gs) {
+  return gs.map(g => ({
+    id: g.id,
+    title: g.title,
+    category: 'bonus',
+    type: g.type,
+    description: g.description,
+    emoji: g.emoji,
+    pdfUrl: g.pdfUrl || null,
+    slidesUrl: g.slidesUrl || null,
+    landingUrl: g.landingUrl || null,
+    isLocked: g.status === 'locked',
+    isComingSoon: g.status === 'coming_soon',
+    keyword: g.keyword || null,
+    unlockGuideText: g.linkedVideoTitle || null,
+    unlockGuideUrl: g.linkedVideoUrl || null,
+  }))
+}
 
 export default function ItemListPage() {
   const { category } = useParams()
@@ -9,8 +29,12 @@ export default function ItemListPage() {
   const { isUnlocked } = useUnlocked()
 
   const currentCat = categories.find(c => c.id === category)
-  const items = contents.filter(item => item.category === category)
-  const unlockedCount = items.filter(i => !i.isLocked || isUnlocked(i.id)).length
+  const items = category === 'bonus'
+    ? giftsToItems(gifts)
+    : contents.filter(item => item.category === category)
+  const unlockedCount = items.filter(i =>
+    (!i.isLocked || isUnlocked(i.id)) && !i.isComingSoon
+  ).length
 
   return (
     <div className="min-h-screen bg-[#0d0d1a]">

@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import { contents } from '../data/contents'
+import { gifts } from '../data/gifts'
 import { useUnlocked } from '../hooks/useUnlocked'
 
 // ─── パターンA: スクリプト ───────────────────────────────────
@@ -76,6 +77,19 @@ function VideoView({ item }) {
   )
 }
 
+// ─── パターンD: スライド ─────────────────────────────────────
+function SlidesView({ item }) {
+  return (
+    <div className="w-full rounded-xl overflow-hidden" style={{ height: '80vh' }}>
+      <iframe
+        src={import.meta.env.BASE_URL + (item.slidesUrl || '').replace(/^\//, '')}
+        className="w-full h-full border-0"
+        title={item.title}
+      />
+    </div>
+  )
+}
+
 // ─── パターンB: PDF ──────────────────────────────────────────
 function PdfView({ item }) {
   return (
@@ -114,7 +128,21 @@ export default function DetailPage() {
   const navigate = useNavigate()
   const { isUnlocked } = useUnlocked()
 
-  const item = contents.find(c => c.id === id)
+  const contentItem = contents.find(c => c.id === id)
+  const giftItem = !contentItem
+    ? gifts.find(g => g.id === id && g.status !== 'coming_soon')
+    : null
+  const item = contentItem || (giftItem ? {
+    id: giftItem.id,
+    title: giftItem.title,
+    category: 'bonus',
+    type: giftItem.type,
+    description: giftItem.description,
+    pdfUrl: giftItem.pdfUrl || null,
+    slidesUrl: giftItem.slidesUrl || null,
+    isLocked: giftItem.status === 'locked',
+    keyword: giftItem.keyword || null,
+  } : null)
 
   if (!item) {
     return (
@@ -158,9 +186,10 @@ export default function DetailPage() {
       <div className="max-w-6xl mx-auto px-5 py-8">
         <h2 className="text-xl sm:text-2xl font-black text-white mb-8">{item.title}</h2>
 
-        {item.type === 'script' && <ScriptView item={item} />}
-        {item.type === 'video'  && <VideoView  item={item} />}
-        {item.type === 'pdf'    && <PdfView    item={item} />}
+        {item.type === 'script' && <ScriptView  item={item} />}
+        {item.type === 'video'  && <VideoView   item={item} />}
+        {item.type === 'pdf'    && <PdfView     item={item} />}
+        {item.type === 'slides' && <SlidesView  item={item} />}
       </div>
     </div>
   )

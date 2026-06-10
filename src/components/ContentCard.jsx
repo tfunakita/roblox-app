@@ -7,12 +7,31 @@ const TYPE_BADGE = {
   script: { label: '💻 スクリプト', cls: 'bg-green-800 text-green-200' },
   video:  { label: '🎬 動画',       cls: 'bg-red-800 text-red-200' },
   pdf:    { label: '📄 PDF',        cls: 'bg-orange-800 text-orange-200' },
+  slides: { label: '🤖 スライド',   cls: 'bg-blue-800 text-blue-200' },
 }
 
 export default function ContentCard({ item }) {
   const navigate = useNavigate()
   const { isUnlocked } = useUnlocked()
   const [showModal, setShowModal] = useState(false)
+
+  if (item.isComingSoon) {
+    return (
+      <div className="relative bg-[#16213e] border border-purple-800/50 rounded-2xl p-5 opacity-70 cursor-default flex flex-col">
+        <span className="inline-block bg-purple-900/30 text-purple-400 border border-purple-700/40 text-xs font-bold px-2.5 py-1 rounded-full mb-3 w-fit">
+          🔮 近日公開
+        </span>
+        <div className="blur-[2px] flex-1">
+          <div className="text-3xl mb-2">{item.emoji || '🎁'}</div>
+          <h3 className="font-bold text-base mb-2 leading-snug text-gray-400">？？？？？？？？</h3>
+          <p className="text-sm leading-relaxed text-gray-600">準備中です。もうしばらくお待ちください...</p>
+        </div>
+        <div className="mt-4 text-sm font-medium">
+          <span className="text-purple-400">✨ 近日公開予定</span>
+        </div>
+      </div>
+    )
+  }
 
   const unlocked = !item.isLocked || isUnlocked(item.id)
   const badge = TYPE_BADGE[item.type] || { label: item.type, cls: 'bg-gray-700 text-gray-300' }
