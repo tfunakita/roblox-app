@@ -100,7 +100,7 @@ export const gifts = [
     linkedVideoUrl: null,
   },
   {
-    id: 'gift_007',
+    id: 'gift_008',
     title: 'バズりやすいRobloxゲームの作り方ガイド',
     description: 'Grow a Garden風ゲームを一から作る完全実践マニュアル。「種を買う→育てる→収穫→売る」の中毒性あるゲームループを11ステップで解説！',
     type: 'slides',
