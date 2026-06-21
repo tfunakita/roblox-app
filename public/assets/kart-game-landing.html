@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>無料特典：ロブロックス設計メソッドガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0d0d1a;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: rgba(0,0,0,0.6);
+      border-bottom: 1px solid rgba(0,162,255,0.2);
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #a0b8d0;
+    }
+    .header span { color: #00a2ff; font-weight: 700; }
+
+    /* ヒーロー */
+    .hero {
+      background: linear-gradient(160deg, #0d0d1a 0%, #0a2040 50%, #0d0d1a 100%);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,162,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(0,162,255,0.15);
+      border: 1px solid rgba(0,162,255,0.4);
+      color: #00a2ff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+    }
+    .hero .emoji { font-size: 72px; margin-bottom: 20px; display: block; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .hero h1 .highlight { color: #00a2ff; }
+    .hero .sub {
+      font-size: 16px;
+      color: #a0b8d0;
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
+    .hero-cta-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #06c755, #05b34a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 48px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(6,199,85,0.3);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .hero-cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(6,199,85,0.4);
+    }
+    .hero .note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #5a7a9a;
+    }
+
+    /* 特典の中身 */
+    .preview {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 64px 24px;
+    }
+    .preview h2 {
+      font-size: 22px;
+      font-weight: 900;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .preview h2 span { color: #00a2ff; }
+    .preview .preview-sub {
+      text-align: center;
+      color: #a0b8d0;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .content-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,162,255,0.15);
+      border-radius: 12px;
+      padding: 24px 20px;
+    }
+    .content-card .card-icon { font-size: 32px; margin-bottom: 12px; }
+    .content-card .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #00a2ff;
+      margin-bottom: 8px;
+    }
+    .content-card .card-desc {
+      font-size: 13px;
+      color: #a0b8d0;
+      line-height: 1.6;
+    }
+
+    /* 目次プレビュー */
+    .toc-preview {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 48px;
+    }
+    .toc-preview h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #a0b8d0;
+      margin-bottom: 16px;
+    }
+    .toc-preview ul { list-style: none; }
+    .toc-preview ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toc-preview ul li:last-child { border-bottom: none; }
+    .toc-preview ul li .num {
+      background: rgba(0,162,255,0.2);
+      color: #00a2ff;
+      font-size: 11px;
+      font-weight: 700;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* CTA2 */
+    .cta2 {
+      text-align: center;
+      padding: 0 24px 32px;
+    }
+    .cta2 .step-label {
+      font-size: 13px;
+      color: #5a7a9a;
+      margin-bottom: 20px;
+    }
+    .cta2 .step-label span { color: #00a2ff; font-weight: 700; }
+    .cta2-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #06c755, #05b34a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 48px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(6,199,85,0.25);
+    }
+    .cta2-sub { margin-top: 12px; font-size: 12px; color: #5a7a9a; }
+
+    /* プロフィール */
+    .profile {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 48px 24px;
+      text-align: center;
+    }
+    .profile .avatar { font-size: 64px; margin-bottom: 16px; }
+    .profile h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+    .profile p {
+      font-size: 14px;
+      color: #a0b8d0;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .profile .yt-link {
+      display: inline-block;
+      background: #ff0000;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    /* フッター */
+    .footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #3a4a6a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span>ロブ爺のRoblox Studio講座</span> — 58歳のゲームクリエイターが教える実践メソッド
+  </div>
+
+  <!-- ヒーロー -->
+  <div class="hero">
+    <div class="badge">🎁 期間限定 無料プレゼント</div>
+    <span class="emoji">🏎️</span>
+    <h1><span class="highlight">ロブロックス設計</span><br>メソッドガイド</h1>
+    <p class="sub">
+      マリオカート風カートゲームを<br>
+      スクリプトだけで作り上げる完全実践マニュアル
+    </p>
+    <a class="hero-cta-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">
+      📲 無料でガイドを受け取る
+    </a>
+    <p class="note">LINEに登録して「マリカ」と送るだけ — 完全無料</p>
+  </div>
+
+  <!-- 特典の中身 -->
+  <div class="preview">
+    <h2>📄 ガイドの<span>中身を見てみる</span></h2>
+    <p class="preview-sub">全8セクション・実践チェックリスト付き</p>
+
+    <div class="content-grid">
+      <div class="content-card">
+        <div class="card-icon">🗺️</div>
+        <div class="card-title">動画内容の全体像</div>
+        <div class="card-desc">7ステップのフローで制作の流れを一目で把握できる</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🔧</div>
+        <div class="card-title">実践ステップ全7本</div>
+        <div class="card-desc">モデル制作からゴーストシステムまで、やること・注意点・確認ポイントを整理</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">⭐</div>
+        <div class="card-title">重要ポイント5つ</div>
+        <div class="card-desc">WeldConstraintの順番・カメラ固定・スピード調整など失敗しやすいポイントを解説</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🚧</div>
+        <div class="card-title">初心者のつまずき集</div>
+        <div class="card-desc">❌間違いパターン → ✅正解 の形式で5つのよくあるミスを解説</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">実践チェックリスト</div>
+        <div class="card-desc">クリックしてチェックできる！実践前・中・後の確認事項を網羅</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">応用アイデア3選</div>
+        <div class="card-desc">マルチプレイ対戦・ランキング・スキン販売など収益化につながる発展例</div>
+      </div>
+    </div>
+
+    <!-- 目次プレビュー -->
+    <div class="toc-preview">
+      <h3>📋 ガイドの目次</h3>
+      <ul>
+        <li><span class="num">1</span>このガイドで学べること</li>
+        <li><span class="num">2</span>動画内容の全体像（7ステップフロー）</li>
+        <li><span class="num">3</span>実践ステップ全7本（カートモデル → コース → スクリプト → ギミック → ゴースト）</li>
+        <li><span class="num">4</span>重要ポイント5つ</li>
+        <li><span class="num">5</span>初心者がつまずきやすい5パターン</li>
+        <li><span class="num">6</span>応用アイデア（収益化につながる発展例）</li>
+        <li><span class="num">7</span>実践チェックリスト（クリック確認可能）</li>
+        <li><span class="num">8</span>次にやること（具体的な3アクション）</li>
+      </ul>
+    </div>
+
+    <!-- CTA2 -->
+    <div class="cta2">
+      <p class="step-label">
+        ① LINE登録 → ② キーワード「<span>マリカ</span>」を送る → ③ ガイド受け取り完了
+      </p>
+      <a class="cta2-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">
+        📲 無料でガイドを受け取る
+      </a>
+      <p class="cta2-sub">登録は無料・いつでも解除OK</p>
+    </div>
+  </div>
+
+  <!-- プロフィール -->
+  <div class="profile">
+    <div class="avatar">👴</div>
+    <h3>ロブ爺 について</h3>
+    <p>
+      58歳からRoblox Studioを始めた現役クリエイター。<br>
+      孫に勝つためにマリオカートゲームを作り上げた経験をもとに、<br>
+      「誰でも楽しみながらゲームを作れる」をモットーに発信中。<br>
+      スクール・セミナーも開催しています。
+    </p>
+    <a class="yt-link" href="https://www.youtube.com/@robjii-roblox" target="_blank">
+      ▶ YouTubeチャンネルを見る
+    </a>
+  </div>
+
+  <div class="footer">
+    © 2026 ロブ爺のRoblox Studio講座 — 個人情報はLINE公式アカウントのプライバシーポリシーに従い管理されます
+  </div>
+
+</body>
+</html>
