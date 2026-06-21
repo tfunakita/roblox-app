@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バズるゲームのタイトル・アイコン戦略 | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print { .no-print { display: none !important; } body { background: white; } .container { box-shadow: none; } }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover { background: linear-gradient(135deg, #1a0d2e 0%, #2d1654 60%, #4a1e8a 100%); color: white; padding: 80px 60px 60px; text-align: center; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(180,100,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(180,100,255,0.08) 1px, transparent 1px); background-size: 40px 40px; }
+    .cover-badge { background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.5); color: #ffd700; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative; }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #c084fc; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 20px 0 10px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .example-box { background: #fdf8ff; border: 1px solid #d8b4fe; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+    .example-title { font-weight: 700; font-size: 14px; color: #6b21a8; margin-bottom: 10px; }
+    .bad-title { background: #fff5f5; border-left: 3px solid #fc8181; padding: 8px 12px; border-radius: 4px; font-size: 13px; margin-bottom: 8px; color: #742a2a; }
+    .good-title { background: #f0fff4; border-left: 3px solid #68d391; padding: 8px 12px; border-radius: 4px; font-size: 13px; color: #276749; }
+    .point-card { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .mistake-box { background: #fff5f5; border: 1px solid #ffcccc; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .mistake-bad { color: #e53e3e; font-size: 13px; margin-bottom: 6px; }
+    .mistake-good { color: #38a169; font-size: 13px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box { background: linear-gradient(135deg, #0d0d1a, #16213e); color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px; }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; background: #00a2ff; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 14px; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .icon-rule { background: #f8faff; border: 1px solid #d0e4ff; border-radius: 10px; padding: 14px 18px; margin: 10px 0; font-size: 13px; }
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: #00a2ff; color: white; border: none; border-radius: 50px; padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100; }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+  <div class="cover">
+    <div class="cover-badge">⭐ 特別講義</div>
+    <div class="cover-emoji">🔥</div>
+    <h1>バズるゲームの<br><span>タイトル・アイコン</span>戦略</h1>
+    <div class="cover-sub">検索で見つかり・クリックされ・プレイされるゲームページの作り方</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#title">タイトルの付け方</a></li>
+        <li><a href="#description">説明文の書き方</a></li>
+        <li><a href="#icon">アイコンデザインの法則</a></li>
+        <li><a href="#thumbnail">サムネイル戦略</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">つまずきやすい点</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>Roblox の検索で上位に出るタイトルの付け方</li>
+      <li>クリック率を上げるアイコン・サムネイルのデザイン法則</li>
+      <li>プレイヤーに「面白そう！」と思わせる説明文の書き方</li>
+      <li>人気ゲームのタイトル・アイコンに共通するパターン</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="title">📝 タイトルの付け方</h2>
+    <p>Roblox でのタイトルは <strong>検索結果に表示される最重要要素</strong> です。プレイヤーが最初に見るのはタイトルとアイコンです。</p>
+
+    <h3>✅ 良いタイトルの3つのルール</h3>
+
+    <div class="icon-rule">
+      <strong>① ジャンルを明示する</strong><br>
+      プレイヤーが何のゲームかすぐわかるようにする。「Obby」「Simulator」「Tycoon」などのジャンル単語を入れると検索に引っかかりやすい。
+    </div>
+    <div class="icon-rule">
+      <strong>② 数字・強調語を使う</strong><br>
+      「100億円」「最強」「無限」「新」「2025」などの強調語は目を引く。「NEW」「UPDATE」も効果的。
+    </div>
+    <div class="icon-rule">
+      <strong>③ 絵文字を使う（先頭や末尾に）</strong><br>
+      絵文字は検索結果でも表示され、視覚的に目立つ。ゲームの雰囲気に合った絵文字を1〜2個使う。
+    </div>
+
+    <div class="example-box">
+      <div class="example-title">📌 タイトル例（コインゲームの場合）</div>
+      <div class="bad-title">❌ 悪い例：My Coin Game（何のゲームか不明、目立たない）</div>
+      <div class="good-title">✅ 良い例：🪙 Coin Simulator！コインを集めて億万長者になれ！[アップデート]</div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="description">📄 説明文の書き方</h2>
+    <p>説明文はゲームページで表示される紹介文です。最初の1〜2行が特に重要（省略されずに表示される部分）。</p>
+    <ul>
+      <li><strong>最初の1文</strong>でゲームの魅力を一言で伝える</li>
+      <li><strong>箇条書き</strong>で特徴を列挙する（読みやすい）</li>
+      <li><strong>アップデート情報</strong>を最後に書く（「NEW: ○○を追加！」）</li>
+      <li>絵文字を使って読みやすくする</li>
+      <li>日本語・英語どちらで書くかはターゲットに合わせる</li>
+    </ul>
+
+    <div class="example-box">
+      <div class="example-title">📌 説明文の例</div>
+      <p style="font-size:13px; white-space:pre-line;">🪙 コインを集めて最強のプレイヤーになれ！
+
+🎮 ゲームの特徴：
+⭐ 50種類以上のコインが登場！
+⚡ 特殊なゴールドコインでスコアが10倍に！
+🏆 世界ランキングに挑戦しよう！
+
+🆕 NEW: レインボーコインエリア追加！</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="icon">🎨 アイコンデザインの法則</h2>
+    <p>アイコンは <strong>150×150px</strong> 程度の小さな画像です。小さくても目立つデザインが重要。</p>
+
+    <h3>クリックされるアイコンの5つの法則</h3>
+
+    <div class="icon-rule"><strong>① シンプルに絞る</strong> — 要素を1〜2つに絞る。詰め込みすぎると何かわからなくなる</div>
+    <div class="icon-rule"><strong>② 明るい色・コントラスト</strong> — 暗い色より明るい色が目立つ。背景と主役の色の差を大きくする</div>
+    <div class="icon-rule"><strong>③ キャラクターの顔を使う</strong> — 人間の目は顔に引き寄せられる。キャラクターの顔アップが効果的</div>
+    <div class="icon-rule"><strong>④ 文字は入れない（または最小限）</strong> — 小さいアイコンに文字を入れても読めない</div>
+    <div class="icon-rule"><strong>⑤ 競合と差別化する</strong> — 同じジャンルの上位ゲームのアイコンと見比べて、違う色・スタイルにする</div>
+
+    <div class="example-box">
+      <div class="example-title">📌 アイコン作成ツール</div>
+      <ul style="margin-bottom:0;">
+        <li><strong>Canva</strong>（無料）— テンプレートが豊富で初心者でも作れる</li>
+        <li><strong>Adobe Express</strong>（無料プランあり）— 高品質なデザイン</li>
+        <li><strong>GIMP</strong>（無料）— 本格的な画像編集</li>
+        <li><strong>Figma</strong>（無料プランあり）— UIデザイン向け</li>
+      </ul>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="thumbnail">🖼️ サムネイル（スクリーンショット）戦略</h2>
+    <p>ゲームページには最大10枚のスクリーンショットを載せられます。</p>
+    <ul>
+      <li><strong>1枚目が最重要</strong> — リストページに表示される画像。最も魅力的な場面を使う</li>
+      <li><strong>ゲームの「できること」を見せる</strong> — 派手なエフェクト・きれいな景観・ユニークな要素</li>
+      <li><strong>プレイヤーキャラクターを入れる</strong> — 「自分がここで遊べる」とイメージしやすい</li>
+      <li><strong>テキストオーバーレイ</strong> — 画像に「NEW AREA!」「100+ Items!」など文字を重ねると情報が伝わる</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="points">⭐ 重要ポイント</h2>
+    <div class="point-card"><span class="star">⭐</span><strong>タイトルはA/Bテストする</strong><p style="font-size:13px; margin-top:8px;">プレイヤー数を見ながら数週間後にタイトルを変えて比較する。データで判断するのがプロのやり方。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>上位ゲームを研究する</strong><p style="font-size:13px; margin-top:8px;">Roblox 検索で同ジャンルの上位ゲームのタイトル・アイコンを研究。共通点を自分のゲームに取り入れる。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>「[アップデート]」タグで検索上位に</strong><p style="font-size:13px; margin-top:8px;">タイトルに「[UPDATE]」「[NEW]」を入れると「最近更新されたゲーム」として検索上位になりやすい。</p></div>
+
+    <hr class="divider">
+
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+    <div class="mistake-box"><div class="mistake-bad">❌ タイトルに何のゲームかわからない名前をつける</div><div class="mistake-good">✅ 「Simulator」「Obby」「Tycoon」などジャンル単語を必ず入れる</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ アイコンに文字を詰め込む</div><div class="mistake-good">✅ 小さいアイコンに文字は読めない。ビジュアルで勝負する</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ 最初に作ったアイコンをずっと使い続ける</div><div class="mistake-good">✅ 定期的に見直してより良いデザインに更新する</div></div>
+
+    <hr class="divider">
+
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> タイトルにジャンル単語を入れた</li>
+      <li><input type="checkbox"> タイトルに数字・強調語・絵文字を使った</li>
+      <li><input type="checkbox"> 説明文の最初の1文でゲームの魅力を伝えた</li>
+      <li><input type="checkbox"> アイコンはシンプルで明るい色を使った</li>
+      <li><input type="checkbox"> 競合の上位ゲームのアイコンと差別化した</li>
+      <li><input type="checkbox"> スクリーンショット1枚目に最も魅力的な場面を使った</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

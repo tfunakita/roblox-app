@@ -54,37 +54,11 @@ print("ジャンプ力を設定しました: " .. humanoid.JumpPower)`,
     id: 'mod_003',
     title: 'コインを集めるゲームの作り方',
     category: 'module',
-    type: 'script',
+    type: 'slides',
     description: 'タッチしたら消えるコインを作り、スコアを記録するゲームの基本システムを構築します。',
-    code: `-- Script（コイン本体にアタッチ）
-local coin = script.Parent
-local debounce = false
-
-coin.Touched:Connect(function(hit)
-  if debounce then return end
-
-  local character = hit.Parent
-  local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-  if humanoid then
-    debounce = true
-    coin.Transparency = 1  -- コインを非表示に
-
-    -- リーダーボードのスコアを加算
-    local player = game.Players:GetPlayerFromCharacter(character)
-    if player then
-      local leaderstats = player:FindFirstChild("leaderstats")
-      if leaderstats then
-        leaderstats.Coins.Value += 1
-      end
-    end
-
-    task.wait(3)         -- 3秒後に復活
-    coin.Transparency = 0
-    debounce = false
-  end
-end)`,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    code: null,
+    videoUrl: null,
+    slidesUrl: '/assets/coin-game-guide.html',
     pdfUrl: null,
     isLocked: true,
     keyword: 'コインゲット',
@@ -95,30 +69,11 @@ end)`,
     id: 'mod_004',
     title: 'リーダーボード（スコア表示）の作り方',
     category: 'module',
-    type: 'script',
+    type: 'slides',
     description: '画面右上にプレイヤーごとのスコアを表示するリーダーボードを実装します。',
-    code: `-- Script（ServerScriptServiceに配置）
-local Players = game:GetService("Players")
-
-Players.PlayerAdded:Connect(function(player)
-  -- leaderstats フォルダを作成（これがリーダーボードの正式な仕組み）
-  local leaderstats = Instance.new("Folder")
-  leaderstats.Name = "leaderstats"
-  leaderstats.Parent = player
-
-  -- コイン数の値を追加
-  local coins = Instance.new("IntValue")
-  coins.Name = "Coins"
-  coins.Value = 0
-  coins.Parent = leaderstats
-
-  -- ポイントの値を追加
-  local points = Instance.new("IntValue")
-  points.Name = "Points"
-  points.Value = 0
-  points.Parent = leaderstats
-end)`,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    code: null,
+    videoUrl: null,
+    slidesUrl: '/assets/leaderboard-guide.html',
     pdfUrl: null,
     isLocked: false,
     keyword: null,
@@ -131,10 +86,11 @@ end)`,
     id: 'spec_001',
     title: '【特別講義】プロが教えるマップ設計術',
     category: 'special',
-    type: 'video',
+    type: 'slides',
     description: 'プロのRobloxクリエイターが教える、プレイヤーを魅了するマップ設計の秘訣を大公開。動線・難易度曲線・視覚的誘導まで徹底解説。',
     code: null,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: null,
+    slidesUrl: '/assets/map-design-guide.html',
     pdfUrl: null,
     isLocked: true,
     keyword: 'マップマスター',
@@ -145,10 +101,11 @@ end)`,
     id: 'spec_002',
     title: '【特別講義】Robuxで稼ぐマネタイズ完全ガイド',
     category: 'special',
-    type: 'video',
+    type: 'slides',
     description: 'GamePass・Developer Productsの作り方から、課金アイテムの価格設定戦略まで。実際に収益を上げているゲームの仕組みを解説。',
     code: null,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: null,
+    slidesUrl: '/assets/monetize-guide.html',
     pdfUrl: null,
     isLocked: false,
     keyword: null,
@@ -159,10 +116,11 @@ end)`,
     id: 'spec_003',
     title: '【特別講義】バズるゲームのタイトル・アイコン戦略',
     category: 'special',
-    type: 'video',
+    type: 'slides',
     description: '検索で見つけてもらえるタイトルの付け方と、クリックされるアイコンデザインの法則を実例と共に解説します。',
     code: null,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: null,
+    slidesUrl: '/assets/title-icon-guide.html',
     pdfUrl: null,
     isLocked: true,
     keyword: 'バズらせる',
@@ -215,12 +173,13 @@ end)`,
   },
   {
     id: 'bonus_004',
-    title: '【限定動画】Studio裏技テクニック集',
+    title: '【限定】Studio裏技テクニック集',
     category: 'bonus',
-    type: 'video',
-    description: '知っている人だけが得をするStudioの便利機能・ショートカット・見落としがちな設定を凝縮した限定動画。',
+    type: 'slides',
+    description: '知っている人だけが得をするStudioの便利機能・ショートカット・見落としがちな設定を凝縮した限定ガイド。',
     code: null,
-    videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+    videoUrl: null,
+    slidesUrl: '/assets/studio-tips-guide.html',
     pdfUrl: null,
     isLocked: true,
     keyword: '裏技マスター',

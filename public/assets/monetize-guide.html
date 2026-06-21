@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Robuxで稼ぐマネタイズ完全ガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print { .no-print { display: none !important; } body { background: white; } .container { box-shadow: none; } }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover { background: linear-gradient(135deg, #0d0d1a 0%, #1a2a0d 60%, #1e4d0f 100%); color: white; padding: 80px 60px 60px; text-align: center; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0,200,100,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,100,0.08) 1px, transparent 1px); background-size: 40px 40px; }
+    .cover-badge { background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.5); color: #ffd700; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative; }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #4ade80; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 20px 0 10px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .method-box { background: #f0fff4; border: 1px solid #9ae6b4; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+    .method-title { font-weight: 700; font-size: 15px; color: #276749; margin-bottom: 10px; }
+    .point-card { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .mistake-box { background: #fff5f5; border: 1px solid #ffcccc; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .mistake-bad { color: #e53e3e; font-size: 13px; margin-bottom: 6px; }
+    .mistake-good { color: #38a169; font-size: 13px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box { background: linear-gradient(135deg, #0d0d1a, #16213e); color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px; }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; background: #00a2ff; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 14px; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .robux-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .robux-table th { background: #276749; color: white; padding: 10px 14px; text-align: left; }
+    .robux-table td { padding: 10px 14px; border-bottom: 1px solid #e8edf2; }
+    .robux-table tr:nth-child(even) td { background: #f0fff4; }
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: #00a2ff; color: white; border: none; border-radius: 50px; padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100; }
+    .code-block { background: #1a1a2e; color: #e0e0e0; border-radius: 10px; padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.8; overflow-x: auto; margin: 16px 0; }
+    .code-block .comment { color: #6a9955; }
+    .code-block .keyword { color: #569cd6; }
+    .code-block .string { color: #ce9178; }
+    .code-block .func { color: #dcdcaa; }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+  <div class="cover">
+    <div class="cover-badge">⭐ 特別講義</div>
+    <div class="cover-emoji">💰</div>
+    <h1><span>Robuxで稼ぐ</span><br>マネタイズ完全ガイド</h1>
+    <div class="cover-sub">GamePass・Developer Products・Premium特典で収益化する方法を完全解説</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#methods">マネタイズの3つの方法</a></li>
+        <li><a href="#gamepass">GamePass の作り方と実装</a></li>
+        <li><a href="#devproduct">Developer Products の使い方</a></li>
+        <li><a href="#premium">Premium 特典</a></li>
+        <li><a href="#pricing">価格設定の考え方</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">つまずきやすい点</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>Roblox のマネタイズ方法の種類と使い分け</li>
+      <li><strong>GamePass</strong>（一回買い切り）の作成と実装</li>
+      <li><strong>Developer Products</strong>（繰り返し購入）の使い方</li>
+      <li><strong>Premium 特典</strong>（サブスクプレイヤー向け）の設定</li>
+      <li>プレイヤーに買ってもらえる価格設定の考え方</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="methods">💎 マネタイズの3つの方法</h2>
+    <table class="robux-table">
+      <tr><th>種類</th><th>特徴</th><th>向いているもの</th></tr>
+      <tr><td><strong>GamePass</strong></td><td>一度買えばずっと有効</td><td>VIPアクセス、永続スキン、特別エリア</td></tr>
+      <tr><td><strong>Developer Products</strong></td><td>何度でも買える消費アイテム</td><td>コイン補充、ブースト、追加の命</td></tr>
+      <tr><td><strong>Premium 特典</strong></td><td>Roblox Premium 会員向け</td><td>月額サブスク会員への特別報酬</td></tr>
+    </table>
+
+    <hr class="divider">
+
+    <h2 id="gamepass">🎫 GamePass の作り方</h2>
+
+    <div class="method-box">
+      <div class="method-title">📋 Creator Hub での設定手順</div>
+      <ol>
+        <li>Roblox の <strong>Creator Hub</strong>（create.roblox.com）にアクセス</li>
+        <li>対象のゲームを選択 → <strong>Monetization</strong> → <strong>Passes</strong></li>
+        <li>「<strong>Create a Pass</strong>」をクリック</li>
+        <li>名前・説明・アイコン画像・価格（Robux）を設定</li>
+        <li>保存後、<strong>Pass ID</strong> をコピーしておく</li>
+      </ol>
+    </div>
+
+    <h3>Studio での実装コード</h3>
+    <div class="code-block">
+<span class="comment">-- ServerScriptService → Script</span>
+<span class="keyword">local</span> MarketplaceService = game:<span class="func">GetService</span>(<span class="string">"MarketplaceService"</span>)
+<span class="keyword">local</span> Players = game:<span class="func">GetService</span>(<span class="string">"Players"</span>)
+
+<span class="keyword">local</span> VIP_PASS_ID = <span class="string">123456789</span>  <span class="comment">-- 自分のPass IDに変える</span>
+
+Players.PlayerAdded:<span class="func">Connect</span>(<span class="keyword">function</span>(player)
+  <span class="comment">-- プレイヤーがGamePassを持っているか確認</span>
+  <span class="keyword">local</span> hasPass = MarketplaceService:<span class="func">UserOwnsGamePassAsync</span>(
+    player.UserId, VIP_PASS_ID
+  )
+
+  <span class="keyword">if</span> hasPass <span class="keyword">then</span>
+    <span class="comment">-- VIP特典を付与（例：移動速度2倍）</span>
+    <span class="keyword">local</span> character = player.Character <span class="keyword">or</span> player.CharacterAdded:<span class="func">Wait</span>()
+    <span class="keyword">local</span> humanoid = character:<span class="func">WaitForChild</span>(<span class="string">"Humanoid"</span>)
+    humanoid.WalkSpeed = <span class="string">32</span>  <span class="comment">-- 通常の2倍</span>
+    print(player.Name .. <span class="string">" はVIPです！"</span>)
+  <span class="keyword">end</span>
+<span class="keyword">end</span>)
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="devproduct">🛒 Developer Products（消費アイテム）</h2>
+
+    <div class="method-box">
+      <div class="method-title">📋 Creator Hub での設定手順</div>
+      <ol>
+        <li>Creator Hub → ゲームを選択 → <strong>Monetization</strong> → <strong>Developer Products</strong></li>
+        <li>「<strong>Create a Developer Product</strong>」をクリック</li>
+        <li>名前・説明・アイコン・価格を設定して保存</li>
+        <li><strong>Product ID</strong> をコピー</li>
+      </ol>
+    </div>
+
+    <div class="code-block">
+<span class="comment">-- ServerScriptService → Script</span>
+<span class="keyword">local</span> MarketplaceService = game:<span class="func">GetService</span>(<span class="string">"MarketplaceService"</span>)
+
+<span class="keyword">local</span> COIN_PRODUCT_ID = <span class="string">987654321</span>  <span class="comment">-- 自分のProduct IDに変える</span>
+
+MarketplaceService.ProcessReceipt = <span class="keyword">function</span>(receiptInfo)
+  <span class="keyword">local</span> player = game.Players:<span class="func">GetPlayerByUserId</span>(receiptInfo.PlayerId)
+  <span class="keyword">if</span> <span class="keyword">not</span> player <span class="keyword">then</span>
+    <span class="keyword">return</span> Enum.ProductPurchaseDecision.NotProcessedYet
+  <span class="keyword">end</span>
+
+  <span class="keyword">if</span> receiptInfo.ProductId == COIN_PRODUCT_ID <span class="keyword">then</span>
+    <span class="comment">-- コインを100枚追加</span>
+    <span class="keyword">local</span> leaderstats = player:<span class="func">FindFirstChild</span>(<span class="string">"leaderstats"</span>)
+    <span class="keyword">if</span> leaderstats <span class="keyword">then</span>
+      leaderstats.Coins.Value += <span class="string">100</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+  <span class="keyword">return</span> Enum.ProductPurchaseDecision.PurchaseGranted
+<span class="keyword">end</span>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="premium">👑 Premium 特典</h2>
+    <div class="code-block">
+<span class="comment">-- Roblox Premium 会員かどうかの確認</span>
+Players.PlayerAdded:<span class="func">Connect</span>(<span class="keyword">function</span>(player)
+  <span class="keyword">if</span> player.MembershipType == Enum.MembershipType.Premium <span class="keyword">then</span>
+    print(player.Name .. <span class="string">" はPremium会員！"</span>)
+    <span class="comment">-- 特典を付与（例：ボーナスコイン）</span>
+    <span class="keyword">local</span> leaderstats = player:<span class="func">FindFirstChild</span>(<span class="string">"leaderstats"</span>)
+    <span class="keyword">if</span> leaderstats <span class="keyword">then</span>
+      leaderstats.Coins.Value += <span class="string">50</span>
+    <span class="keyword">end</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>)
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="pricing">💹 価格設定の考え方</h2>
+    <table class="robux-table">
+      <tr><th>価格（Robux）</th><th>目安</th><th>向いているもの</th></tr>
+      <tr><td>25〜50 R$</td><td>入門価格（気軽に買える）</td><td>見た目アイテム、小さなブースト</td></tr>
+      <tr><td>100〜200 R$</td><td>標準価格</td><td>VIPパス、中程度の特典</td></tr>
+      <tr><td>500〜1000 R$</td><td>プレミアム価格</td><td>大きな永続特典、希少アイテム</td></tr>
+    </table>
+    <ul>
+      <li>最初は<strong>安め</strong>に設定してプレイヤーの反応を見る</li>
+      <li>「無料で遊べるが課金するとより楽しい」設計が長く続くゲームの秘訣</li>
+      <li>強すぎる課金要素（Pay to Win）はレビューが下がる原因になる</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="points">⭐ 重要ポイント</h2>
+    <div class="point-card"><span class="star">⭐</span><strong>ProcessReceipt は必ず返り値を返す</strong><p style="font-size:13px; margin-top:8px;"><code>PurchaseGranted</code> を返さないと購入処理が完了せず、プレイヤーに二重請求される可能性がある。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>GamePass 確認は Server Script で行う</strong><p style="font-size:13px; margin-top:8px;">LocalScript で確認するとクライアント側で偽装できる可能性があるため必ずサーバーで確認する。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>Roblox の収益還元率は約25〜70%</strong><p style="font-size:13px; margin-top:8px;">Developer Exchange（DevEx）で Robux を現金に換えると手数料が引かれる。条件は公式ページで確認。</p></div>
+
+    <hr class="divider">
+
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+    <div class="mistake-box"><div class="mistake-bad">❌ Product ID と Pass ID を間違える</div><div class="mistake-good">✅ Creator Hub で作ったものの ID を正確にコピーして使う</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ ProcessReceipt で返り値を忘れる</div><div class="mistake-good">✅ 必ず <code>return Enum.ProductPurchaseDecision.PurchaseGranted</code> を返す</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ テスト時に実際に課金してしまう</div><div class="mistake-good">✅ Studio テスト中はダイアログが出るが実際には請求されない（テスト購入）</div></div>
+
+    <hr class="divider">
+
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> Creator Hub で GamePass または Developer Product を作った</li>
+      <li><input type="checkbox"> ID を正確にコピーしてスクリプトに書いた</li>
+      <li><input type="checkbox"> Server Script で所持確認・購入処理を書いた</li>
+      <li><input type="checkbox"> Studio でテストプレイして購入ダイアログが出ることを確認した</li>
+      <li><input type="checkbox"> 特典が正しく付与されることを確認した</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

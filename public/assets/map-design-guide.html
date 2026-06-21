@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロが教えるマップ設計術 | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print { .no-print { display: none !important; } body { background: white; } .container { box-shadow: none; } }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover { background: linear-gradient(135deg, #0d0d1a 0%, #16213e 60%, #0f3460 100%); color: white; padding: 80px 60px 60px; text-align: center; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(0,162,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,162,255,0.08) 1px, transparent 1px); background-size: 40px 40px; }
+    .cover-badge { background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.5); color: #ffd700; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative; }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #00a2ff; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .concept-box { background: #f8faff; border: 1px solid #d0e4ff; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+    .concept-title { font-weight: 700; font-size: 15px; color: #0f3460; margin-bottom: 10px; }
+    .point-card { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .mistake-box { background: #fff5f5; border: 1px solid #ffcccc; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .mistake-bad { color: #e53e3e; font-size: 13px; margin-bottom: 6px; }
+    .mistake-good { color: #38a169; font-size: 13px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box { background: linear-gradient(135deg, #0d0d1a, #16213e); color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px; }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; background: #00a2ff; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 14px; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: #00a2ff; color: white; border: none; border-radius: 50px; padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100; }
+    .flow-box { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; background: #f0f8ff; border-radius: 10px; padding: 16px 20px; margin: 16px 0; font-size: 13px; font-weight: 700; color: #0f3460; }
+    .flow-arrow { color: #00a2ff; font-size: 18px; }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+  <div class="cover">
+    <div class="cover-badge">⭐ 特別講義</div>
+    <div class="cover-emoji">🗺️</div>
+    <h1>プロが教える<br><span>マップ設計術</span></h1>
+    <div class="cover-sub">動線・難易度曲線・視覚的誘導でプレイヤーを引き込むマップを作る</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#overview">マップ設計の3大要素</a></li>
+        <li><a href="#flow">動線設計</a></li>
+        <li><a href="#difficulty">難易度曲線</a></li>
+        <li><a href="#visual">視覚的誘導</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">つまずきやすい点</a></li>
+        <li><a href="#advanced">応用アイデア</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>プレイヤーが迷わず進める<strong>動線設計</strong>の基本</li>
+      <li>飽きさせない<strong>難易度曲線</strong>の作り方</li>
+      <li>プレイヤーを自然に誘導する<strong>視覚的テクニック</strong></li>
+      <li>エリア分けとチェックポイントの配置方法</li>
+      <li>人気Robloxゲームのマップから学ぶ共通パターン</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="overview">🗺️ マップ設計の3大要素</h2>
+    <p>プロのRobloxクリエイターが重視する3つの要素があります：</p>
+    <div class="flow-box">
+      <span>① 動線（どこを歩くか）</span>
+      <span class="flow-arrow">→</span>
+      <span>② 難易度曲線（どれだけ難しくなるか）</span>
+      <span class="flow-arrow">→</span>
+      <span>③ 視覚的誘導（次に何をすべきか見てわかるか）</span>
+    </div>
+    <p>この3つがそろったマップはプレイヤーが「何をすればいいかわかる」「ちょうど良い難しさ」「見ていて楽しい」と感じます。</p>
+
+    <hr class="divider">
+
+    <h2 id="flow">① 動線設計 — プレイヤーを迷わせない</h2>
+
+    <div class="concept-box">
+      <div class="concept-title">💡 動線とは？</div>
+      <p>プレイヤーがゲーム内で自然に移動する経路のことです。良い動線設計はプレイヤーを説明なしに正しい方向へ誘導します。</p>
+    </div>
+
+    <p><strong>Roblox で動線を作るテクニック：</strong></p>
+    <ul>
+      <li><strong>通路を細くする</strong> — 広い平野より細い通路の方が進む方向が明確</li>
+      <li><strong>地面の色で道を示す</strong> — 明るい色の床が「進める場所」、暗い色が「行けない場所」</li>
+      <li><strong>高さの差を使う</strong> — 上り坂・階段は目標（頂上）を視覚的に示す</li>
+      <li><strong>T字路を避ける</strong> — 初心者向けなら一本道か、片方が明らかにメインの分岐</li>
+      <li><strong>スタート地点から見えるゴール</strong> — 遠くにゴールが見えるとモチベーションが上がる</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="difficulty">② 難易度曲線 — 飽きさせない緊張感</h2>
+
+    <div class="concept-box">
+      <div class="concept-title">💡 難易度曲線とは？</div>
+      <p>ゲームが進むにつれて少しずつ難しくなるカーブのことです。最初から難しすぎると諦め、簡単すぎると飽きます。</p>
+    </div>
+
+    <p><strong>理想的な難易度の上げ方：</strong></p>
+    <ul>
+      <li><strong>ゾーン1（スタート）</strong> — 何もない平坦な道。操作を覚える場所</li>
+      <li><strong>ゾーン2（中盤）</strong> — 障害物・タイミングが必要な仕掛けを追加</li>
+      <li><strong>ゾーン3（終盤）</strong> — 複数の障害物が組み合わさる複合ギミック</li>
+      <li><strong>ボス・クライマックス</strong> — これまでの要素すべてを使うシーン</li>
+    </ul>
+    <p><strong>一気に難しくしない</strong>のが鉄則。1つの新要素を追加したら次の難易度アップまで少し平坦にする「ブリーザー（息継ぎ）」の区間を作ると親切です。</p>
+
+    <hr class="divider">
+
+    <h2 id="visual">③ 視覚的誘導 — 見ればわかる設計</h2>
+
+    <div class="concept-box">
+      <div class="concept-title">💡 視覚的誘導とは？</div>
+      <p>色・光・サイズ・動きを使って、プレイヤーが自然と「あそこに行けばいい」と感じる設計です。</p>
+    </div>
+
+    <ul>
+      <li><strong>明るい色</strong> — 重要なもの（ゴール・アイテム）は明るく目立つ色にする</li>
+      <li><strong>光源（PointLight / SpotLight）</strong> — 暗い部屋で光っているものに目が引き寄せられる</li>
+      <li><strong>矢印パーツ</strong> — 方向を示す矢印を地面や壁に設置する</li>
+      <li><strong>粒子エフェクト（ParticleEmitter）</strong> — 重要アイテムの周りにキラキラ演出</li>
+      <li><strong>大きいものに目が行く</strong> — ゴールのオブジェクトを大きくするだけで自然に誘導できる</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="points">⭐ 重要ポイント</h2>
+    <div class="point-card"><span class="star">⭐</span><strong>「ゾーン分け」して考える</strong><p style="font-size:13px; margin-top:8px;">マップ全体を一気に作ろうとせず、スタート・中盤・終盤のゾーンに分けて設計する。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>チェックポイントを必ず入れる</strong><p style="font-size:13px; margin-top:8px;">長いマップにはチェックポイントが必須。最初からやり直しになると離脱率が激増する。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>自分でプレイテストする</strong><p style="font-size:13px; margin-top:8px;">作った後は必ず自分でプレイ。初見のつもりで「次どこへ行くかわからない」場所を探す。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>他人に遊んでもらう</strong><p style="font-size:13px; margin-top:8px;">作者は答えを知っているので迷わない。友人に遊んでもらって詰まった場所をメモする。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>「空き地」を作らない</strong><p style="font-size:13px; margin-top:8px;">何もない広い空間はプレイヤーを迷わせる。必ず何か目標になるオブジェクトを置く。</p></div>
+
+    <hr class="divider">
+
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+    <div class="mistake-box"><div class="mistake-bad">❌ マップが広すぎて何もない「砂漠感」になる</div><div class="mistake-good">✅ まず小さいマップで完成させる。広げるのは後から</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ 見た目だけこだわって進む方向がわからない</div><div class="mistake-good">✅ 見た目の前に「動線」を先に決めてから装飾する</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ 最初のエリアから難しすぎて新規プレイヤーが諦める</div><div class="mistake-good">✅ ゾーン1は絶対にクリアできる難しさにする</div></div>
+    <div class="mistake-box"><div class="mistake-bad">❌ 全エリアが同じ雰囲気で飽きる</div><div class="mistake-good">✅ ゾーンごとに色・テーマ・BGMを変えてメリハリをつける</div></div>
+
+    <hr class="divider">
+
+    <h2 id="advanced">🚀 応用アイデア</h2>
+    <ul>
+      <li><strong>ミニマップ</strong> — SurfaceGui でミニマップUIを作り、現在地を表示する</li>
+      <li><strong>隠し通路</strong> — 壁の一部を透明パーツで隠し、入れる穴を作る</li>
+      <li><strong>ランダムマップ生成</strong> — Script でランダムにブロックを配置し、毎回違うマップにする</li>
+      <li><strong>昼夜システム</strong> — Lighting の TimeOfDay を変化させてマップの雰囲気を変える</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> マップをゾーン（スタート・中盤・終盤）に分けた</li>
+      <li><input type="checkbox"> 動線が一本に絞られていてプレイヤーが迷わない</li>
+      <li><input type="checkbox"> 難易度が少しずつ上がるよう設計した</li>
+      <li><input type="checkbox"> 重要な場所に視覚的な誘導（色・光）を設置した</li>
+      <li><input type="checkbox"> チェックポイントを配置した</li>
+      <li><input type="checkbox"> 自分でプレイテストして詰まる場所を確認した</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
