@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roblox 車制作マスターガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0d0d1a;
+      color: #1a1a2e;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 794px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,162,255,0.15);
+    }
+
+    /* 表紙 */
+    .cover {
+      background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 60%, #0a2a4a 100%);
+      color: #fff;
+      padding: 64px 48px 56px;
+      text-align: center;
+      border-bottom: 4px solid #00a2ff;
+    }
+    .cover .logo { font-size: 56px; margin-bottom: 16px; }
+    .cover .channel-name {
+      font-size: 13px;
+      color: #00a2ff;
+      letter-spacing: 0.12em;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 16px rgba(0,162,255,0.4);
+    }
+    .cover h1 span { color: #00a2ff; }
+    .cover .subtitle { font-size: 15px; color: #a0b8d0; margin-bottom: 32px; }
+    .cover .badge {
+      display: inline-block;
+      background: #00a2ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 20px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .cover .date { font-size: 12px; color: #5a7a9a; margin-top: 16px; }
+
+    /* 目次 */
+    .toc {
+      background: #f0f6ff;
+      padding: 40px 48px;
+      border-bottom: 2px solid #dde8f5;
+    }
+    .toc h2 { font-size: 18px; font-weight: 900; color: #0d0d1a; margin-bottom: 20px; }
+    .toc h2 span { color: #00a2ff; }
+    .toc ul { list-style: none; }
+    .toc ul li {
+      padding: 6px 0;
+      border-bottom: 1px dashed #c0d4ec;
+      font-size: 14px;
+    }
+    .toc ul li:last-child { border-bottom: none; }
+    .toc ul li a { color: #1a3a6a; text-decoration: none; }
+    .toc ul li .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #00a2ff;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    /* 本文 */
+    .content { padding: 40px 48px; }
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0d0d1a;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #00a2ff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 24px; }
+
+    /* 学べること */
+    .learn-list { background: #f0f6ff; border-radius: 10px; padding: 20px 24px; }
+    .learn-list li {
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+      font-size: 14px;
+      border-bottom: 1px solid #dde8f5;
+    }
+    .learn-list li:last-child { border-bottom: none; }
+    .learn-list li::before { content: '✅'; position: absolute; left: 0; }
+
+    /* 3つの方法カード */
+    .method-compare {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    .method-card {
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+      border: 2px solid #dde8f5;
+    }
+    .method-card.highlight { border-color: #00a2ff; background: #f0f8ff; }
+    .method-card .m-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      background: #00a2ff;
+      padding: 2px 10px;
+      border-radius: 12px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+    .method-card .m-emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+    .method-card .m-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #0d0d1a; }
+    .method-card .m-desc { font-size: 12px; color: #5a7a9a; line-height: 1.5; }
+    .method-card .m-tag {
+      margin-top: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+    .tag-adv { background: #e8f5e9; color: #1b7e2b; }
+    .tag-mid { background: #fff3e0; color: #b85c00; }
+    .tag-note { background: #f3e8ff; color: #6a1b9a; }
+
+    /* 全体像フロー */
+    .flow-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .flow-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #f8f9ff;
+      border-radius: 8px;
+      padding: 14px 18px;
+      border-left: 4px solid #00a2ff;
+    }
+    .flow-num {
+      background: #00a2ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-content { font-size: 13px; line-height: 1.6; }
+    .flow-content strong { color: #00a2ff; font-weight: 700; }
+
+    /* ステップカード */
+    .step-card {
+      background: #fff;
+      border: 2px solid #dde8f5;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .step-header {
+      background: linear-gradient(90deg, #0d0d1a, #1a2a4a);
+      color: #fff;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .step-header .step-num {
+      background: #00a2ff;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 2px 10px;
+      border-radius: 12px;
+    }
+    .step-body { padding: 16px 20px; font-size: 13px; line-height: 1.8; }
+    .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .label-do { background: #e0f4ff; color: #0070b8; }
+    .label-warn { background: #fff3e0; color: #b85c00; }
+    .label-check { background: #e8f5e9; color: #1b7e2b; }
+    .step-body p { margin-bottom: 10px; }
+    .step-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .step-body ul li { margin-bottom: 4px; }
+
+    /* セクション区切り */
+    .method-divider {
+      background: linear-gradient(90deg, #0d0d1a, #1a2a4a);
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: 8px;
+      margin: 32px 0 20px;
+      font-size: 16px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .method-divider span { color: #00a2ff; }
+
+    /* コードブロック */
+    .code-block {
+      background: #1a1a2e;
+      color: #7dd3fc;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .code-block .comment { color: #6b7280; }
+    .code-block .key { color: #a78bfa; }
+    .code-block .str { color: #86efac; }
+    .code-block .num { color: #fbbf24; }
+
+    /* テーブル */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .data-table th {
+      background: #0d0d1a;
+      color: #00a2ff;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #eee;
+    }
+    .data-table tr:nth-child(even) td { background: #f8f9ff; }
+
+    /* 重要ポイント */
+    .point-list { list-style: none; }
+    .point-list li {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* つまずき */
+    .trouble-item {
+      background: #f8f9ff;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .trouble-ng { color: #d32f2f; font-weight: 700; margin-bottom: 4px; }
+    .trouble-ok { color: #1b7e2b; font-weight: 700; }
+    .arrow { color: #00a2ff; font-size: 16px; margin: 4px 0; }
+
+    /* チェックリスト */
+    .checklist-group { margin-bottom: 20px; }
+    .checklist-group h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0d0d1a;
+      margin-bottom: 10px;
+      background: #f0f6ff;
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    .checklist-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 4px;
+      font-size: 13px;
+      border-bottom: 1px dashed #e0e8f5;
+      cursor: pointer;
+    }
+    .checklist-group label:last-child { border-bottom: none; }
+    .checklist-group input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+
+    /* 応用 */
+    .idea-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .idea-card {
+      background: linear-gradient(135deg, #0d0d1a, #1a2a4a);
+      color: #fff;
+      border-radius: 10px;
+      padding: 20px 18px;
+      font-size: 13px;
+    }
+    .idea-card .idea-emoji { font-size: 28px; margin-bottom: 10px; }
+    .idea-card .idea-title { font-weight: 700; margin-bottom: 6px; color: #00a2ff; }
+
+    /* 次のアクション */
+    .action-list { list-style: none; }
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    .action-list li:last-child { border-bottom: none; }
+    .action-num {
+      background: #00a2ff;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 100%);
+      color: #fff;
+      padding: 48px;
+      text-align: center;
+    }
+    .cta-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 12px; }
+    .cta-section h2 span { color: #00a2ff; }
+    .cta-section p { font-size: 14px; color: #a0b8d0; margin-bottom: 28px; line-height: 1.7; }
+    .cta-btn {
+      display: inline-block;
+      background: #06c755;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .cta-yt {
+      display: inline-block;
+      background: #ff0000;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-left: 12px;
+    }
+    .footer {
+      background: #0a0a14;
+      color: #5a7a9a;
+      font-size: 11px;
+      text-align: center;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 表紙 -->
+  <div class="cover">
+    <div class="logo">🚗</div>
+    <div class="channel-name">ロブ爺のRoblox Studio講座</div>
+    <h1>Roblox <span>車制作</span><br>マスターガイド</h1>
+    <div class="subtitle">3種類の車の作り方を完全解説 — 自作・シャーシー・スクリプト</div>
+    <div class="badge">🎁 無料特典ガイド</div>
+    <div class="date">2026年6月 発行</div>
+  </div>
+
+  <!-- 目次 -->
+  <div class="toc">
+    <h2>📋 <span>目次</span></h2>
+    <ul>
+      <li><span class="num">1</span>このガイドで学べること</li>
+      <li><span class="num">2</span>3種類の車の作り方を比較</li>
+      <li><span class="num">3</span>方法①：パーツで自作する（HingeConstraint方式）</li>
+      <li><span class="num">4</span>方法②：シャーシーに車体を被せる</li>
+      <li><span class="num">5</span>重要ポイント</li>
+      <li><span class="num">6</span>初心者がつまずきやすい点</li>
+      <li><span class="num">7</span>応用アイデア</li>
+      <li><span class="num">8</span>実践チェックリスト</li>
+      <li><span class="num">9</span>次にやること</li>
+    </ul>
+  </div>
+
+  <div class="content">
+
+    <!-- 学べること -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🎯</span>このガイドで学べること</div>
+      <ul class="learn-list">
+        <li>Roblox Studioで車を動かす3種類のアプローチとそれぞれの違い</li>
+        <li>HingeConstraintを使ったタイヤ・車軸・ステアリングの自作方法</li>
+        <li>VehicleSeat（バーチカルシート）のパラメーター設定と走行スクリプト</li>
+        <li>ツールボックスのシャーシーを活用して車体を組み合わせる方法</li>
+        <li>WeldConstraintで車体と座席をくっつける手順</li>
+      </ul>
+    </div>
+
+    <!-- 3つの比較 -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🔍</span>3種類の車の作り方を比較</div>
+      <div class="method-compare">
+        <div class="method-card highlight">
+          <span class="m-num">方法①</span>
+          <span class="m-emoji">🔧</span>
+          <div class="m-title">パーツで自作</div>
+          <div class="m-desc">タイヤ・車軸・ボディをゼロから作りHingeConstraintで接続する</div>
+          <span class="m-tag tag-adv">仕組みが理解できる</span>
+        </div>
+        <div class="method-card highlight">
+          <span class="m-num">方法②</span>
+          <span class="m-emoji">📦</span>
+          <div class="m-title">シャーシー活用</div>
+          <div class="m-desc">ツールボックスの既製シャーシーに自分の車体モデルを被せる</div>
+          <span class="m-tag tag-mid">手早く走らせられる</span>
+        </div>
+        <div class="method-card">
+          <span class="m-num">方法③</span>
+          <span class="m-emoji">💻</span>
+          <div class="m-title">スクリプトのみ</div>
+          <div class="m-desc">VehicleSeatにスクリプトを書いてゲーム向けの挙動を実現する</div>
+          <span class="m-tag tag-note">前動画で解説済み</span>
+        </div>
+      </div>
+      <p style="font-size:13px; color:#5a7a9a; text-align:center;">このガイドでは方法①と方法②を詳しく解説します。方法③は「ロブロックス設計メソッドガイド」を参照してください。</p>
+    </div>
+
+    <!-- 方法① -->
+    <div class="section">
+      <div class="method-divider">🔧 方法① <span>パーツで自作する（HingeConstraint方式）</span></div>
+
+      <div class="flow-grid" style="margin-bottom:24px;">
+        <div class="flow-item"><div class="flow-num">1</div><div class="flow-content"><strong>タイヤと車軸を作る</strong> → シリンダーパーツでタイヤ2個 + ブロックで車軸 → モデル化して中心合わせ</div></div>
+        <div class="flow-item"><div class="flow-num">2</div><div class="flow-content"><strong>HingeConstraintで接続</strong> → 車軸の端にアタッチメントを付け → タイヤ側に接続して回転軸を設定</div></div>
+        <div class="flow-item"><div class="flow-num">3</div><div class="flow-content"><strong>ボディを作り前後を複製</strong> → ControlD でコピー → 車軸×2 + タイヤ×4の完成形に</div></div>
+        <div class="flow-item"><div class="flow-num">4</div><div class="flow-content"><strong>VehicleSeatを取り付け</strong> → バーチカルシートを180°回転 → WeldConstraintでボディに固定</div></div>
+        <div class="flow-item"><div class="flow-num">5</div><div class="flow-content"><strong>後輪をMotorに設定</strong> → LDrive / RDrive を「Motor」タイプ → トルク10000に設定</div></div>
+        <div class="flow-item"><div class="flow-num">6</div><div class="flow-content"><strong>前輪にステアリングを追加</strong> → 別のHingeConstraint（縦方向）→「Servo」タイプ、スピード5</div></div>
+        <div class="flow-item"><div class="flow-num">7</div><div class="flow-content"><strong>走行スクリプトを書く</strong> → シートの下に通常スクリプト → アクセル・ハンドル操作を接続</div></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 1</span>タイヤと車軸の作成</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          ブロックで車軸を作り、シリンダーパーツでタイヤを2個作る。タイヤは90°回転させてから大きさを調整する。</p>
+          <table class="data-table">
+            <tr><th>パーツ</th><th>形状</th><th>サイズ設定</th></tr>
+            <tr><td>車軸</td><td>ブロック</td><td>長さで左右タイヤの幅を決める</td></tr>
+            <tr><td>タイヤ</td><td>シリンダー（90°回転）</td><td>直径3〜4、厚み1.5</td></tr>
+          </table>
+          <p><span class="label label-check">中心合わせ</span><br>
+          3つ（タイヤ×2 + 車軸）を選択した状態で、モデルタブの「整列」でZ軸・高さをそれぞれ合わせて中心に揃える。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 2</span>HingeConstraintで車軸とタイヤを接続</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          車軸を選択した状態で「＋」→「W」を押してHingeConstraintを追加。車軸の端にアタッチメントを配置し、もう一方のアタッチメントをタイヤの中心に合わせる。</p>
+          <p><span class="label label-warn">向きの設定</span><br>
+          アタッチメントの出っ張り（回転軸方向）を両方とも外側に向けること。向きが揃っていないと車輪が正しく回転しない。</p>
+          <p><span class="label label-check">確認ポイント</span><br>
+          テストプレイ前に車軸が固定されたまま車輪だけ回るかを確認する（ウェルドで車軸を固定すると分かりやすい）。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 3</span>ボディの作成と前後タイヤの配置</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          ブロックでボディを作る（例：長さ9.5、幅7、高さ1）。車軸ユニット（タイヤ×2 + 車軸）を Ctrl+D で複製して前後に配置する。</p>
+          <p><span class="label label-check">モデル化の手順</span><br>
+          ボディ + 後ろ車軸を選択 → モデルタブ「Union（ニュー）」で1つのオブジェクトにまとめる。前輪も同様にまとめてから前方に配置する。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 4</span>VehicleSeat（バーチカルシート）の取り付け</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          オブジェクト検索欄で「V」と入力するとVehicleSeat（バーチカルシート）が出てくる。これを車体の上に配置し、180°回転させて前進方向を合わせる。</p>
+          <p><span class="label label-warn">WeldConstraintで固定</span><br>
+          シートの横で「＋」→「W」→ WeldConstraint を追加。パーツ0にVehicleSeat、パーツ1にボディを設定する（順番が逆だと固定されない）。</p>
+          <p><span class="label label-check">確認ポイント</span><br>
+          座席に乗るとVehicleSeatのプロパティにトルク・スピードなどのパラメーターが表示される。これが走行設定のベースになる。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 5</span>後輪をMotor（駆動輪）に設定</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          後輪のHingeConstraint2個（LDrive・RDrive）を「Motor」タイプに変更し、それぞれトルクを10000に設定する。</p>
+          <table class="data-table">
+            <tr><th>設定項目</th><th>値</th><th>役割</th></tr>
+            <tr><td>名前</td><td>LDrive / RDrive</td><td>スクリプトから識別するため必須</td></tr>
+            <tr><td>ActuatorType</td><td>Motor</td><td>回転する動力源</td></tr>
+            <tr><td>MaxTorque</td><td>10000</td><td>駆動力（低いと坂を登れない）</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 6</span>前輪にステアリング（Servo）を追加</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          ボディから前の車軸へ向かって新しいHingeConstraintを縦方向（Y軸下向き）で追加する。これがハンドルの回転軸になる。</p>
+          <table class="data-table">
+            <tr><th>設定項目</th><th>値</th><th>役割</th></tr>
+            <tr><td>名前</td><td>Steering</td><td>スクリプトから制御するため必須</td></tr>
+            <tr><td>ActuatorType</td><td>Servo</td><td>指定角度に動く（ラジコンのサーボと同じ）</td></tr>
+            <tr><td>Speed</td><td>5</td><td>ハンドルの切れる速さ</td></tr>
+            <tr><td>MaxTorque</td><td>1</td><td>ステアリングの力（小さくてOK）</td></tr>
+          </table>
+          <p><span class="label label-warn">アタッチメントの向き</span><br>
+          ステアリング用HingeConstraintの出っ張りは必ず「下（Y軸マイナス方向）」に向ける。横向きにすると前後に倒れてしまう。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 7</span>走行スクリプトを書く</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          VehicleSeatの子要素として「Script（通常スクリプト）」を追加し、以下のコードを記述する。</p>
+          <div class="code-block">
+<span class="comment">-- VehicleSeat の下に置く通常スクリプト</span>
+<span class="key">local</span> seat     = script.Parent
+<span class="key">local</span> Car      = seat.Parent
+<span class="key">local</span> LDrive   = Car.Body.LDrive
+<span class="key">local</span> RDrive   = Car.Body.RDrive
+<span class="key">local</span> Steering = Car.Body.Steering
+
+seat:GetPropertyChangedSignal(<span class="str">"Steer"</span>):Connect(<span class="key">function</span>()
+    Steering.TargetAngle = <span class="num">30</span> * seat.Steer
+<span class="key">end</span>)
+
+seat:GetPropertyChangedSignal(<span class="str">"Throttle"</span>):Connect(<span class="key">function</span>()
+    LDrive.AngularVelocity = <span class="num">10</span> * seat.Throttle
+    RDrive.AngularVelocity = <span class="num">10</span> * seat.Throttle
+<span class="key">end</span>)
+          </div>
+          <p><span class="label label-warn">スペルミスは致命的</span><br>
+          LDrive・RDrive・Steeringの名前はパーツの名前と完全に一致させること。大文字・小文字の違いでもエラーになる。</p>
+          <p><span class="label label-check">速度の調整</span><br>
+          <code style="background:#f0f6ff;padding:2px 6px;border-radius:4px;">AngularVelocity = 10</code> の数字を変えると速度が変わる。ステアリング角度は <code style="background:#f0f6ff;padding:2px 6px;border-radius:4px;">30</code> を変えると旋回角が変わる。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 方法② -->
+    <div class="section">
+      <div class="method-divider">📦 方法② <span>シャーシーに車体を被せる</span></div>
+
+      <div class="flow-grid" style="margin-bottom:24px;">
+        <div class="flow-item"><div class="flow-num">1</div><div class="flow-content"><strong>ツールボックスで検索</strong> → 「Chassis」で検索 → シンプルな座席だけのものを選ぶ</div></div>
+        <div class="flow-item"><div class="flow-num">2</div><div class="flow-content"><strong>自分の車体を配置</strong> → 車体モデルをシャーシーのBodyの中に移動 → 座席の真上に位置調整</div></div>
+        <div class="flow-item"><div class="flow-num">3</div><div class="flow-content"><strong>タイヤサイズを合わせる</strong> → パーツとモデルで縮小方法が違うため注意 → 4輪すべて合わせてから地面に揃える</div></div>
+        <div class="flow-item"><div class="flow-num">4</div><div class="flow-content"><strong>座席と車体をWeld固定</strong> → WeldConstraintでシートとボディを接続 → 車体のCanCollideをOFFにする</div></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 1</span>ツールボックスからシャーシーを入手</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          ツールボックス（3Dアセット）で「Chassis」と検索する。座席だけのシンプルなものを選ぶ（複雑な機能付きは避ける）。</p>
+          <p><span class="label label-check">動作確認</span><br>
+          インポートしたらそのままテストプレイして走ることを確認する。走らない場合は別のシャーシーを選び直す。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 2</span>自分の車体モデルをシャーシーに移植</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          自分で作った車体モデル（タイヤなし・ボディのみ）をシャーシーの「Body」フォルダの中にドラッグして配置する。シャーシーの座席（VehicleSeat）の真上に来るよう位置を調整する。</p>
+          <p><span class="label label-warn">タイヤは入れない</span><br>
+          シャーシーにすでにタイヤが付いているので、自分の車体にタイヤは付けなくてよい。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 3</span>タイヤサイズの調整（パーツとモデルの違いに注意）</div>
+        <div class="step-body">
+          <p><span class="label label-warn">サイズ変更の罠</span><br>
+          シャーシーのタイヤは「パーツ」と「モデル」が混在している。サイズの変更方法が異なる：</p>
+          <table class="data-table">
+            <tr><th>種類</th><th>サイズ変更の方法</th></tr>
+            <tr><td>パーツ</td><td>プロパティのサイズXYZを直接変更する（例：直径2.79 → 2.8などに合わせる）</td></tr>
+            <tr><td>モデル</td><td>モデルを選択してScaleを0.5など倍率で変更する</td></tr>
+          </table>
+          <p><span class="label label-check">確認ポイント</span><br>
+          4輪すべてのサイズを揃えてから、まとめて選択して地面に合わせる（整列ツールを使う）。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 4</span>座席と車体をWeld固定＆CanCollide設定</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          VehicleSeatの横で「＋」→「W」→ WeldConstraintを追加。パーツ0にシート、パーツ1に自分の車体ボディを設定する。</p>
+          <p><span class="label label-do">CanCollideをOFFに</span><br>
+          車体ボディのCanCollideをOFFにする。ONのままだとシャーシーのタイヤと干渉して車体が飛び上がってしまう。</p>
+          <p><span class="label label-check">完成確認</span><br>
+          テストプレイで座席に乗り、前進・後退・ハンドリングが機能することを確認する。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 重要ポイント -->
+    <div class="section">
+      <div class="section-title"><span class="icon">⭐</span>重要ポイント</div>
+      <ul class="point-list">
+        <li>⭐ HingeConstraintのアタッチメントの「向き（出っ張りの方向）」が回転軸になる — 向きが合っていないとタイヤが正しく回転しない</li>
+        <li>⭐ WeldConstraintのパーツ0/1の順番は「固定したい側がパーツ0、くっつける先がパーツ1」と覚える</li>
+        <li>⭐ スクリプトのパーツ名（LDrive・RDrive・Steering）はStudio上のパーツ名と完全一致が必須 — 大文字・小文字も区別される</li>
+        <li>⭐ シャーシー方式はタイヤのサイズ変更でパーツとモデルで操作が異なる — 先にタイプを確認してから変更する</li>
+        <li>⭐ VehicleSeatは180°回転させてから配置する — 逆向きだとアクセルを踏むと後退してしまう</li>
+      </ul>
+    </div>
+
+    <!-- つまずき -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🚧</span>初心者がつまずきやすい点</div>
+
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ 車軸まで一緒に回転してしまってタイヤの動きが変</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ WeldConstraintで車軸をボディに固定してから、HingeConstraintでタイヤだけ回転するように設定する</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ 座席に乗っても車が動かない</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ 後輪HingeConstraintのActuatorTypeが「None」のまま → 「Motor」に変更してMaxTorqueを10000に設定する</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ ハンドルを切っても前輪が動かない</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ ステアリング用HingeConstraintのActuatorTypeが「None」→「Servo」に変更する。またアタッチメントの向きが縦（Y軸下向き）になっているか確認する</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ スクリプトエラーが出て走らない</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ スクリプト内の「LDrive」「RDrive」「Steering」という名前がStudio上のパーツ名と完全一致しているか確認する</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ シャーシー方式で車体が弾き飛ばされる</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ 車体ボディのCanCollideがONのままになっている → OFFに変更してシャーシーのパーツと干渉しないようにする</div>
+      </div>
+    </div>
+
+    <!-- 応用 -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🚀</span>応用アイデア</div>
+      <div class="idea-grid">
+        <div class="idea-card">
+          <div class="idea-emoji">🏎️</div>
+          <div class="idea-title">方法①→③に発展させる</div>
+          パーツ自作で仕組みを理解したら、スクリプトのみ方式（方法③）でよりゲームらしい挙動に改造する。
+        </div>
+        <div class="idea-card">
+          <div class="idea-emoji">🎨</div>
+          <div class="idea-title">オリジナル車体でシャーシー方式</div>
+          BlenderやStudioで作ったオリジナルデザインの車体をシャーシーに被せて、見た目だけ差別化する。
+        </div>
+        <div class="idea-card">
+          <div class="idea-emoji">🛞</div>
+          <div class="idea-title">トルク値でゲームバランス調整</div>
+          MaxTorqueを変えると坂道の登坂力が変わる。レースゲームなら低くして難易度を調整する。
+        </div>
+      </div>
+    </div>
+
+    <!-- チェックリスト -->
+    <div class="section">
+      <div class="section-title"><span class="icon">✅</span>実践チェックリスト</div>
+
+      <div class="checklist-group">
+        <h3>🔧 方法① パーツ自作 チェック</h3>
+        <label><input type="checkbox"> タイヤ（シリンダー）を90°回転させてから配置している</label>
+        <label><input type="checkbox"> HingeConstraintのアタッチメントが両方とも外側を向いている</label>
+        <label><input type="checkbox"> 後輪2個のHingeConstraintをMotorタイプに設定した</label>
+        <label><input type="checkbox"> LDrive・RDriveという名前を正確に付けた</label>
+        <label><input type="checkbox"> ステアリング用HingeConstraintをServoタイプに設定した</label>
+        <label><input type="checkbox"> VehicleSeatを180°回転させてから配置した</label>
+        <label><input type="checkbox"> WeldConstraintのパーツ0にVehicleSeat、パーツ1にボディを設定した</label>
+        <label><input type="checkbox"> スクリプト内の名前がパーツ名と完全一致している</label>
+      </div>
+
+      <div class="checklist-group">
+        <h3>📦 方法② シャーシー方式 チェック</h3>
+        <label><input type="checkbox"> ツールボックスからシンプルなシャーシーを入手した</label>
+        <label><input type="checkbox"> 単体でテストプレイして走ることを確認した</label>
+        <label><input type="checkbox"> 自分の車体をBodyフォルダの中に移動した</label>
+        <label><input type="checkbox"> タイヤのタイプ（パーツ/モデル）を確認してからサイズ変更した</label>
+        <label><input type="checkbox"> WeldConstraintでシートとボディを固定した</label>
+        <label><input type="checkbox"> 車体ボディのCanCollideをOFFにした</label>
+      </div>
+
+      <div class="checklist-group">
+        <h3>🎮 共通 動作確認</h3>
+        <label><input type="checkbox"> 座席に乗ると前進する</label>
+        <label><input type="checkbox"> 左右キー（AとD）でハンドリングが効く</label>
+        <label><input type="checkbox"> 坂道でも止まらずに走れる（トルクが十分）</label>
+      </div>
+    </div>
+
+    <!-- 次のアクション -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🎯</span>次にやること</div>
+      <ul class="action-list">
+        <li>
+          <div class="action-num">1</div>
+          <div>まず方法②（シャーシー）でとにかく走らせてみる。仕組みは後でいいので、まず「動く体験」をすることが大切。</div>
+        </li>
+        <li>
+          <div class="action-num">2</div>
+          <div>方法①でタイヤ1個 + 車軸を作り、HingeConstraintだけを試してみる。回転の仕組みを理解してから全体を組み上げると早い。</div>
+        </li>
+        <li>
+          <div class="action-num">3</div>
+          <div>走れるようになったら「ロブロックス設計メソッドガイド」のスクリプト方式（方法③）と組み合わせて、マリオカート風ゲームに仕上げる。</div>
+        </li>
+      </ul>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>🚗 もっと本格的に<span>Robloxで稼ぎたい</span>なら</h2>
+    <p>
+      ロブ爺チャンネルでは、58歳の現役クリエイターが<br>
+      実際に使っているノウハウを毎週公開中。<br>
+      LINEに登録して最新情報をいち早く受け取ろう！
+    </p>
+    <a class="cta-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">📲 公式LINEに登録する（無料）</a>
+    <a class="cta-yt" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeで動画を見る</a>
+    <p style="margin-top:20px; font-size:12px; color:#5a7a9a;">
+      キーワード「クルマ」を送るとこのガイドが届きます
+    </p>
+  </div>
+
+  <div class="footer">
+    © 2026 ロブ爺のRoblox Studio講座 — このガイドは個人学習目的でご利用ください
+  </div>
+
+</div>
+</body>
+</html>

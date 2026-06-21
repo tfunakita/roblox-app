@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>無料特典：Roblox 車制作マスターガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #0d0d1a; color: #fff; min-height: 100vh; }
+
+    .header {
+      background: rgba(0,0,0,0.6);
+      border-bottom: 1px solid rgba(0,162,255,0.2);
+      padding: 14px 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #a0b8d0;
+    }
+    .header span { color: #00a2ff; font-weight: 700; }
+
+    .hero {
+      background: linear-gradient(160deg, #0d0d1a 0%, #0a2040 50%, #0d0d1a 100%);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,162,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(0,162,255,0.15);
+      border: 1px solid rgba(0,162,255,0.4);
+      color: #00a2ff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+      letter-spacing: 0.08em;
+    }
+    .hero .emoji { font-size: 72px; margin-bottom: 20px; display: block; }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .hero h1 .highlight { color: #00a2ff; }
+    .hero .sub { font-size: 16px; color: #a0b8d0; margin-bottom: 40px; line-height: 1.7; }
+    .hero-cta-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #06c755, #05b34a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 48px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 24px rgba(6,199,85,0.3);
+    }
+    .hero .note { margin-top: 14px; font-size: 12px; color: #5a7a9a; }
+
+    .preview { max-width: 760px; margin: 0 auto; padding: 64px 24px; }
+    .preview h2 { font-size: 22px; font-weight: 900; text-align: center; margin-bottom: 8px; }
+    .preview h2 span { color: #00a2ff; }
+    .preview .preview-sub { text-align: center; color: #a0b8d0; font-size: 14px; margin-bottom: 40px; }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .content-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,162,255,0.15);
+      border-radius: 12px;
+      padding: 24px 20px;
+    }
+    .content-card .card-icon { font-size: 32px; margin-bottom: 12px; }
+    .content-card .card-title { font-size: 15px; font-weight: 700; color: #00a2ff; margin-bottom: 8px; }
+    .content-card .card-desc { font-size: 13px; color: #a0b8d0; line-height: 1.6; }
+
+    .method-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .method-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(0,162,255,0.2);
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .method-card .m-emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+    .method-card .m-num { font-size: 11px; font-weight: 700; color: #00a2ff; margin-bottom: 6px; display: block; }
+    .method-card .m-title { font-size: 14px; font-weight: 700; }
+
+    .cta2 { text-align: center; padding: 0 24px 32px; }
+    .cta2 .step-label { font-size: 13px; color: #5a7a9a; margin-bottom: 20px; }
+    .cta2 .step-label span { color: #00a2ff; font-weight: 700; }
+    .cta2-btn {
+      display: inline-block;
+      background: linear-gradient(90deg, #06c755, #05b34a);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      padding: 18px 48px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+    .cta2-sub { margin-top: 12px; font-size: 12px; color: #5a7a9a; }
+
+    .profile { max-width: 600px; margin: 0 auto; padding: 48px 24px; text-align: center; }
+    .profile .avatar { font-size: 64px; margin-bottom: 16px; }
+    .profile h3 { font-size: 18px; font-weight: 900; margin-bottom: 8px; }
+    .profile p { font-size: 14px; color: #a0b8d0; line-height: 1.8; margin-bottom: 20px; }
+    .profile .yt-link {
+      display: inline-block;
+      background: #ff0000;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+    .footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 24px;
+      text-align: center;
+      font-size: 11px;
+      color: #3a4a6a;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <span>ロブ爺のRoblox Studio講座</span> — 58歳のゲームクリエイターが教える実践メソッド
+  </div>
+
+  <div class="hero">
+    <div class="badge">🎁 期間限定 無料プレゼント</div>
+    <span class="emoji">🚗</span>
+    <h1>Roblox <span class="highlight">車制作</span><br>マスターガイド</h1>
+    <p class="sub">
+      3種類の車の作り方を完全解説<br>
+      HingeConstraint・シャーシー・スクリプトを全部まとめた教科書
+    </p>
+    <a class="hero-cta-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">
+      📲 無料でガイドを受け取る
+    </a>
+    <p class="note">LINEに登録して「クルマ」と送るだけ — 完全無料</p>
+  </div>
+
+  <div class="preview">
+    <h2>📄 ガイドの<span>中身を見てみる</span></h2>
+    <p class="preview-sub">全9セクション・走行スクリプト付き・実践チェックリスト付き</p>
+
+    <div class="method-preview">
+      <div class="method-card">
+        <span class="m-emoji">🔧</span>
+        <span class="m-num">方法①</span>
+        <div class="m-title">パーツで自作</div>
+      </div>
+      <div class="method-card">
+        <span class="m-emoji">📦</span>
+        <span class="m-num">方法②</span>
+        <div class="m-title">シャーシー活用</div>
+      </div>
+      <div class="method-card">
+        <span class="m-emoji">💻</span>
+        <span class="m-num">方法③</span>
+        <div class="m-title">スクリプトのみ</div>
+      </div>
+    </div>
+
+    <div class="content-grid">
+      <div class="content-card">
+        <div class="card-icon">🔩</div>
+        <div class="card-title">HingeConstraint完全解説</div>
+        <div class="card-desc">タイヤ・車軸・ステアリングの接続方法をアタッチメントの向きまで丁寧に解説</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">💻</div>
+        <div class="card-title">走行スクリプト掲載</div>
+        <div class="card-desc">コピーしてすぐ使えるLuaスクリプト付き。変数名の意味まで解説</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">シャーシー方式の罠を解説</div>
+        <div class="card-desc">タイヤサイズ変更でパーツとモデルが混在する問題など、はまりやすいポイントを網羅</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🚧</div>
+        <div class="card-title">5大つまずきポイント</div>
+        <div class="card-desc">「動かない」「弾き飛ばされる」など実際によくあるミスの原因と解決策</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">方法別チェックリスト</div>
+        <div class="card-desc">方法①・②それぞれの確認項目をクリックでチェックできる形式で収録</div>
+      </div>
+      <div class="content-card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">応用アイデア3選</div>
+        <div class="card-desc">スクリプト方式への発展・オリジナル車体・トルク調整でゲームバランスを整える方法</div>
+      </div>
+    </div>
+
+    <div class="cta2">
+      <p class="step-label">
+        ① LINE登録 → ② キーワード「<span>クルマ</span>」を送る → ③ ガイド受け取り完了
+      </p>
+      <a class="cta2-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">
+        📲 無料でガイドを受け取る
+      </a>
+      <p class="cta2-sub">登録は無料・いつでも解除OK</p>
+    </div>
+  </div>
+
+  <div class="profile">
+    <div class="avatar">👴</div>
+    <h3>ロブ爺 について</h3>
+    <p>
+      58歳からRoblox Studioを始めた現役クリエイター。<br>
+      孫に勝つためにマリオカートゲームを自作した経験をもとに、<br>
+      「誰でも楽しみながらゲームを作れる」をモットーに発信中。<br>
+      スクール・セミナーも開催しています。
+    </p>
+    <a class="yt-link" href="https://www.youtube.com/@robjii-roblox" target="_blank">
+      ▶ YouTubeチャンネルを見る
+    </a>
+  </div>
+
+  <div class="footer">
+    © 2026 ロブ爺のRoblox Studio講座 — 個人情報はLINE公式アカウントのプライバシーポリシーに従い管理されます
+  </div>
+
+</body>
+</html>
