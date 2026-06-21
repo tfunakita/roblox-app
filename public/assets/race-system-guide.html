@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roblox レースゲーム システム設計ガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #0d0d1a; color: #1a1a2e; padding: 24px 16px; }
+    .container { max-width: 794px; margin: 0 auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,162,255,0.15); }
+
+    /* 表紙 */
+    .cover { background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 60%, #0a2a4a 100%); color: #fff; padding: 64px 48px 56px; text-align: center; border-bottom: 4px solid #00a2ff; }
+    .cover .logo { font-size: 56px; margin-bottom: 16px; }
+    .cover .channel-name { font-size: 13px; color: #00a2ff; letter-spacing: 0.12em; margin-bottom: 24px; }
+    .cover h1 { font-size: 32px; font-weight: 900; line-height: 1.3; margin-bottom: 16px; text-shadow: 0 2px 16px rgba(0,162,255,0.4); }
+    .cover h1 span { color: #00a2ff; }
+    .cover .subtitle { font-size: 15px; color: #a0b8d0; margin-bottom: 32px; }
+    .cover .badge { display: inline-block; background: #00a2ff; color: #fff; font-size: 13px; font-weight: 700; padding: 6px 20px; border-radius: 20px; margin-bottom: 24px; }
+    .cover .date { font-size: 12px; color: #5a7a9a; margin-top: 16px; }
+
+    /* 目次 */
+    .toc { background: #f0f6ff; padding: 40px 48px; border-bottom: 2px solid #dde8f5; }
+    .toc h2 { font-size: 18px; font-weight: 900; color: #0d0d1a; margin-bottom: 20px; }
+    .toc h2 span { color: #00a2ff; }
+    .toc ul { list-style: none; }
+    .toc ul li { padding: 6px 0; border-bottom: 1px dashed #c0d4ec; font-size: 14px; }
+    .toc ul li:last-child { border-bottom: none; }
+    .toc ul li .num { display: inline-flex; align-items: center; justify-content: center; background: #00a2ff; color: #fff; font-size: 11px; font-weight: 700; width: 22px; height: 22px; border-radius: 50%; margin-right: 10px; }
+
+    /* 本文 */
+    .content { padding: 40px 48px; }
+    .section { margin-bottom: 48px; }
+    .section-title { font-size: 20px; font-weight: 900; color: #0d0d1a; padding-bottom: 10px; border-bottom: 3px solid #00a2ff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+    .section-title .icon { font-size: 24px; }
+
+    /* 学べること */
+    .learn-list { background: #f0f6ff; border-radius: 10px; padding: 20px 24px; }
+    .learn-list li { padding: 8px 0; padding-left: 28px; position: relative; font-size: 14px; border-bottom: 1px solid #dde8f5; }
+    .learn-list li:last-child { border-bottom: none; }
+    .learn-list li::before { content: '✅'; position: absolute; left: 0; }
+
+    /* 3システムカード */
+    .system-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+    .system-card { border-radius: 10px; padding: 20px 16px; text-align: center; border: 2px solid #dde8f5; }
+    .system-card.highlight { border-color: #00a2ff; background: #f0f8ff; }
+    .system-card .s-emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+    .system-card .s-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #0d0d1a; }
+    .system-card .s-desc { font-size: 12px; color: #5a7a9a; line-height: 1.5; }
+
+    /* セクション区切り */
+    .system-divider { background: linear-gradient(90deg, #0d0d1a, #1a2a4a); color: #fff; padding: 14px 24px; border-radius: 8px; margin: 32px 0 20px; font-size: 16px; font-weight: 900; display: flex; align-items: center; gap: 12px; }
+    .system-divider span { color: #00a2ff; }
+
+    /* フロー */
+    .flow-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .flow-item { display: flex; align-items: flex-start; gap: 14px; background: #f8f9ff; border-radius: 8px; padding: 14px 18px; border-left: 4px solid #00a2ff; }
+    .flow-num { background: #00a2ff; color: #fff; font-size: 13px; font-weight: 900; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .flow-content { font-size: 13px; line-height: 1.6; }
+    .flow-content strong { color: #00a2ff; font-weight: 700; }
+
+    /* ステップカード */
+    .step-card { background: #fff; border: 2px solid #dde8f5; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    .step-header { background: linear-gradient(90deg, #0d0d1a, #1a2a4a); color: #fff; padding: 12px 20px; font-weight: 700; font-size: 15px; display: flex; align-items: center; gap: 10px; }
+    .step-header .step-num { background: #00a2ff; color: #fff; font-size: 12px; font-weight: 900; padding: 2px 10px; border-radius: 12px; }
+    .step-body { padding: 16px 20px; font-size: 13px; line-height: 1.8; }
+    .label { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 4px; }
+    .label-do { background: #e0f4ff; color: #0070b8; }
+    .label-warn { background: #fff3e0; color: #b85c00; }
+    .label-check { background: #e8f5e9; color: #1b7e2b; }
+    .step-body p { margin-bottom: 10px; }
+    .step-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .step-body ul li { margin-bottom: 4px; }
+
+    /* コード */
+    .code-block { background: #1a1a2e; color: #7dd3fc; border-radius: 8px; padding: 16px 20px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.7; margin: 10px 0; overflow-x: auto; }
+    .code-block .comment { color: #6b7280; }
+    .code-block .key { color: #a78bfa; }
+    .code-block .str { color: #86efac; }
+    .code-block .num { color: #fbbf24; }
+
+    /* テーブル */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    .data-table th { background: #0d0d1a; color: #00a2ff; padding: 10px 14px; text-align: left; font-weight: 700; }
+    .data-table td { padding: 10px 14px; border-bottom: 1px solid #eee; }
+    .data-table tr:nth-child(even) td { background: #f8f9ff; }
+
+    /* 重要ポイント */
+    .point-list { list-style: none; }
+    .point-list li { background: #fff8e1; border-left: 4px solid #ffc107; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 10px; font-size: 14px; font-weight: 700; }
+
+    /* つまずき */
+    .trouble-item { background: #f8f9ff; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px; font-size: 13px; }
+    .trouble-ng { color: #d32f2f; font-weight: 700; margin-bottom: 4px; }
+    .trouble-ok { color: #1b7e2b; font-weight: 700; }
+    .arrow { color: #00a2ff; font-size: 16px; margin: 4px 0; }
+
+    /* チェックリスト */
+    .checklist-group { margin-bottom: 20px; }
+    .checklist-group h3 { font-size: 14px; font-weight: 700; color: #0d0d1a; margin-bottom: 10px; background: #f0f6ff; padding: 6px 12px; border-radius: 4px; }
+    .checklist-group label { display: flex; align-items: flex-start; gap: 10px; padding: 8px 4px; font-size: 13px; border-bottom: 1px dashed #e0e8f5; cursor: pointer; }
+    .checklist-group label:last-child { border-bottom: none; }
+    .checklist-group input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+
+    /* 応用 */
+    .idea-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+    .idea-card { background: linear-gradient(135deg, #0d0d1a, #1a2a4a); color: #fff; border-radius: 10px; padding: 20px 18px; font-size: 13px; }
+    .idea-card .idea-emoji { font-size: 28px; margin-bottom: 10px; }
+    .idea-card .idea-title { font-weight: 700; margin-bottom: 6px; color: #00a2ff; }
+
+    /* 次のアクション */
+    .action-list { list-style: none; }
+    .action-list li { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+    .action-list li:last-child { border-bottom: none; }
+    .action-num { background: #00a2ff; color: #fff; font-weight: 900; font-size: 16px; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+    /* CTA */
+    .cta-section { background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 100%); color: #fff; padding: 48px; text-align: center; }
+    .cta-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 12px; }
+    .cta-section h2 span { color: #00a2ff; }
+    .cta-section p { font-size: 14px; color: #a0b8d0; margin-bottom: 28px; line-height: 1.7; }
+    .cta-btn { display: inline-block; background: #06c755; color: #fff; font-size: 16px; font-weight: 700; padding: 14px 40px; border-radius: 8px; text-decoration: none; margin-bottom: 20px; }
+    .cta-yt { display: inline-block; background: #ff0000; color: #fff; font-size: 14px; font-weight: 700; padding: 10px 28px; border-radius: 8px; text-decoration: none; margin-left: 12px; }
+    .footer { background: #0a0a14; color: #5a7a9a; font-size: 11px; text-align: center; padding: 16px; }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 表紙 -->
+  <div class="cover">
+    <div class="logo">👻</div>
+    <div class="channel-name">ロブ爺のRoblox Studio講座</div>
+    <h1>Roblox <span>レースゲーム</span><br>システム設計ガイド</h1>
+    <div class="subtitle">ラップタイム・コース復帰・ゴースト — 3つのシステムを完全スクリプト解説</div>
+    <div class="badge">🎁 無料特典ガイド</div>
+    <div class="date">2026年6月 発行</div>
+  </div>
+
+  <!-- 目次 -->
+  <div class="toc">
+    <h2>📋 <span>目次</span></h2>
+    <ul>
+      <li><span class="num">1</span>このガイドで学べること</li>
+      <li><span class="num">2</span>3つのシステム全体像</li>
+      <li><span class="num">3</span>システム① ラップタイム計測 ＆ カウントダウン</li>
+      <li><span class="num">4</span>システム② コースアウト自動復帰</li>
+      <li><span class="num">5</span>システム③ ゴーストシステム</li>
+      <li><span class="num">6</span>発展：4人マルチプレイへの拡張</li>
+      <li><span class="num">7</span>重要ポイント</li>
+      <li><span class="num">8</span>初心者がつまずきやすい点</li>
+      <li><span class="num">9</span>実践チェックリスト</li>
+      <li><span class="num">10</span>次にやること</li>
+    </ul>
+  </div>
+
+  <div class="content">
+
+    <!-- 学べること -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🎯</span>このガイドで学べること</div>
+      <ul class="learn-list">
+        <li>スタート・ゴールラインとラップタイム計測スクリプトの組み方</li>
+        <li>5秒前カウントダウン → 0でスタート解除のシステム実装</li>
+        <li>コースアウト時に「2秒後に1秒前の位置へ戻る」復帰処理のスクリプト</li>
+        <li>ゴーストカーの録画・再生システム（ReplicatedStorage + ServerScript構成）</li>
+        <li>1人プレイ用ゴーストモードを4人マルチプレイに拡張する方法</li>
+      </ul>
+    </div>
+
+    <!-- 3システム比較 -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🗺️</span>3つのシステム全体像</div>
+      <div class="system-grid">
+        <div class="system-card highlight">
+          <span class="s-emoji">⏱️</span>
+          <div class="s-title">システム①<br>ラップタイム</div>
+          <div class="s-desc">スタート/ゴールライン通過を検知してタイムを計測・表示する</div>
+        </div>
+        <div class="system-card highlight">
+          <span class="s-emoji">🔄</span>
+          <div class="s-title">システム②<br>コース復帰</div>
+          <div class="s-desc">コースアウト後2秒で1秒前の位置に自動テレポートする</div>
+        </div>
+        <div class="system-card highlight">
+          <span class="s-emoji">👻</span>
+          <div class="s-title">システム③<br>ゴースト</div>
+          <div class="s-desc">前周の自分の走りを録画して次周に幽霊として再生する</div>
+        </div>
+      </div>
+      <p style="font-size:13px; color:#5a7a9a;">
+        3つはすべて連動しています。①でゴール判定 → ②でコース維持 → ③でゴール後にゴーストを召喚。<br>
+        スクリプトの配置場所：<strong>ServerScriptService</strong>（コース復帰・ゴースト）と<strong>VehicleSeat配下</strong>（ラップ・カウントダウン）の2か所が中心。
+      </p>
+    </div>
+
+    <!-- システム① ラップタイム -->
+    <div class="section">
+      <div class="system-divider">⏱️ システム① <span>ラップタイム計測 ＆ カウントダウン</span></div>
+
+      <div class="flow-grid" style="margin-bottom:24px;">
+        <div class="flow-item"><div class="flow-num">1</div><div class="flow-content"><strong>スタート台・ゴールラインを配置</strong> → Transparency 0.5の半透明ブロック → CanCollide OFF、Anchored ON</div></div>
+        <div class="flow-item"><div class="flow-num">2</div><div class="flow-content"><strong>カウントダウンを実装</strong> → 5秒前から数字表示 → 3秒前からサウンド → 0でカート走行ロック解除</div></div>
+        <div class="flow-item"><div class="flow-num">3</div><div class="flow-content"><strong>ゴールライン通過を検知</strong> → Touched イベントでラップカウント → 設定周回数に達したらゴール表示</div></div>
+        <div class="flow-item"><div class="flow-num">4</div><div class="flow-content"><strong>タイムを表示・リセット</strong> → ベストラップ / 周回タイムをHUDに表示 → ゴール後10秒でリスタート</div></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 1</span>スタート台・ゴールラインの設定</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          スタート台とゴールラインをそれぞれ別の半透明ブロックとして配置する。カートをちょうど覆う横幅に設定する。</p>
+          <table class="data-table">
+            <tr><th>プロパティ</th><th>値</th><th>理由</th></tr>
+            <tr><td>Transparency</td><td>0.5</td><td>半透明で見えるが邪魔にならない</td></tr>
+            <tr><td>CanCollide</td><td>OFF</td><td>当たっても弾かれない（すり抜ける）</td></tr>
+            <tr><td>CanTouch</td><td>ON</td><td>Touchedイベントを受け取るために必要</td></tr>
+            <tr><td>Anchored</td><td>ON</td><td>落下防止</td></tr>
+          </table>
+          <p><span class="label label-warn">名前を正確に付ける</span><br>
+          スクリプトから参照するのでパーツ名を決めておく（例：「StartLine」「FinishLine」）。名前が変わるとスクリプトがエラーになる。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 2</span>カウントダウンと走行ロックの実装</div>
+        <div class="step-body">
+          <p><span class="label label-do">カウントダウンの流れ</span></p>
+          <div class="code-block">
+<span class="comment">-- カウントダウンのタイミング（RaceManagerスクリプト内）</span>
+<span class="comment">-- 5秒前：数字の表示を開始</span>
+<span class="comment">-- 3秒前：カウントダウン音を再生</span>
+<span class="comment">-- 0秒 ：走行ロック解除（カートが動けるようになる）</span>
+
+<span class="comment">-- 走行ロック中はスロットル入力を無効化しておく</span>
+<span class="key">if</span> not raceStarted <span class="key">then</span>
+    seat.Throttle = <span class="num">0</span>
+<span class="key">end</span>
+          </div>
+          <p><span class="label label-check">確認ポイント</span><br>
+          カウントダウン中にアクセルを踏んでもカートが動かないことを確認する。0になった瞬間に動き始めるのが正しい動作。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 3</span>ゴールライン通過とラップタイム計測</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          ゴールラインの Touched イベントでラップカウントを増やし、タイムを記録する。</p>
+          <div class="code-block">
+<span class="comment">-- ゴールライン通過時の処理（概要）</span>
+FinishLine.Touched:<span class="key">Connect</span>(<span class="key">function</span>(hit)
+    <span class="comment">-- カートのパーツかどうかチェック</span>
+    <span class="key">local</span> lapTime = tick() - lapStartTime  <span class="comment">-- タイム計算</span>
+    lapCount = lapCount + <span class="num">1</span>
+
+    <span class="key">if</span> lapCount >= totalLaps <span class="key">then</span>
+        <span class="comment">-- ゴール処理（FINISH表示 → 10秒後リスタート）</span>
+    <span class="key">else</span>
+        <span class="comment">-- 周回タイム更新・次のラップ開始</span>
+        lapStartTime = tick()
+    <span class="key">end</span>
+<span class="key">end</span>)
+          </div>
+          <p><span class="label label-check">周回数の変更</span><br>
+          変数 <code style="background:#f0f6ff;padding:2px 6px;border-radius:4px;">totalLaps</code> の数値を変えるだけで1周・3周・5周に変更できる。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- システム② コース復帰 -->
+    <div class="section">
+      <div class="system-divider">🔄 システム② <span>コースアウト自動復帰</span></div>
+
+      <div class="flow-grid" style="margin-bottom:24px;">
+        <div class="flow-item"><div class="flow-num">1</div><div class="flow-content"><strong>RunServiceで毎フレーム処理</strong> → Heartbeatで継続してプレイヤーの位置を記録する</div></div>
+        <div class="flow-item"><div class="flow-num">2</div><div class="flow-content"><strong>コース上にいるか判定</strong> → カートの4隅がコースパーツの上にあるかをRaycastで確認</div></div>
+        <div class="flow-item"><div class="flow-num">3</div><div class="flow-content"><strong>コースアウト2秒後に復帰</strong> → 「コースを外れた瞬間から1秒前」の記録位置へテレポート</div></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 1</span>スクリプトの配置場所とサービスの宣言</div>
+        <div class="step-body">
+          <p><span class="label label-do">配置場所</span><br>
+          <strong>ServerScriptService</strong> の中にスクリプトを置く（名前は「リプレイ」や「CourseReset」など自由でOK。スクリプトの動作には影響しない）。</p>
+          <div class="code-block">
+<span class="comment">-- 必ず最初に宣言するサービス</span>
+<span class="key">local</span> RunService = game:GetService(<span class="str">"RunService"</span>)
+<span class="key">local</span> Players   = game:GetService(<span class="str">"Players"</span>)
+
+<span class="comment">-- コースのパーツを取得（名前は自分のワークスペースに合わせる）</span>
+<span class="key">local</span> safeZone = workspace.マリオカートコース1.コース
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 2</span>位置の記録と安全な場所の判定</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          プレイヤーが乗っているカートのHumanoidRootPartの位置を毎フレーム記録し続ける。カートの左右4方向の点がコースパーツ上にあるかで「コース上かどうか」を判定する。</p>
+          <div class="code-block">
+<span class="comment">-- 位置の記録（例）</span>
+<span class="key">local</span> posHistory = {}  <span class="comment">-- 過去の位置を格納するテーブル</span>
+
+RunService.Heartbeat:<span class="key">Connect</span>(<span class="key">function</span>()
+    <span class="key">local</span> rootPart = <span class="comment">-- HumanoidRootPartを取得</span>
+    table.insert(posHistory, {
+        pos = rootPart.CFrame,
+        time = tick()
+    })
+    <span class="comment">-- 古いデータは削除（直近数秒分だけ保持）</span>
+    <span class="key">while</span> posHistory[<span class="num">1</span>] and tick() - posHistory[<span class="num">1</span>].time > <span class="num">5</span> <span class="key">do</span>
+        table.remove(posHistory, <span class="num">1</span>)
+    <span class="key">end</span>
+<span class="key">end</span>)
+          </div>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 3</span>2秒後に1秒前の位置へ復帰する処理</div>
+        <div class="step-body">
+          <p><span class="label label-do">復帰ロジックの考え方</span></p>
+          <table class="data-table">
+            <tr><th>タイミング</th><th>何が起きるか</th></tr>
+            <tr><td>コースアウト直後</td><td>タイマーをスタート（まだ走り続けられる）</td></tr>
+            <tr><td>コースアウトから2秒後</td><td>posHistoryから「1秒前の位置」を探して取得</td></tr>
+            <tr><td>テレポート実行</td><td>HumanoidRootPartをその位置にCFrameで移動</td></tr>
+          </table>
+          <p><span class="label label-warn">「1秒前」の意味</span><br>
+          コースを外れた瞬間ではなく、その1秒前の位置（=まだコース上にいた地点）に戻す。これにより壁際にうまく復帰できる。</p>
+          <p><span class="label label-check">確認ポイント</span><br>
+          海や崖の外に落ちたとき、2秒後にコース上の直前の地点に戻ることを確認する。復帰後のスピードは通常通りになる。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- システム③ ゴースト -->
+    <div class="section">
+      <div class="system-divider">👻 システム③ <span>ゴーストシステム</span></div>
+
+      <div class="flow-grid" style="margin-bottom:24px;">
+        <div class="flow-item"><div class="flow-num">1</div><div class="flow-content"><strong>ゴーストモデルを準備</strong> → ReplicatedStorageに専用カートを配置 → Transparency 0.2・CanCollide OFF</div></div>
+        <div class="flow-item"><div class="flow-num">2</div><div class="flow-content"><strong>走行中にデータを録画</strong> → 毎フレーム、自分のカートのCFrameとシートの状態を記録</div></div>
+        <div class="flow-item"><div class="flow-num">3</div><div class="flow-content"><strong>ゴール後10秒で再生</strong> → リスタート時にゴーストモデルを出現させ、録画データ通りに動かす</div></div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 1</span>ゴーストモデルの準備（ReplicatedStorage）</div>
+        <div class="step-body">
+          <p><span class="label label-do">やること</span><br>
+          本物のカートとは別に「ゴースト専用カート」を作り、<strong>ReplicatedStorage</strong> の中に「ゴーストモデル」という名前で置く。</p>
+          <table class="data-table">
+            <tr><th>設定項目</th><th>値</th><th>理由</th></tr>
+            <tr><td>Transparency</td><td>0.2</td><td>透けて見える幽霊っぽい見た目</td></tr>
+            <tr><td>CanCollide</td><td>OFF（全パーツ）</td><td>本物のカートとぶつかって弾かれないように</td></tr>
+            <tr><td>Anchored</td><td>OFF</td><td>スクリプトで動かすので物理は不要</td></tr>
+            <tr><td>VehicleSeat</td><td>誰も乗れない設定</td><td>プレイヤーが誤って乗らないように</td></tr>
+          </table>
+          <p><span class="label label-check">確認方法</span><br>
+          ゴーストモデルが見つからない場合はスクリプト内でエラーが出る。必ず「ゴーストモデル」という名前で正確に配置すること。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 2</span>走行データの録画（RaceManagerスクリプト）</div>
+        <div class="step-body">
+          <p><span class="label label-do">配置場所</span><br>
+          ServerScriptService の中に「RaceManager」という名前のスクリプトを作成する。</p>
+          <div class="code-block">
+<span class="comment">-- 録画データを格納するテーブル</span>
+<span class="key">local</span> ghostData = {}
+
+<span class="comment">-- 毎フレーム、プレイヤーの位置を記録</span>
+RunService.Heartbeat:<span class="key">Connect</span>(<span class="key">function</span>()
+    <span class="key">if</span> isRacing <span class="key">then</span>
+        table.insert(ghostData, {
+            cframe = humanoidRootPart.CFrame,
+            <span class="comment">-- シートの状態も記録（ハンドル・アクセルなど）</span>
+        })
+    <span class="key">end</span>
+<span class="key">end</span>)
+          </div>
+          <p><span class="label label-warn">ゴール判定との連携</span><br>
+          ゴールラインを通過した時点で録画を停止し、ghostDataを保存する。次のラップ開始時に空のテーブルでリセットして新たに録画を始める。</p>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">STEP 3</span>ゴール後10秒でゴースト召喚・再生</div>
+        <div class="step-body">
+          <p><span class="label label-do">ゴール後の流れ</span></p>
+          <div class="code-block">
+<span class="comment">-- ゴール後の処理</span>
+<span class="comment">-- 1. ラップタイムを表示</span>
+<span class="comment">-- 2. 10秒待機</span>
+task.wait(<span class="num">10</span>)
+<span class="comment">-- 3. ゴーストモデルをReplicatedStorageから複製してワークスペースに配置</span>
+<span class="key">local</span> ghost = ghostModel:Clone()
+ghost.Parent = workspace
+<span class="comment">-- 4. ghostDataのインデックスを1から順に再生</span>
+<span class="key">for</span> i, frame <span class="key">in</span> ipairs(ghostData) <span class="key">do</span>
+    ghost.PrimaryPart.CFrame = frame.cframe
+    task.wait(<span class="num">1</span>/<span class="num">60</span>)  <span class="comment">-- 60FPS相当で再生</span>
+<span class="key">end</span>
+<span class="comment">-- 5. リスタート後はゴーストと競走</span>
+          </div>
+          <p><span class="label label-check">確認ポイント</span><br>
+          ゴースト再生中に自分も走れること、ゴーストに当たっても弾かれないことを確認する。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 発展：4人マルチプレイ -->
+    <div class="section">
+      <div class="system-divider">👥 発展 <span>4人マルチプレイへの拡張</span></div>
+
+      <div class="step-card">
+        <div class="step-header"><span class="step-num">変更点</span>1人プレイ → 4人プレイに変えるポイント</div>
+        <div class="step-body">
+          <table class="data-table">
+            <tr><th>項目</th><th>1人プレイ</th><th>4人プレイ</th></tr>
+            <tr><td>カート数</td><td>1台</td><td>4台（コースのスタート位置に等間隔で配置）</td></tr>
+            <tr><td>ゴーストシステム</td><td>あり</td><td>削除（ゴーストなしの別ルーム）</td></tr>
+            <tr><td>カウントダウン開始条件</td><td>ゲーム開始時</td><td>4人目がシートに座った瞬間</td></tr>
+            <tr><td>カメラ</td><td>1つ（自分のカート追従）</td><td>各プレイヤーが自分のカートを追う（変更不要）</td></tr>
+          </table>
+          <p><span class="label label-do">実装のポイント</span></p>
+          <ul>
+            <li>VehicleSeatのOccupant（乗っている人）を監視して4人全員がそろったら raceStarted = true にする</li>
+            <li>各プレイヤーのカメラはLocalScriptで自分のカートを追うようにしているので変更不要</li>
+            <li>アイテムボックス（バナナ・甲羅・キノコ）はそのまま流用できる</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 重要ポイント -->
+    <div class="section">
+      <div class="section-title"><span class="icon">⭐</span>重要ポイント</div>
+      <ul class="point-list">
+        <li>⭐ スタートライン・ゴールラインは CanTouch = ON のまま残すこと — これがないとTouchedイベントが発火しない</li>
+        <li>⭐ コース復帰スクリプトは ServerScriptService に置く — LocalScriptでは他プレイヤーに位置変更が反映されない</li>
+        <li>⭐ 「コースアウト2秒・1秒前に戻る」の2つの数値は別々に設定されている — 混同しないこと</li>
+        <li>⭐ ゴーストモデルは必ず ReplicatedStorage に置く — Workspace に直接置くとゲーム開始前から見えてしまう</li>
+        <li>⭐ 4人マルチプレイへの変更は「ゴーストを消す + カート4台 + 最後の1人が座ったらスタート」の3点だけでOK</li>
+      </ul>
+    </div>
+
+    <!-- つまずき -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🚧</span>初心者がつまずきやすい点</div>
+
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ ゴールラインを通っても反応しない</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ CanTouch が OFF になっている — ON にするとTouchedイベントが動き始める</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ コースアウトしても復帰しない</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ コースのパーツ名がスクリプトの参照と一致していない — workspace内のパーツ名を確認して変数の文字列と完全一致させる</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ ゴーストが出現しない・エラーが出る</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ ReplicatedStorage に「ゴーストモデル」という名前でモデルを入れていない — 名前を完全一致させる</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ ゴーストに当たってカートが弾き飛ばされる</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ ゴーストモデルの全パーツの CanCollide が ON のまま — 全パーツを選択して OFF に変更する</div>
+      </div>
+      <div class="trouble-item">
+        <div class="trouble-ng">❌ カウントダウン中にカートが動いてしまう</div>
+        <div class="arrow">↓</div>
+        <div class="trouble-ok">✅ スタートフラグ（raceStarted）のチェックが抜けている — Throttle入力を受け取る前にフラグを確認する処理を追加する</div>
+      </div>
+    </div>
+
+    <!-- チェックリスト -->
+    <div class="section">
+      <div class="section-title"><span class="icon">✅</span>実践チェックリスト</div>
+
+      <div class="checklist-group">
+        <h3>⏱️ ラップタイムシステム</h3>
+        <label><input type="checkbox"> スタート台・ゴールラインを半透明ブロックで配置した</label>
+        <label><input type="checkbox"> CanTouch が ON になっている</label>
+        <label><input type="checkbox"> カウントダウン中はカートが動かない</label>
+        <label><input type="checkbox"> ゴールを通過するとラップタイムが表示される</label>
+        <label><input type="checkbox"> 設定した周回数に達するとゴール画面が出る</label>
+      </div>
+
+      <div class="checklist-group">
+        <h3>🔄 コースアウト復帰システム</h3>
+        <label><input type="checkbox"> スクリプトを ServerScriptService に配置した</label>
+        <label><input type="checkbox"> コースパーツの名前がスクリプト内の変数と一致している</label>
+        <label><input type="checkbox"> コースアウト後 2 秒で自動復帰する</label>
+        <label><input type="checkbox"> 復帰後のスピードが正常に戻る</label>
+      </div>
+
+      <div class="checklist-group">
+        <h3>👻 ゴーストシステム</h3>
+        <label><input type="checkbox"> ReplicatedStorage に「ゴーストモデル」を配置した</label>
+        <label><input type="checkbox"> ゴーストの全パーツが Transparency 0.2、CanCollide OFF になっている</label>
+        <label><input type="checkbox"> 1周ゴール後 10 秒待つとゴーストが出現する</label>
+        <label><input type="checkbox"> ゴーストが前周の走りを正確に再現している</label>
+        <label><input type="checkbox"> ゴーストに当たってもカートが弾かれない</label>
+      </div>
+    </div>
+
+    <!-- 応用アイデア -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🚀</span>応用アイデア</div>
+      <div class="idea-grid">
+        <div class="idea-card">
+          <div class="idea-emoji">🏆</div>
+          <div class="idea-title">ベストタイムをDataStoreに保存</div>
+          DataStoreを使ってサーバーにベストラップを保存。次のセッションでもゴーストが残る本格仕様に。
+        </div>
+        <div class="idea-card">
+          <div class="idea-emoji">👥</div>
+          <div class="idea-title">4人マルチに拡張</div>
+          ゴーストを削除してカート4台を配置。4人目着席でカウントダウン開始。コードの変更は最小限。
+        </div>
+        <div class="idea-card">
+          <div class="idea-emoji">🌐</div>
+          <div class="idea-title">ランキングボードを設置</div>
+          DataStoreのベストタイムを読み込んでコース上にリーダーボードを表示。対戦モチベーションが上がる。
+        </div>
+      </div>
+    </div>
+
+    <!-- 次のアクション -->
+    <div class="section">
+      <div class="section-title"><span class="icon">🎯</span>次にやること</div>
+      <ul class="action-list">
+        <li>
+          <div class="action-num">1</div>
+          <div>まずラップタイムシステムだけを実装する。ゴールラインにTouchedイベントを付けてラップ数を表示するところから始める。</div>
+        </li>
+        <li>
+          <div class="action-num">2</div>
+          <div>コースアウト復帰を追加する。ServerScriptServiceにスクリプトを置き、まず位置をprint()で記録できているか確認してから復帰処理を組む。</div>
+        </li>
+        <li>
+          <div class="action-num">3</div>
+          <div>ゴーストを実装する。ReplicatedStorageにモデルを置いてClone()で召喚できたら次は録画データの再生に進む。</div>
+        </li>
+      </ul>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <h2>👻 もっと本格的に<span>Robloxで稼ぎたい</span>なら</h2>
+    <p>
+      ロブ爺チャンネルでは、58歳の現役クリエイターが<br>
+      実際に使っているノウハウを毎週公開中。<br>
+      LINEに登録して最新情報をいち早く受け取ろう！
+    </p>
+    <a class="cta-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">📲 公式LINEに登録する（無料）</a>
+    <a class="cta-yt" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeで動画を見る</a>
+    <p style="margin-top:20px; font-size:12px; color:#5a7a9a;">
+      キーワード「ゴースト」を送るとこのガイドが届きます
+    </p>
+  </div>
+
+  <div class="footer">
+    © 2026 ロブ爺のRoblox Studio講座 — このガイドは個人学習目的でご利用ください
+  </div>
+
+</div>
+</body>
+</html>
