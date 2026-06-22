@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リーダーボードの作り方 | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print { .no-print { display: none !important; } body { background: white; } .container { box-shadow: none; } }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover {
+      background: linear-gradient(135deg, #0d0d1a 0%, #16213e 60%, #0f3460 100%);
+      color: white; padding: 80px 60px 60px; text-align: center;
+      min-height: 400px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; position: relative; overflow: hidden;
+    }
+    .cover::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,162,255,0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,162,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .cover-badge { background: rgba(0,162,255,0.2); border: 1px solid rgba(0,162,255,0.5); color: #00a2ff; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative; }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #00a2ff; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 24px 0 10px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .step-box { background: #f8faff; border: 1px solid #d0e4ff; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+    .step-number { display: inline-block; background: #00a2ff; color: white; font-weight: 900; font-size: 12px; border-radius: 50%; width: 28px; height: 28px; line-height: 28px; text-align: center; margin-right: 10px; vertical-align: middle; }
+    .step-title { font-weight: 700; font-size: 15px; color: #0f3460; vertical-align: middle; }
+    .step-detail { margin-top: 12px; font-size: 13px; color: #444; }
+    .code-block { background: #1a1a2e; color: #e0e0e0; border-radius: 10px; padding: 20px 24px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.8; overflow-x: auto; margin: 16px 0; }
+    .code-block .comment { color: #6a9955; }
+    .code-block .keyword { color: #569cd6; }
+    .code-block .string { color: #ce9178; }
+    .code-block .func { color: #dcdcaa; }
+    .point-card { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .mistake-box { background: #fff5f5; border: 1px solid #ffcccc; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .mistake-bad { color: #e53e3e; font-size: 13px; margin-bottom: 6px; }
+    .mistake-good { color: #38a169; font-size: 13px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box { background: linear-gradient(135deg, #0d0d1a, #16213e); color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px; }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; background: #00a2ff; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 14px; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .value-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .value-table th { background: #0f3460; color: white; padding: 10px 14px; text-align: left; }
+    .value-table td { padding: 10px 14px; border-bottom: 1px solid #e8edf2; }
+    .value-table tr:nth-child(even) td { background: #f8faff; }
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: #00a2ff; color: white; border: none; border-radius: 50px; padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100; }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+
+  <div class="cover">
+    <div class="cover-badge">📚 学習モジュール</div>
+    <div class="cover-emoji">🏆</div>
+    <h1><span>リーダーボード</span>（スコア表示）<br>の作り方ガイド</h1>
+    <div class="cover-sub">画面右上にプレイヤーのスコアを表示する仕組みを完全解説</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#overview">仕組みの全体像</a></li>
+        <li><a href="#steps">実践ステップ</a></li>
+        <li><a href="#valuetypes">値の種類一覧</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">つまずきやすい点</a></li>
+        <li><a href="#advanced">応用アイデア</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>Roblox の <strong>leaderstats</strong> システムの仕組み</li>
+      <li>IntValue / StringValue など値の種類と使い分け</li>
+      <li>PlayerAdded イベントでプレイヤー参加を検知する方法</li>
+      <li>複数の値（コイン・ポイントなど）を同時に表示する方法</li>
+      <li>ゲーム中にスコアを動的に変化させる方法</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="overview">🗺️ 仕組みの全体像</h2>
+    <p>Roblox のリーダーボードは <strong>自動表示システム</strong> です。ルールに従ってフォルダを作るだけで、Roblox が勝手に画面右上に表示してくれます。</p>
+    <div class="step-box" style="background:#f0f8ff">
+      <p style="font-size:14px; color:#0f3460; text-align:center;">
+        <strong>PlayerAdded イベント発火</strong>
+        &nbsp;→&nbsp; <strong>leaderstats フォルダ作成</strong>
+        &nbsp;→&nbsp; <strong>値（IntValue等）を子に追加</strong>
+        &nbsp;→&nbsp; <strong>自動で画面に表示</strong>
+      </p>
+    </div>
+    <p>ポイントは「<strong>leaderstats</strong> という名前のフォルダをプレイヤーの直下に作る」というルールを守るだけです。</p>
+
+    <hr class="divider">
+
+    <h2 id="steps">🛠️ 実践ステップ</h2>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      <span class="step-title">ServerScriptService に Script を追加</span>
+      <div class="step-detail">
+        <ul>
+          <li>Explorer で <strong>ServerScriptService</strong> を右クリック</li>
+          <li><strong>Insert Object → Script</strong> を選択</li>
+          <li>Script の名前を <code>LeaderboardScript</code> などに変更（任意）</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">2</span>
+      <span class="step-title">基本のリーダーボードを書く</span>
+      <div class="step-detail">
+        <div class="code-block">
+<span class="comment">-- ServerScriptService → Script</span>
+<span class="keyword">local</span> Players = game:<span class="func">GetService</span>(<span class="string">"Players"</span>)
+
+Players.PlayerAdded:<span class="func">Connect</span>(<span class="keyword">function</span>(player)
+
+  <span class="comment">-- ① leaderstats フォルダを作る（名前は絶対に変えない！）</span>
+  <span class="keyword">local</span> leaderstats = Instance.<span class="func">new</span>(<span class="string">"Folder"</span>)
+  leaderstats.Name = <span class="string">"leaderstats"</span>
+  leaderstats.Parent = player
+
+  <span class="comment">-- ② コイン数の値を追加</span>
+  <span class="keyword">local</span> coins = Instance.<span class="func">new</span>(<span class="string">"IntValue"</span>)
+  coins.Name = <span class="string">"Coins"</span>
+  coins.Value = <span class="string">0</span>
+  coins.Parent = leaderstats
+
+  <span class="comment">-- ③ ポイントの値を追加</span>
+  <span class="keyword">local</span> points = Instance.<span class="func">new</span>(<span class="string">"IntValue"</span>)
+  points.Name = <span class="string">"Points"</span>
+  points.Value = <span class="string">0</span>
+  points.Parent = leaderstats
+
+<span class="keyword">end</span>)
+        </div>
+        <ul>
+          <li><code>coins.Name</code> の文字列がリーダーボードの列名になる</li>
+          <li>表示順は追加した順番通り</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">3</span>
+      <span class="step-title">スコアを変化させる</span>
+      <div class="step-detail">
+        <p>スコアを変えたいときは Value プロパティを操作します。</p>
+        <div class="code-block">
+<span class="comment">-- コインを1増やす例</span>
+<span class="keyword">local</span> leaderstats = player:<span class="func">FindFirstChild</span>(<span class="string">"leaderstats"</span>)
+<span class="keyword">if</span> leaderstats <span class="keyword">then</span>
+  leaderstats.Coins.Value += <span class="string">1</span>   <span class="comment">-- 加算</span>
+  leaderstats.Points.Value -= <span class="string">5</span>  <span class="comment">-- 減算</span>
+<span class="keyword">end</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">4</span>
+      <span class="step-title">テストプレイで確認</span>
+      <div class="step-detail">
+        <ul>
+          <li>Play ボタン（▶）を押す</li>
+          <li>画面右上に「Coins 0」「Points 0」が表示されれば成功！</li>
+          <li>表示されない場合は leaderstats のスペルを確認</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="valuetypes">📊 値の種類一覧</h2>
+    <table class="value-table">
+      <tr><th>種類</th><th>用途</th><th>例</th></tr>
+      <tr><td><strong>IntValue</strong></td><td>整数（小数なし）</td><td>コイン数、レベル、倒した敵の数</td></tr>
+      <tr><td><strong>NumberValue</strong></td><td>小数あり数値</td><td>タイム、距離</td></tr>
+      <tr><td><strong>StringValue</strong></td><td>文字列</td><td>称号、ランク名</td></tr>
+      <tr><td><strong>BoolValue</strong></td><td>true / false</td><td>VIP判定、アイテム所持</td></tr>
+    </table>
+
+    <hr class="divider">
+
+    <h2 id="points">⭐ 重要ポイント</h2>
+
+    <div class="point-card">
+      <span class="star">⭐</span><strong>フォルダ名は必ず <code>leaderstats</code>（小文字）</strong>
+      <p style="font-size:13px; margin-top:8px;">Roblox エンジンがこの名前を特別に認識します。大文字が混じると表示されません。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>PlayerAdded に接続する</strong>
+      <p style="font-size:13px; margin-top:8px;">ゲームに新しいプレイヤーが入るたびに自動でリーダーボードを作成します。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>値は player の子孫でないと反映されない</strong>
+      <p style="font-size:13px; margin-top:8px;"><code>leaderstats.Parent = player</code> が必須。Workspace 等の別の場所に置いても表示されません。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>ServerScript で書く（LocalScript は不可）</strong>
+      <p style="font-size:13px; margin-top:8px;">LocalScript はクライアント側なので他のプレイヤーのスコアに影響できません。</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ フォルダ名を "LeaderStats" や "Leaderstats" にしてしまう</div>
+      <div class="mistake-good">✅ 必ず全部小文字 <code>leaderstats</code> で書く</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ Script を StarterPlayerScripts に置いてしまう</div>
+      <div class="mistake-good">✅ リーダーボードのスクリプトは ServerScriptService に置く</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ ゲーム開始時にすでにいるプレイヤーにリーダーボードが作られない</div>
+      <div class="mistake-good">✅ スクリプトの最後に <code>for _, p in Players:GetPlayers() do</code> ループを追加</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ <code>leaderstats.Coins.Value = leaderstats.Coins.Value + 1</code> の書き方で混乱</div>
+      <div class="mistake-good">✅ <code>+= 1</code> の省略形が使えて便利（Lua 5.1 以降）</div>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="advanced">🚀 応用アイデア</h2>
+    <ul>
+      <li><strong>DataStore でセーブ</strong> — サーバー終了後もスコアが保存されるように DataStoreService を使う</li>
+      <li><strong>レベルシステム</strong> — 一定ポイントでレベルアップし、StringValue で称号を変化させる</li>
+      <li><strong>タイムランキング</strong> — NumberValue でタイムを記録し、最速タイムを表示する</li>
+      <li><strong>キルデス比</strong> — Kill と Death の IntValue を両方作り比率で順位を付ける</li>
+    </ul>
+
+    <hr class="divider">
+
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> ServerScriptService に Script を追加した</li>
+      <li><input type="checkbox"> leaderstats フォルダを小文字で作った</li>
+      <li><input type="checkbox"> IntValue などの値を leaderstats の子に追加した</li>
+      <li><input type="checkbox"> テストプレイで画面右上にスコアが表示された</li>
+      <li><input type="checkbox"> スコアを変化させる処理を別のスクリプトから呼べた</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

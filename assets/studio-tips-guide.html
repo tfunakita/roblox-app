@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio裏技テクニック集 | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print { .no-print { display: none !important; } body { background: white; } .container { box-shadow: none; } }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover { background: linear-gradient(135deg, #0d0d1a 0%, #1a1a0d 60%, #2d2d00 100%); color: white; padding: 80px 60px 60px; text-align: center; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,200,0,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,200,0,0.06) 1px, transparent 1px); background-size: 40px 40px; }
+    .cover-badge { background: rgba(147,51,234,0.3); border: 1px solid rgba(147,51,234,0.6); color: #c084fc; font-size: 11px; font-weight: 700; letter-spacing: 2px; padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative; }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #fbbf24; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 20px 0 10px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .tip-box { background: #fffbf0; border: 1px solid #fcd34d; border-radius: 12px; padding: 18px 22px; margin: 12px 0; }
+    .tip-title { font-weight: 700; font-size: 14px; color: #92400e; margin-bottom: 8px; }
+    .shortcut-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+    .shortcut-table th { background: #0f3460; color: white; padding: 10px 14px; text-align: left; }
+    .shortcut-table td { padding: 10px 14px; border-bottom: 1px solid #e8edf2; }
+    .shortcut-table tr:nth-child(even) td { background: #f8faff; }
+    .shortcut-table .key { background: #e8edf2; border-radius: 4px; padding: 2px 8px; font-family: monospace; font-size: 12px; }
+    .point-card { background: linear-gradient(135deg, #fff9e6, #fff3cc); border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box { background: linear-gradient(135deg, #0d0d1a, #16213e); color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px; }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn { display: inline-block; background: #00a2ff; color: white; padding: 14px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; font-size: 14px; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .print-btn { position: fixed; bottom: 24px; right: 24px; background: #00a2ff; color: white; border: none; border-radius: 50px; padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100; }
+    .secret-badge { display: inline-block; background: #7c3aed; color: white; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+  <div class="cover">
+    <div class="cover-badge">🎁 ロブ爺の特典箱（限定）</div>
+    <div class="cover-emoji">🔧</div>
+    <h1>Studio<span>裏技</span><br>テクニック集</h1>
+    <div class="cover-sub">知っている人だけが得をするショートカット・便利機能・見落としがちな設定を一挙公開</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#shortcuts">ショートカットキー完全一覧</a></li>
+        <li><a href="#select">選択・グループ化の裏技</a></li>
+        <li><a href="#model">モデル再利用テクニック</a></li>
+        <li><a href="#test">テストモードの便利機能</a></li>
+        <li><a href="#plugin">知っておくべきプラグイン</a></li>
+        <li><a href="#misc">見落としがちな便利設定</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <h2 id="shortcuts">⌨️ ショートカットキー完全一覧</h2>
+    <p>これを覚えるだけで制作速度が2〜3倍に！</p>
+    <table class="shortcut-table">
+      <tr><th>操作</th><th>ショートカット</th><th>ポイント</th></tr>
+      <tr><td>複製</td><td><span class="key">Ctrl + D</span></td><td>選択中のオブジェクトをその場でコピー</td></tr>
+      <tr><td>元に戻す</td><td><span class="key">Ctrl + Z</span></td><td>何度でも戻せる。失敗を恐れずに作れる</td></tr>
+      <tr><td>やり直し</td><td><span class="key">Ctrl + Y</span></td><td>戻しすぎたときに前進</td></tr>
+      <tr><td>全選択</td><td><span class="key">Ctrl + A</span></td><td>ビューポート内の全オブジェクトを選択</td></tr>
+      <tr><td>グループ化</td><td><span class="key">Ctrl + G</span></td><td>選択中のパーツをModelでまとめる</td></tr>
+      <tr><td>グループ解除</td><td><span class="key">Ctrl + Shift + G</span></td><td>Modelを個別パーツに分解</td></tr>
+      <tr><td>移動ツール</td><td><span class="key">W</span></td><td>一発で移動モードに切り替え</td></tr>
+      <tr><td>回転ツール</td><td><span class="key">E</span></td><td>一発で回転モードに切り替え</td></tr>
+      <tr><td>スケールツール</td><td><span class="key">R</span></td><td>一発でスケールモードに切り替え</td></tr>
+      <tr><td>テストプレイ</td><td><span class="key">F5</span></td><td>素早くテストを開始</td></tr>
+      <tr><td>テスト終了</td><td><span class="key">Shift + F5</span></td><td>テストモードから抜ける</td></tr>
+      <tr><td>カメラリセット</td><td><span class="key">F</span></td><td>選択中のオブジェクトにカメラをフォーカス</td></tr>
+    </table>
+
+    <hr class="divider">
+
+    <h2 id="select">🎯 選択・グループ化の裏技</h2>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技1：ドラッグ選択で一括選択</div>
+      <p>ビューポートでマウスをドラッグするだけで範囲内のオブジェクトを一括選択できる。Explorer で一つずつクリックより圧倒的に速い。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技2：Ctrl クリックで複数選択</div>
+      <p>Ctrl を押しながらクリックすると複数のオブジェクトを個別に選択できる。離れた位置にある複数のパーツを同時に動かすときに便利。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技3：Model の中を直接選択する方法</div>
+      <p>グループ化（Model）されたオブジェクトの内側のパーツだけを選びたいとき：<strong>ダブルクリック</strong>すると Model の中に入って個別パーツを選べる。外に出るときはビューポートの空白をクリック。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技4：Explorer で Shift クリックで範囲選択</div>
+      <p>Explorer パネルで一番上のアイテムをクリックし、Shift を押しながら一番下をクリックすると間のアイテムをすべて選択できる。</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="model">♻️ モデル再利用テクニック</h2>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技5：Toolbox（ツールボックス）を活用する <span class="secret-badge">おすすめ</span></div>
+      <p>View タブ → <strong>Toolbox</strong> を開くと、Roblox コミュニティが公開しているモデルを無料で使える。木・岩・建物など、ゼロから作らなくても良い。検索して気に入ったものをドラッグするだけで追加できる。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技6：自分のモデルを保存する</div>
+      <p>よく使うオブジェクト（コイン・ドアなど）は Toolbox の <strong>My Models</strong> に保存しておくと次のゲームでも使い回せる。保存方法：Explorer でモデルを右クリック → <strong>Save to Roblox</strong>。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技7：Union（合体）と Negate（くり抜き）</div>
+      <p><strong>Union</strong>（Model タブ）：複数のパーツを一体化して複雑な形を作る。<br><strong>Negate</strong>：パーツをくり抜きツールにして Union すると穴あきの形が作れる。窓・ドア・トンネルを作るのに最強。</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="test">🎮 テストモードの便利機能</h2>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技8：複数プレイヤーのテスト</div>
+      <p>Test タブ → <strong>Players の数を2以上に設定</strong> してテストすると、複数プレイヤーが参加した状態をシミュレートできる。マルチプレイヤーゲームの動作確認に必須。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技9：テスト中に Explorer で値をリアルタイム変更</div>
+      <p>テストプレイ中も Explorer・Properties が使える。スコアの値を手動で変えたり、オブジェクトのプロパティを即座に確認・変更できる。デバッグの時間が大幅に短縮できる。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技10：Output ウィンドウでエラーを確認</div>
+      <p>View タブ → <strong>Output</strong>。スクリプトのエラーやprint()の出力がここに表示される。エラーの行番号をクリックすると問題の行に自動でジャンプする。</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="plugin">🔌 知っておくべきプラグイン</h2>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技11：便利なプラグインを入れる</div>
+      <ul style="margin-bottom:0;">
+        <li><strong>GapFill</strong> — パーツとパーツの隙間を自動で埋めてくれる</li>
+        <li><strong>Stravant's RigEdit</strong> — アニメーション・リグ編集を簡単に</li>
+        <li><strong>Model Resize</strong> — グループ化したモデル全体のサイズを一括変更</li>
+        <li><strong>Archimedes Two</strong> — 円形・弧状にパーツを並べる</li>
+      </ul>
+      <p style="margin-top:10px;">プラグインは Toolbox → <strong>Plugins</strong> タブで検索してインストールできる。</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2 id="misc">⚙️ 見落としがちな便利設定</h2>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技12：スナップ（Studs）設定を活用</div>
+      <p>移動・回転のスナップ値を変えることでより細かく or 大きく動かせる。Model タブのスナップ設定で Studs 数を変更。細かい調整は 0.1、大きな配置は 4 など用途によって切り替える。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技13：Surface の設定でくっつき防止</div>
+      <p>パーツ同士が勝手にくっついてしまうのは Surface 設定が原因。全面を <strong>Smooth</strong> にするか、Properties で <strong>Locked</strong> をONにすると意図しない結合を防げる。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技14：Script の自動補完を活用</div>
+      <p>スクリプトエディタで変数名・メソッド名の最初の数文字を打つと候補が表示される（<strong>Ctrl + Space</strong> でも呼び出せる）。正確なスペルを調べる時間が激減する。</p>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 裏技15：バックアップを自動で作る</div>
+      <p>File → <strong>Studio Settings</strong> → <strong>Studio</strong> → <strong>Auto Save</strong> をONにしておく。クラッシュや誤操作で消えてしまったデータを復旧できる。必ず設定しておこう！</p>
+    </div>
+
+    <hr class="divider">
+
+    <h2>⭐ 特に覚えてほしい裏技 TOP 3</h2>
+    <div class="point-card"><span class="star">⭐</span><strong>Ctrl + D で複製が一番使う</strong><p style="font-size:13px; margin-top:8px;">コインやブロックを大量に配置するとき、複製して移動を繰り返すのが最速。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>F キーでカメラフォーカス</strong><p style="font-size:13px; margin-top:8px;">オブジェクトを選んでFを押すだけでそこにカメラが飛ぶ。迷子になったときの救世主。</p></div>
+    <div class="point-card"><span class="star">⭐</span><strong>Output を常に開いておく</strong><p style="font-size:13px; margin-top:8px;">エラーに気づかないまま作業を続けるのが一番の時間のムダ。常にOutputを表示しておく。</p></div>
+
+    <hr class="divider">
+
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> ショートカットキー（W/E/R/F/Ctrl+D）を覚えた</li>
+      <li><input type="checkbox"> Toolbox からコミュニティモデルを試してみた</li>
+      <li><input type="checkbox"> Union と Negate で複雑な形を試してみた</li>
+      <li><input type="checkbox"> Output ウィンドウを常に表示する設定にした</li>
+      <li><input type="checkbox"> Auto Save 設定をONにした</li>
+      <li><input type="checkbox"> 便利なプラグインを1つインストールした</li>
+    </ul>
+
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

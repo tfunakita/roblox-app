@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>コインを集めるゲームの作り方 | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    @media print {
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+      body { background: white; }
+      .container { box-shadow: none; }
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; background: #e8edf2; color: #1a1a2e; line-height: 1.7; }
+    .container { max-width: 794px; margin: 32px auto; background: #fff; box-shadow: 0 4px 32px rgba(0,0,0,0.12); }
+    .cover {
+      background: linear-gradient(135deg, #0d0d1a 0%, #16213e 60%, #0f3460 100%);
+      color: white; padding: 80px 60px 60px; text-align: center;
+      min-height: 400px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; position: relative; overflow: hidden;
+    }
+    .cover::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,162,255,0.08) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,162,255,0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .cover-badge {
+      background: rgba(0,162,255,0.2); border: 1px solid rgba(0,162,255,0.5);
+      color: #00a2ff; font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      padding: 6px 16px; border-radius: 20px; margin-bottom: 24px; position: relative;
+    }
+    .cover-emoji { font-size: 72px; margin-bottom: 20px; position: relative; }
+    .cover h1 { font-size: 28px; font-weight: 900; line-height: 1.4; margin-bottom: 16px; position: relative; }
+    .cover h1 span { color: #00a2ff; }
+    .cover-sub { color: rgba(255,255,255,0.6); font-size: 13px; position: relative; }
+    .cover-channel { margin-top: 32px; font-size: 12px; color: rgba(255,255,255,0.4); position: relative; }
+    .body-content { padding: 48px 60px; }
+    h2 { font-size: 20px; font-weight: 900; color: #0f3460; border-left: 4px solid #00a2ff; padding-left: 14px; margin: 40px 0 16px; }
+    h3 { font-size: 16px; font-weight: 700; color: #1a1a2e; margin: 24px 0 10px; }
+    p { margin-bottom: 12px; font-size: 14px; }
+    ul, ol { padding-left: 20px; margin-bottom: 16px; }
+    li { font-size: 14px; margin-bottom: 6px; }
+    .toc { background: #f0f4f8; border-radius: 12px; padding: 24px 32px; margin-bottom: 32px; }
+    .toc h2 { margin-top: 0; }
+    .toc ol { margin-bottom: 0; }
+    .toc a { color: #0f3460; text-decoration: none; font-size: 14px; }
+    .toc a:hover { color: #00a2ff; }
+    .step-box {
+      background: #f8faff; border: 1px solid #d0e4ff; border-radius: 12px;
+      padding: 20px 24px; margin: 16px 0;
+    }
+    .step-number {
+      display: inline-block; background: #00a2ff; color: white;
+      font-weight: 900; font-size: 12px; border-radius: 50%;
+      width: 28px; height: 28px; line-height: 28px; text-align: center;
+      margin-right: 10px; vertical-align: middle;
+    }
+    .step-title { font-weight: 700; font-size: 15px; color: #0f3460; vertical-align: middle; }
+    .step-detail { margin-top: 12px; font-size: 13px; color: #444; }
+    .step-detail ul { margin-bottom: 0; }
+    .code-block {
+      background: #1a1a2e; color: #e0e0e0; border-radius: 10px;
+      padding: 20px 24px; font-family: 'Courier New', monospace;
+      font-size: 12px; line-height: 1.8; overflow-x: auto; margin: 16px 0;
+    }
+    .code-block .comment { color: #6a9955; }
+    .code-block .keyword { color: #569cd6; }
+    .code-block .string { color: #ce9178; }
+    .code-block .func { color: #dcdcaa; }
+    .point-card {
+      background: linear-gradient(135deg, #fff9e6, #fff3cc);
+      border: 1px solid #ffd700; border-radius: 12px; padding: 16px 20px; margin: 12px 0;
+    }
+    .point-card .star { color: #ffd700; font-size: 18px; margin-right: 8px; }
+    .mistake-box { background: #fff5f5; border: 1px solid #ffcccc; border-radius: 12px; padding: 16px 20px; margin: 12px 0; }
+    .mistake-bad { color: #e53e3e; font-size: 13px; margin-bottom: 6px; }
+    .mistake-good { color: #38a169; font-size: 13px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+    .checklist input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; accent-color: #00a2ff; flex-shrink: 0; }
+    .cta-box {
+      background: linear-gradient(135deg, #0d0d1a, #16213e);
+      color: white; border-radius: 16px; padding: 40px; text-align: center; margin-top: 48px;
+    }
+    .cta-box h3 { color: #00a2ff; font-size: 18px; margin-bottom: 12px; }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 24px; }
+    .cta-btn {
+      display: inline-block; background: #00a2ff; color: white;
+      padding: 14px 32px; border-radius: 50px; font-weight: 700;
+      text-decoration: none; font-size: 14px; transition: opacity 0.2s;
+    }
+    .cta-btn:hover { opacity: 0.85; }
+    .divider { border: none; border-top: 2px solid #e8edf2; margin: 32px 0; }
+    .info-tag {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px; margin-right: 6px; margin-bottom: 4px;
+    }
+    .tag-blue { background: #e0f0ff; color: #0070cc; }
+    .tag-green { background: #e0f8ef; color: #00875a; }
+    .tag-orange { background: #fff0e0; color: #cc7700; }
+    .print-btn {
+      position: fixed; bottom: 24px; right: 24px;
+      background: #00a2ff; color: white; border: none; border-radius: 50px;
+      padding: 12px 24px; font-weight: 700; cursor: pointer; font-size: 14px;
+      box-shadow: 0 4px 16px rgba(0,162,255,0.4); z-index: 100;
+    }
+  </style>
+</head>
+<body>
+<button class="print-btn no-print" onclick="window.print()">🖨️ 印刷・PDF保存</button>
+<div class="container">
+
+  <!-- 表紙 -->
+  <div class="cover">
+    <div class="cover-badge">📚 学習モジュール</div>
+    <div class="cover-emoji">🪙</div>
+    <h1><span>コインを集める</span>ゲームの<br>作り方ガイド</h1>
+    <div class="cover-sub">タッチで消えるコイン・スコア管理・復活システムを完全解説</div>
+    <div class="cover-channel">ロブ爺のRoblox Studio講座 ／ 2026</div>
+  </div>
+
+  <div class="body-content">
+
+    <!-- 目次 -->
+    <div class="toc">
+      <h2 style="margin-top:0">📋 目次</h2>
+      <ol>
+        <li><a href="#learn">このガイドで学べること</a></li>
+        <li><a href="#overview">全体の流れ</a></li>
+        <li><a href="#steps">実践ステップ（全5ステップ）</a></li>
+        <li><a href="#points">重要ポイント</a></li>
+        <li><a href="#mistakes">つまずきやすい点</a></li>
+        <li><a href="#advanced">応用アイデア</a></li>
+        <li><a href="#checklist">チェックリスト</a></li>
+      </ol>
+    </div>
+
+    <!-- 学べること -->
+    <h2 id="learn">🎯 このガイドで学べること</h2>
+    <ul>
+      <li>タッチしたら消えるコインオブジェクトの作り方</li>
+      <li><strong>Touched イベント</strong>を使ったプレイヤー検知</li>
+      <li>デバウンス処理で二重カウントを防ぐ方法</li>
+      <li>リーダーボードにスコアを反映させる仕組み</li>
+      <li>コインが一定時間後に復活するシステム</li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- 全体の流れ -->
+    <h2 id="overview">🗺️ 全体の流れ</h2>
+    <p>コインゲームは以下の4つの要素で構成されています：</p>
+    <div class="step-box" style="background:#f0f8ff">
+      <p style="font-size:14px; text-align:center; color:#0f3460;">
+        <strong>① コインオブジェクト作成</strong>
+        &nbsp;→&nbsp; <strong>② Touched イベント設定</strong>
+        &nbsp;→&nbsp; <strong>③ スコア加算</strong>
+        &nbsp;→&nbsp; <strong>④ 一定時間後に復活</strong>
+      </p>
+    </div>
+    <p>これらをひとつの Script にまとめてコインに貼り付けるのが基本パターンです。</p>
+
+    <hr class="divider">
+
+    <!-- 実践ステップ -->
+    <h2 id="steps">🛠️ 実践ステップ</h2>
+
+    <div class="step-box">
+      <span class="step-number">1</span>
+      <span class="step-title">コインパーツを作る</span>
+      <div class="step-detail">
+        <p>Roblox Studio の Workspace に Part を追加し、コインらしく加工します。</p>
+        <ul>
+          <li>Shape を <strong>Cylinder</strong> に変更（Propertiesウィンドウ）</li>
+          <li>Size を <code>0.2, 1, 1</code> くらいに縮小</li>
+          <li>BrickColor を <strong>Bright yellow</strong> に設定</li>
+          <li>Anchored を <strong>ON</strong>（固定しないと重力で落ちる！）</li>
+          <li>名前を <code>Coin</code> に変更</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">2</span>
+      <span class="step-title">leaderstats を作る（スコア保存の準備）</span>
+      <div class="step-detail">
+        <p>ServerScriptService に Script を追加し、以下を貼り付けます。</p>
+        <div class="code-block">
+<span class="comment">-- ServerScriptService → Script</span>
+<span class="keyword">local</span> Players = game:GetService(<span class="string">"Players"</span>)
+
+Players.PlayerAdded:<span class="func">Connect</span>(<span class="keyword">function</span>(player)
+  <span class="keyword">local</span> leaderstats = Instance.<span class="func">new</span>(<span class="string">"Folder"</span>)
+  leaderstats.Name = <span class="string">"leaderstats"</span>
+  leaderstats.Parent = player
+
+  <span class="keyword">local</span> coins = Instance.<span class="func">new</span>(<span class="string">"IntValue"</span>)
+  coins.Name = <span class="string">"Coins"</span>
+  coins.Value = <span class="string">0</span>
+  coins.Parent = leaderstats
+<span class="keyword">end</span>)
+        </div>
+        <ul>
+          <li><strong>フォルダ名は必ず <code>leaderstats</code></strong>（大文字小文字も正確に！）</li>
+          <li>これでゲーム画面右上にコイン数が自動表示されます</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">3</span>
+      <span class="step-title">コインに Script を貼り付ける</span>
+      <div class="step-detail">
+        <p>Coin パーツの中に Script を挿入（右クリック → Insert Object → Script）</p>
+        <div class="code-block">
+<span class="comment">-- Coin パーツの中の Script</span>
+<span class="keyword">local</span> coin = script.Parent
+<span class="keyword">local</span> debounce = <span class="keyword">false</span>  <span class="comment">-- 二重カウント防止フラグ</span>
+
+coin.Touched:<span class="func">Connect</span>(<span class="keyword">function</span>(hit)
+  <span class="keyword">if</span> debounce <span class="keyword">then return end</span>
+
+  <span class="keyword">local</span> character = hit.Parent
+  <span class="keyword">local</span> humanoid = character:<span class="func">FindFirstChildOfClass</span>(<span class="string">"Humanoid"</span>)
+
+  <span class="keyword">if</span> humanoid <span class="keyword">then</span>
+    debounce = <span class="keyword">true</span>
+    coin.Transparency = <span class="string">1</span>  <span class="comment">-- コインを非表示に</span>
+    coin.CanCollide = <span class="keyword">false</span>
+
+    <span class="comment">-- スコアを加算</span>
+    <span class="keyword">local</span> player = game.Players:<span class="func">GetPlayerFromCharacter</span>(character)
+    <span class="keyword">if</span> player <span class="keyword">then</span>
+      <span class="keyword">local</span> leaderstats = player:<span class="func">FindFirstChild</span>(<span class="string">"leaderstats"</span>)
+      <span class="keyword">if</span> leaderstats <span class="keyword">then</span>
+        leaderstats.Coins.Value += <span class="string">1</span>
+      <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    task.<span class="func">wait</span>(<span class="string">3</span>)  <span class="comment">-- 3秒後に復活</span>
+    coin.Transparency = <span class="string">0</span>
+    coin.CanCollide = <span class="keyword">true</span>
+    debounce = <span class="keyword">false</span>
+  <span class="keyword">end</span>
+<span class="keyword">end</span>)
+        </div>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">4</span>
+      <span class="step-title">コインをマップに複数配置する</span>
+      <div class="step-detail">
+        <ul>
+          <li>Coin を右クリック → <strong>Duplicate</strong>（Ctrl+D）でコピー</li>
+          <li>複数のコインを好きな場所に配置</li>
+          <li>コインごとに Script が入るので、それぞれ独立して動作します</li>
+          <li>見た目をよくしたいときは <strong>SpecialMesh</strong> で形を変えるのもOK</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <span class="step-number">5</span>
+      <span class="step-title">テストプレイで動作確認</span>
+      <div class="step-detail">
+        <ul>
+          <li>Studio 上部の <strong>Play ボタン</strong>（▶）を押してテスト</li>
+          <li>キャラクターをコインに近づける</li>
+          <li>コインが消えて、画面右上のスコアが増えれば成功！</li>
+          <li>3秒後にコインが復活するか確認</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 重要ポイント -->
+    <h2 id="points">⭐ 重要ポイント</h2>
+
+    <div class="point-card">
+      <span class="star">⭐</span><strong>debounce（デバウンス）は必須！</strong>
+      <p style="font-size:13px; margin-top:8px;">Touched イベントは1回の接触で何十回も発火します。debounce フラグを使わないとコインが1枚で何十枚分もカウントされてしまいます。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>Anchored を必ず ON に</strong>
+      <p style="font-size:13px; margin-top:8px;">コインは空中に浮いていることが多いです。Anchored をOFFにすると重力で地面に落ちてしまいます。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>script.Parent でコイン自身を参照</strong>
+      <p style="font-size:13px; margin-top:8px;"><code>script.Parent</code> はスクリプトが入っているオブジェクト（コイン）を指します。コピーしても自動的に正しいコインを参照します。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>CanCollide も一緒に切る</strong>
+      <p style="font-size:13px; margin-top:8px;">Transparency を1にしても当たり判定が残ります。<code>CanCollide = false</code> にすることで見えない壁が残るバグを防げます。</p>
+    </div>
+    <div class="point-card">
+      <span class="star">⭐</span><strong>Server Script を使うこと</strong>
+      <p style="font-size:13px; margin-top:8px;">スコア管理はサーバー側（Script）で行います。LocalScript で書くとスコアが自分にしか見えなくなります。</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- つまずきやすい点 -->
+    <h2 id="mistakes">❌ 初心者がつまずきやすい点</h2>
+
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ leaderstats の名前を間違える（LeaderStats、Leaderstats など）</div>
+      <div class="mistake-good">✅ 必ず小文字で <code>leaderstats</code> と書く（Roblox の仕様）</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ Script を Workspace 直下に置いて coin を名前で探す</div>
+      <div class="mistake-good">✅ Script はコインの中に入れて <code>script.Parent</code> で参照する</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ debounce なしで書いてスコアが爆発的に増える</div>
+      <div class="mistake-good">✅ <code>local debounce = false</code> を先頭に書いて必ず使う</div>
+    </div>
+    <div class="mistake-box">
+      <div class="mistake-bad">❌ LocalScript でスコアを変えて自分だけ反映される</div>
+      <div class="mistake-good">✅ スコア変更は必ずサーバー Script（Script）で行う</div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 応用アイデア -->
+    <h2 id="advanced">🚀 応用アイデア</h2>
+    <ul>
+      <li><strong>コインに価値を付ける</strong> — 金・銀・銅のコインを作り、それぞれ加算値を変える（金 = 10点、銀 = 5点、銅 = 1点）</li>
+      <li><strong>タイマーを追加する</strong> — 制限時間内に何枚集められるか競うゲームにする</li>
+      <li><strong>効果音を付ける</strong> — Sound オブジェクトをコインに追加して取得時に鳴らす</li>
+      <li><strong>コインが動く</strong> — TweenService でコインを回転・上下に動かして見栄えをよくする</li>
+      <li><strong>DataStore でセーブ</strong> — サーバー閉鎖後もスコアが残るように DataStoreService を使う</li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- チェックリスト -->
+    <h2 id="checklist">✅ チェックリスト</h2>
+    <ul class="checklist">
+      <li><input type="checkbox"> Coin パーツを作り、Anchored をONにした</li>
+      <li><input type="checkbox"> leaderstats フォルダを ServerScriptService の Script に作った</li>
+      <li><input type="checkbox"> コインの中に Script を挿入した</li>
+      <li><input type="checkbox"> debounce フラグを使っている</li>
+      <li><input type="checkbox"> Transparency と CanCollide を両方切っている</li>
+      <li><input type="checkbox"> テストプレイでコインが消えてスコアが増えることを確認した</li>
+      <li><input type="checkbox"> 3秒後にコインが復活することを確認した</li>
+      <li><input type="checkbox"> コインを複数配置してすべて動くか確認した</li>
+    </ul>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h3>🎮 もっとRobloxを学ぼう！</h3>
+      <p>ロブ爺のRoblox Studio講座では、初心者でも楽しく作れるゲーム制作を毎週配信中！</p>
+      <a class="cta-btn" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeチャンネルを見る</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

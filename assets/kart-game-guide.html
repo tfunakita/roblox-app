@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ロブロックス設計メソッドガイド | ロブ爺のRoblox Studio講座</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    @media print {
+      .no-print { display: none; }
+      .page-break { page-break-before: always; }
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: #0d0d1a;
+      color: #1a1a2e;
+      padding: 24px 16px;
+    }
+    .container {
+      max-width: 794px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,162,255,0.15);
+    }
+
+    /* 表紙 */
+    .cover {
+      background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 60%, #0a2a4a 100%);
+      color: #fff;
+      padding: 64px 48px 56px;
+      text-align: center;
+      border-bottom: 4px solid #00a2ff;
+    }
+    .cover .logo { font-size: 56px; margin-bottom: 16px; }
+    .cover .channel-name {
+      font-size: 13px;
+      color: #00a2ff;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .cover h1 {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.3;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 16px rgba(0,162,255,0.4);
+    }
+    .cover h1 span { color: #00a2ff; }
+    .cover .subtitle {
+      font-size: 15px;
+      color: #a0b8d0;
+      margin-bottom: 32px;
+    }
+    .cover .badge {
+      display: inline-block;
+      background: #00a2ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 6px 20px;
+      border-radius: 20px;
+      margin-bottom: 24px;
+    }
+    .cover .date { font-size: 12px; color: #5a7a9a; margin-top: 16px; }
+
+    /* 目次 */
+    .toc {
+      background: #f0f6ff;
+      padding: 40px 48px;
+      border-bottom: 2px solid #dde8f5;
+    }
+    .toc h2 { font-size: 18px; font-weight: 900; color: #0d0d1a; margin-bottom: 20px; }
+    .toc h2 span { color: #00a2ff; }
+    .toc ul { list-style: none; }
+    .toc ul li {
+      padding: 6px 0;
+      border-bottom: 1px dashed #c0d4ec;
+      font-size: 14px;
+    }
+    .toc ul li:last-child { border-bottom: none; }
+    .toc ul li a { color: #1a3a6a; text-decoration: none; }
+    .toc ul li a:hover { color: #00a2ff; }
+    .toc ul li .num {
+      display: inline-block;
+      background: #00a2ff;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      width: 22px;
+      height: 22px;
+      line-height: 22px;
+      border-radius: 50%;
+      text-align: center;
+      margin-right: 10px;
+    }
+
+    /* 本文 */
+    .content { padding: 40px 48px; }
+    .section { margin-bottom: 48px; }
+    .section-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0d0d1a;
+      padding-bottom: 10px;
+      border-bottom: 3px solid #00a2ff;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title .icon { font-size: 24px; }
+
+    /* 学べること */
+    .learn-list {
+      background: #f0f6ff;
+      border-radius: 10px;
+      padding: 20px 24px;
+    }
+    .learn-list li {
+      padding: 8px 0;
+      padding-left: 28px;
+      position: relative;
+      font-size: 14px;
+      border-bottom: 1px solid #dde8f5;
+    }
+    .learn-list li:last-child { border-bottom: none; }
+    .learn-list li::before {
+      content: '✅';
+      position: absolute;
+      left: 0;
+    }
+
+    /* 全体像フロー */
+    .flow-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .flow-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: #f8f9ff;
+      border-radius: 8px;
+      padding: 14px 18px;
+      border-left: 4px solid #00a2ff;
+    }
+    .flow-num {
+      background: #00a2ff;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-content { font-size: 13px; line-height: 1.6; }
+    .flow-content strong { color: #00a2ff; font-weight: 700; }
+
+    /* 実践ステップ */
+    .step-card {
+      background: #fff;
+      border: 2px solid #dde8f5;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .step-header {
+      background: linear-gradient(90deg, #0d0d1a, #1a2a4a);
+      color: #fff;
+      padding: 12px 20px;
+      font-weight: 700;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .step-header .step-num {
+      background: #00a2ff;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 2px 10px;
+      border-radius: 12px;
+    }
+    .step-body { padding: 16px 20px; font-size: 13px; line-height: 1.8; }
+    .step-body .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 4px;
+    }
+    .label-do { background: #e0f4ff; color: #0070b8; }
+    .label-warn { background: #fff3e0; color: #b85c00; }
+    .label-check { background: #e8f5e9; color: #1b7e2b; }
+    .step-body p { margin-bottom: 10px; }
+    .step-body ul { padding-left: 20px; margin-bottom: 10px; }
+    .step-body ul li { margin-bottom: 4px; }
+
+    /* テーブル */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin: 12px 0;
+    }
+    .data-table th {
+      background: #0d0d1a;
+      color: #00a2ff;
+      padding: 10px 14px;
+      text-align: left;
+      font-weight: 700;
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #eee;
+    }
+    .data-table tr:nth-child(even) td { background: #f8f9ff; }
+
+    /* コードブロック */
+    .code-block {
+      background: #1a1a2e;
+      color: #7dd3fc;
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      margin: 10px 0;
+      overflow-x: auto;
+    }
+    .code-block .comment { color: #6b7280; }
+    .code-block .key { color: #a78bfa; }
+
+    /* 重要ポイント */
+    .point-list { list-style: none; }
+    .point-list li {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    /* つまずきポイント */
+    .trouble-item {
+      background: #f8f9ff;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .trouble-ng { color: #d32f2f; font-weight: 700; margin-bottom: 4px; }
+    .trouble-ok { color: #1b7e2b; font-weight: 700; }
+    .arrow { color: #00a2ff; font-size: 16px; margin: 4px 0; }
+
+    /* チェックリスト */
+    .checklist-group { margin-bottom: 20px; }
+    .checklist-group h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0d0d1a;
+      margin-bottom: 10px;
+      background: #f0f6ff;
+      padding: 6px 12px;
+      border-radius: 4px;
+    }
+    .checklist-group label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 4px;
+      font-size: 13px;
+      border-bottom: 1px dashed #e0e8f5;
+      cursor: pointer;
+    }
+    .checklist-group label:last-child { border-bottom: none; }
+    .checklist-group input[type="checkbox"] { width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+
+    /* 応用アイデア */
+    .idea-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .idea-card {
+      background: linear-gradient(135deg, #0d0d1a, #1a2a4a);
+      color: #fff;
+      border-radius: 10px;
+      padding: 20px 18px;
+      font-size: 13px;
+    }
+    .idea-card .idea-emoji { font-size: 28px; margin-bottom: 10px; }
+    .idea-card .idea-title { font-weight: 700; margin-bottom: 6px; color: #00a2ff; }
+
+    /* 次のアクション */
+    .action-list { list-style: none; }
+    .action-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 14px;
+    }
+    .action-list li:last-child { border-bottom: none; }
+    .action-num {
+      background: #00a2ff;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #0d0d1a 0%, #1a1a3e 100%);
+      color: #fff;
+      padding: 48px 48px;
+      text-align: center;
+    }
+    .cta-section h2 { font-size: 22px; font-weight: 900; margin-bottom: 12px; }
+    .cta-section h2 span { color: #00a2ff; }
+    .cta-section p { font-size: 14px; color: #a0b8d0; margin-bottom: 28px; line-height: 1.7; }
+    .cta-btn {
+      display: inline-block;
+      background: #06c755;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-bottom: 20px;
+    }
+    .cta-btn:hover { opacity: 0.9; }
+    .cta-yt {
+      display: inline-block;
+      background: #ff0000;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-left: 12px;
+    }
+    .footer {
+      background: #0a0a14;
+      color: #5a7a9a;
+      font-size: 11px;
+      text-align: center;
+      padding: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- 表紙 -->
+    <div class="cover">
+      <div class="logo">🏎️</div>
+      <div class="channel-name">ロブ爺のRoblox Studio講座</div>
+      <h1>ロブロックス<br><span>設計メソッドガイド</span></h1>
+      <div class="subtitle">マリオカート風カートゲーム 完全制作マニュアル</div>
+      <div class="badge">🎁 無料特典ガイド</div>
+      <div class="date">2026年6月 発行</div>
+    </div>
+
+    <!-- 目次 -->
+    <div class="toc">
+      <h2>📋 <span>目次</span></h2>
+      <ul>
+        <li><span class="num">1</span><a href="#learn">このガイドで学べること</a></li>
+        <li><span class="num">2</span><a href="#overview">動画内容の全体像</a></li>
+        <li><span class="num">3</span><a href="#steps">実践ステップ（全7ステップ）</a></li>
+        <li><span class="num">4</span><a href="#points">重要ポイント</a></li>
+        <li><span class="num">5</span><a href="#trouble">初心者がつまずきやすい点</a></li>
+        <li><span class="num">6</span><a href="#ideas">応用アイデア</a></li>
+        <li><span class="num">7</span><a href="#checklist">実践チェックリスト</a></li>
+        <li><span class="num">8</span><a href="#next">次にやること</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+
+      <!-- 学べること -->
+      <div class="section" id="learn">
+        <div class="section-title"><span class="icon">🎯</span>このガイドで学べること</div>
+        <ul class="learn-list">
+          <li>ChatGPTとBlenderでオリジナルカートモデルを作る方法</li>
+          <li>Roblox Studioでカートゲームを動かす3つのアプローチの違い</li>
+          <li>スクリプトのみでマリオカートらしい挙動を実現するシステム設計</li>
+          <li>スピードブースト矢印・アイテムボックスなどのギミック実装</li>
+          <li>ゴーストシステムとラップタイム計測の組み込み方</li>
+        </ul>
+      </div>
+
+      <!-- 全体像 -->
+      <div class="section" id="overview">
+        <div class="section-title"><span class="icon">🗺️</span>動画内容の全体像</div>
+        <div class="flow-grid">
+          <div class="flow-item">
+            <div class="flow-num">1</div>
+            <div class="flow-content"><strong>カートモデル制作</strong><br>ChatGPTで画像生成 → Blenderでローポリモデリング → テクスチャ512で仕上げ</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">2</div>
+            <div class="flow-content"><strong>タイヤの取り付け</strong><br>Studioでシリンダーパーツ追加 → WeldConstraintで固定 → 前後4輪をモデル化</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">3</div>
+            <div class="flow-content"><strong>コース制作（Blender）</strong><br>パスでコースライン → パイプ化（モディファイヤー） → メッシュ変換 → Studioにインポート</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">4</div>
+            <div class="flow-content"><strong>カートの走行方式を選ぶ</strong><br>① VehicleSeat方式 ② シャーシー方式 ③ スクリプトのみ方式（今回採用）</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">5</div>
+            <div class="flow-content"><strong>ゲームシステム3本柱</strong><br>走行スクリプト（Seat）/ コースアウト復帰（ServerScript）/ カメラ固定（LocalScript）</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">6</div>
+            <div class="flow-content"><strong>ギミック追加</strong><br>スピードブースト矢印 / アイテムボックス6個 / バナナ・甲羅・キノコの各アイテム効果</div>
+          </div>
+          <div class="flow-item">
+            <div class="flow-num">7</div>
+            <div class="flow-content"><strong>完成・ゴーストシステム</strong><br>ラップタイム計測 / 前ラップのゴーストカーが追いかけてくる / セーブデータで記録保持</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 実践ステップ -->
+      <div class="section" id="steps">
+        <div class="section-title"><span class="icon">🔧</span>実践ステップ</div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 1</span>カートモデルの準備（ChatGPT + Blender）</div>
+          <div class="step-body">
+            <p><span class="label label-do">やること</span><br>
+            ChatGPTに「Roblox用マリオカート風カートの画像を生成して」と依頼 → 画像をBlenderに読み込んでローポリモデルを作成。</p>
+            <p><span class="label label-warn">注意点</span><br>
+            メッシュはなるべくローポリに仕上げること。テクスチャは512サイズが適切（1024より小さい方がデータ量を抑えられる）。タイヤはBlenderで作らずStudioで追加する。</p>
+            <p><span class="label label-check">確認ポイント</span><br>
+            カクカクした形を作るときは、角を潰しておくと見た目が良くなる。スムーズシェーディングより平坦な面の方がRobloxらしいデザインに仕上がる。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 2</span>Roblox StudioへのインポートとタイヤのWeld固定</div>
+          <div class="step-body">
+            <p><span class="label label-do">やること</span><br>
+            カート本体をインポート → 名前を「カート」に変更 → シリンダーパーツでタイヤを作り、スケールを1.5に調整。</p>
+            <p><span class="label label-warn">素材設定</span></p>
+            <ul>
+              <li>タイヤ外側：素材「ラバー」、色「ブラック」</li>
+              <li>タイヤ内側：複製してサイズ0.8×0.5に縮小、素材「メタル」、色「グレー」</li>
+            </ul>
+            <p><span class="label label-check">WeldConstraintの設定</span><br>
+            Wキーを押して「WeldConstraint」を選択 → プロパティで「パーツ0」にカート本体、「パーツ1」にタイヤを設定。前後のタイヤも同様に固定し、まとめてモデル化する（右クリック → モデル）。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 3</span>コースの制作（Blender）</div>
+          <div class="step-body">
+            <p><span class="label label-do">やること</span><br>
+            参照画像をBlenderに読み込み（Shift+A → 画像 → 参照）、カーブ（Shift+A → カーブ → パス）でコースラインを描く。</p>
+            <p><span class="label label-warn">コースのパイプ化手順</span></p>
+            <ul>
+              <li>スタートとゴールの2点を選択して Ctrl+C で接続（ループにする）</li>
+              <li>モディファイヤー → カーブ → 解像度を「3」に変更して断面を丸くする</li>
+              <li>右クリック → 変換 → メッシュ に変換</li>
+            </ul>
+            <p><span class="label label-check">道路の仕上げ</span><br>
+            編集モードで下半分の頂点を削除（X軸基準）→ S+Enter で平坦化 → 3番（面選択）で上面を選択 → Eキーで押し出して厚みをつけ、道路の縁を作る。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 4</span>カートの走行システム（スクリプト方式）</div>
+          <div class="step-body">
+            <p><span class="label label-do">採用方式：スクリプトのみ（最もマリオカートらしい挙動）</span></p>
+
+            <p><strong>① Seatスクリプト（走行制御）</strong></p>
+            <div class="code-block">
+<span class="comment">-- 主要な設定値</span>
+<span class="key">speed</span> = 80          <span class="comment">-- 最高速度（変更でスピード調整）</span>
+<span class="key">steering</span> = 30       <span class="comment">-- ハンドリングの強さ</span>
+<span class="comment">-- AとDキーでハンドリング、RunServiceで滑らか動作</span>
+            </div>
+
+            <p><strong>② ServerScript（コースアウト復帰）</strong></p>
+            <div class="code-block">
+<span class="comment">-- コースから外れても2秒間は走れる</span>
+<span class="comment">-- 2秒後に「1秒前の位置」へ自動テレポート</span>
+<span class="comment">-- マリオカートのヘリコプター復帰と同じ動作</span>
+            </div>
+
+            <p><strong>③ LocalScript（カメラ固定）</strong></p>
+            <div class="code-block">
+<span class="key">X</span> = 0    <span class="comment">-- 左右は固定</span>
+<span class="key">Y</span> = 8    <span class="comment">-- 地面から8上</span>
+<span class="key">Z</span> = -12  <span class="comment">-- カートの12後ろから追従</span>
+            </div>
+            <p><span class="label label-check">確認ポイント</span><br>カメラがぐるぐる回らないことを確認。後方固定にすることでハンドリング時の視認性が向上する。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 5</span>スピードブースト矢印の追加</div>
+          <div class="step-body">
+            <p><span class="label label-do">やること</span></p>
+            <ul>
+              <li>テンプレートパーツに矢印テクスチャを貼り付ける</li>
+              <li>Transparency（透明度）を1に設定（ゲーム開始前は非表示、スタートで浮き出る）</li>
+              <li>10×10の透明ブロックをコースに配置（当たり判定用）</li>
+            </ul>
+            <p><span class="label label-warn">当たり判定ブロックの設定</span></p>
+            <ul>
+              <li>Transparency = 1（透明）</li>
+              <li>CanCollide = OFF</li>
+              <li>CanTouch = ON（これを残すこと）</li>
+              <li>Anchored = ON（落下防止）</li>
+            </ul>
+            <p><span class="label label-check">スクリプトのポイント</span><br>
+            スピード属性（Attribute）を別管理にすること。メインのスピード値と分けておくと、ブーストの数値を個別に調整できる。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 6</span>アイテムボックスの設定</div>
+          <div class="step-body">
+            <p>アイテムボックスを6個設置。各ボックスに1つずつスクリプトを付ける（同じスクリプトを全ボックスにコピー）。</p>
+
+            <table class="data-table">
+              <tr>
+                <th>アイテム</th>
+                <th>使い方</th>
+                <th>効果</th>
+                <th>持続</th>
+              </tr>
+              <tr>
+                <td>🍌 バナナ</td>
+                <td>Eボタンで設置</td>
+                <td>当たるとカートが3.5回転スピン、その後停止</td>
+                <td>当たるまで残る</td>
+              </tr>
+              <tr>
+                <td>🐢 甲羅（コーラ）</td>
+                <td>Eボタンで投げる</td>
+                <td>当たると1.5秒後に消滅＋スピン。当たらなくても2秒で消える</td>
+                <td>最大2秒</td>
+              </tr>
+              <tr>
+                <td>🍄 キノコ</td>
+                <td>Eボタンで使用</td>
+                <td>通常80 → 160まで即時加速</td>
+                <td>1.5秒</td>
+              </tr>
+            </table>
+
+            <p><span class="label label-check">確認ポイント</span><br>
+            1列に2個並べると「1個取ったら残りはすり抜ける」仕様が自然に実現できる。消えたボックスは3秒後に自動復活する。</p>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header"><span class="step-num">STEP 7</span>ゴーストシステムとラップタイム</div>
+          <div class="step-body">
+            <p><span class="label label-do">スタート台・ゴールラインの設定</span></p>
+            <ul>
+              <li>Transparency = 0.5（半透明）でカートに被さるように配置</li>
+              <li>CanCollide = OFF（すり抜け可能）</li>
+              <li>Anchored = ON（必須！ONにしないと沈む）</li>
+            </ul>
+            <p><span class="label label-do">ゴーストシステムの仕組み</span><br>
+            1周目のラップデータをセーブ → 2周目スタート時にゴーストカーが現れて追いかけてくる → セーブデータが残るので何度プレイしてもゴーストが出現する。</p>
+            <p><span class="label label-check">ラップ数の変更</span><br>
+            スクリプト内の数値を変えるだけ。5にすれば5周、3にすれば3周のレースに変更できる。音は3種類（アイドリング・走行・ドリフト）をそれぞれ設定すること。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 重要ポイント -->
+      <div class="section" id="points">
+        <div class="section-title"><span class="icon">⭐</span>重要ポイント</div>
+        <ul class="point-list">
+          <li>⭐ スクリプトのみで動かす方式が最もマリオカートらしい挙動になる（シャーシー方式は操作が複雑でNG）</li>
+          <li>⭐ WeldConstraintは「パーツ0 = カート本体、パーツ1 = タイヤ」の順番が重要</li>
+          <li>⭐ コースアウト検知は「2秒グレース → 1秒前の位置に戻す」が自然な復帰に見えるポイント</li>
+          <li>⭐ スピードを上げるときは走行スクリプトの数値（speed/steeringの両方）を合わせて変更する</li>
+          <li>⭐ アイテムボックスを1列2個並べると「1つしか取れない」ルールが自動的に実現できる</li>
+        </ul>
+      </div>
+
+      <!-- つまずきポイント -->
+      <div class="section" id="trouble">
+        <div class="section-title"><span class="icon">🚧</span>初心者がつまずきやすい点</div>
+
+        <div class="trouble-item">
+          <div class="trouble-ng">❌ タイヤをWeldConstraintでつなぐ順番が逆になっている</div>
+          <div class="arrow">↓</div>
+          <div class="trouble-ok">✅ パーツ0にカート本体、パーツ1にタイヤを設定する（逆にすると挙動がおかしくなる）</div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-ng">❌ コースアウトしてもそのまま外を走り続けてしまう</div>
+          <div class="arrow">↓</div>
+          <div class="trouble-ok">✅ ServerScriptで1秒ごとに位置を記録して、2秒後に記録した位置へテレポートする処理を追加する</div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-ng">❌ カメラがぐるぐる回って操作しにくい</div>
+          <div class="arrow">↓</div>
+          <div class="trouble-ok">✅ LocalScriptでカメラをカートの後方固定（高さ8、後方12）に設定する</div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-ng">❌ スピードを上げすぎてカートが制御不能になる</div>
+          <div class="arrow">↓</div>
+          <div class="trouble-ok">✅ 走行スクリプトのspeed値（80→120）とブースト値（200）をセットで調整する</div>
+        </div>
+        <div class="trouble-item">
+          <div class="trouble-ng">❌ アイテムボックスが1個通ったときに隣のアイテムも取れてしまう</div>
+          <div class="arrow">↓</div>
+          <div class="trouble-ok">✅ 1列に2個並べる。スクリプトで「1つ取ったら残りはすり抜ける」処理を入れる</div>
+        </div>
+      </div>
+
+      <!-- 応用アイデア -->
+      <div class="section" id="ideas">
+        <div class="section-title"><span class="icon">🚀</span>応用アイデア</div>
+        <div class="idea-grid">
+          <div class="idea-card">
+            <div class="idea-emoji">👥</div>
+            <div class="idea-title">マルチプレイヤー対戦</div>
+            ServerScriptで複数プレイヤーの位置を共有し、本格的な対人レースゲームにする。課金アイテムとの相性も抜群。
+          </div>
+          <div class="idea-card">
+            <div class="idea-emoji">🏆</div>
+            <div class="idea-title">ベストタイムランキング</div>
+            DataStoreを使ってベストラップタイムをサーバーに保存し、全プレイヤーのランキングを表示する機能を追加。
+          </div>
+          <div class="idea-card">
+            <div class="idea-emoji">🎨</div>
+            <div class="idea-title">カートスキン販売</div>
+            Robloxのゲームパスを使ってオリジナルカートスキンを販売し、収益化と組み合わせる。
+          </div>
+        </div>
+      </div>
+
+      <!-- チェックリスト -->
+      <div class="section" id="checklist">
+        <div class="section-title"><span class="icon">✅</span>実践チェックリスト</div>
+
+        <div class="checklist-group">
+          <h3>📌 実践前に確認すること</h3>
+          <label><input type="checkbox"> Blenderがインストールされている（無料）</label>
+          <label><input type="checkbox"> ChatGPTアカウントがある（画像生成用）</label>
+          <label><input type="checkbox"> Roblox Studioが最新バージョンになっている</label>
+          <label><input type="checkbox"> 完成イメージのコースレイアウトをざっくり決めておく</label>
+        </div>
+
+        <div class="checklist-group">
+          <h3>🔧 実践中に確認すること</h3>
+          <label><input type="checkbox"> WeldConstraintのパーツ0/1が正しく設定されている</label>
+          <label><input type="checkbox"> 走行スクリプトがSeat（シート）の中に入っている</label>
+          <label><input type="checkbox"> コースアウト用ブロックのAnchoredがONになっている</label>
+          <label><input type="checkbox"> アイテムボックスに1つずつスクリプトが付いている</label>
+          <label><input type="checkbox"> スピードブースト用ブロックのCanTouchがONになっている</label>
+        </div>
+
+        <div class="checklist-group">
+          <h3>🎮 実践後に確認すること</h3>
+          <label><input type="checkbox"> テストプレイでカートが前に進む</label>
+          <label><input type="checkbox"> AとDキーでハンドリングが効く</label>
+          <label><input type="checkbox"> コースアウトすると2秒後に自動復帰する</label>
+          <label><input type="checkbox"> アイテムボックスを通ると効果が発動する</label>
+          <label><input type="checkbox"> ゴーストカーが2周目から現れる</label>
+          <label><input type="checkbox"> ラップタイムがHUD（画面UI）に表示される</label>
+        </div>
+      </div>
+
+      <!-- 次のアクション -->
+      <div class="section" id="next">
+        <div class="section-title"><span class="icon">🎯</span>次にやること</div>
+        <ul class="action-list">
+          <li>
+            <div class="action-num">1</div>
+            <div>まずBlenderでシンプルなカートモデルを1個作ってみる。完璧でなくOK — まずエクスポートしてStudioに読み込めればスタート成功。</div>
+          </li>
+          <li>
+            <div class="action-num">2</div>
+            <div>スクリプト方式でカートを1台だけ走らせるシンプルなテストコースを作る。走行・カメラ・コースアウト復帰の3スクリプトが揃えばベース完成。</div>
+          </li>
+          <li>
+            <div class="action-num">3</div>
+            <div>ギミックを1つずつ追加していく。最初にスピードブースト矢印、次にアイテムボックス1個、最後にゴーストシステムの順で実装するとスムーズ。</div>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- CTA -->
+    <div class="cta-section">
+      <h2>🎮 もっと本格的に<span>Robloxで稼ぎたい</span>なら</h2>
+      <p>
+        ロブ爺チャンネルでは、58歳の現役クリエイターが<br>
+        実際に使っているノウハウを毎週公開中。<br>
+        LINEに登録して最新情報をいち早く受け取ろう！
+      </p>
+      <a class="cta-btn" href="https://lin.ee/YOUR_LINE_ID" target="_blank">📲 公式LINEに登録する（無料）</a>
+      <a class="cta-yt" href="https://www.youtube.com/@robjii-roblox" target="_blank">▶ YouTubeで動画を見る</a>
+      <p style="margin-top:20px; font-size:12px; color:#5a7a9a;">
+        キーワード「マリカ」を送るとこのガイドが届きます
+      </p>
+    </div>
+
+    <div class="footer">
+      © 2026 ロブ爺のRoblox Studio講座 — このガイドは個人学習目的でご利用ください
+    </div>
+  </div>
+</body>
+</html>
