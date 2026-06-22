@@ -31,7 +31,7 @@ export default function ItemListPage() {
   const currentCat = categories.find(c => c.id === category)
   const items = category === 'bonus'
     ? giftsToItems(gifts)
-    : contents.filter(item => item.category === category)
+    : contents.filter(item => item.category === category && !item.hidden)
   const unlockedCount = items.filter(i =>
     (!i.isLocked || isUnlocked(i.id)) && !i.isComingSoon
   ).length

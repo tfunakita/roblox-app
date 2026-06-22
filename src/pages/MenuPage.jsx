@@ -7,7 +7,7 @@ export default function MenuPage() {
   const { isUnlocked } = useUnlocked()
 
   const getStats = (catId) => {
-    const items = contents.filter(c => c.category === catId)
+    const items = contents.filter(c => c.category === catId && !c.hidden)
     const unlocked = items.filter(c => !c.isLocked || isUnlocked(c.id)).length
     return { total: items.length, unlocked }
   }
