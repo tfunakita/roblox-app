@@ -197,22 +197,7 @@ print("ジャンプ力を設定しました: " .. humanoid.JumpPower)`,
 
 // カテゴリ定義（新カテゴリ追加はここに追記するだけでメニューに自動反映）
 export const categories = [
-  {
-    id: 'module',
-    label: '📚 学習モジュール',
-    icon: '📚',
-    description: 'Roblox Studioの基礎から応用まで、ステップアップ形式で学べる講座。スクリプト付き。',
-    color: 'from-blue-900 to-blue-800',
-    border: 'border-blue-700',
-  },
-  {
-    id: 'special',
-    label: '⭐ 特別講義',
-    icon: '⭐',
-    description: 'プロクリエイターによる特別授業。マップ設計・マネタイズ・バズ戦略まで。',
-    color: 'from-yellow-900 to-yellow-800',
-    border: 'border-yellow-700',
-  },
+  // 学習モジュール・特別講義は 2026-10-27 に外した（特典箱だけにする）
   {
     id: 'bonus',
     label: '🎁 ロブ爺の特典箱',

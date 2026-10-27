@@ -18,8 +18,10 @@ function giftsToItems(gs) {
     isLocked: g.status === 'locked',
     isComingSoon: g.status === 'coming_soon',
     keyword: g.keyword || null,
-    unlockGuideText: g.linkedVideoTitle || null,
-    unlockGuideUrl: g.linkedVideoUrl || null,
+    unlockGuideText: g.linkedVideoTitle || (g.videoTitle ? `キーワードは「${g.videoTitle}」で発表しています` : null),
+    unlockGuideUrl: g.linkedVideoUrl || g.videoUrl || null,
+    videoTitle: g.videoTitle || null,
+    videoUrl: g.videoUrl || null,
   }))
 }
 
@@ -42,16 +44,16 @@ export default function ItemListPage() {
       <header className="bg-[#1a1a2e] border-b border-[#0f3460] sticky top-0 z-40">
         <div className="px-5 py-3 flex items-center gap-3">
           <button
-            onClick={() => navigate('/menu')}
+            onClick={() => navigate('/')}
             className="text-gray-400 hover:text-white transition-colors text-sm"
-          >← メニューへ</button>
+          >← トップへ</button>
           <span className="text-gray-600">|</span>
           <span className="text-base">{currentCat?.icon}</span>
           <span className="font-bold text-white text-sm">{currentCat?.label}</span>
         </div>
 
-        {/* カテゴリタブ */}
-        <div className="px-5 flex gap-1 overflow-x-auto">
+        {/* カテゴリタブ（カテゴリが1つのときは出さない） */}
+        {categories.length > 1 && <div className="px-5 flex gap-1 overflow-x-auto">
           {categories.map(cat => (
             <button
               key={cat.id}
@@ -65,7 +67,7 @@ export default function ItemListPage() {
               {cat.icon} {cat.label.replace(/^[^\s]+ /, '')}
             </button>
           ))}
-        </div>
+        </div>}
       </header>
 
       <div className="max-w-6xl mx-auto px-5 py-8">

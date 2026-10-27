@@ -27,7 +27,7 @@ export default function TopPage() {
 
         <h1 className="text-4xl sm:text-5xl font-black text-white mb-3 leading-tight">
           <span className="text-[#00a2ff]">ロブ爺</span>の<br />
-          <span className="text-yellow-400">学習・特典ポータル</span>
+          <span className="text-yellow-400">特典箱</span>
         </h1>
 
         <p className="text-gray-300 text-base mb-2">
@@ -38,17 +38,12 @@ export default function TopPage() {
         </p>
 
         <button
-          onClick={() => navigate('/menu')}
+          onClick={() => navigate('/items/bonus')}
           className="bg-[#e2231a] hover:bg-red-700 active:scale-95 text-white font-black text-lg py-4 px-10 rounded-2xl shadow-2xl shadow-red-900/40 hover:shadow-red-900/60 transform hover:scale-105 transition-all duration-200"
         >
-          🚀 学習・特典ページへ入る
+          🎁 特典箱をひらく
         </button>
 
-        <div className="mt-10 flex justify-center gap-6 text-gray-600 text-xs">
-          <span>📚 学習モジュール</span>
-          <span>⭐ 特別講義</span>
-          <span>🎁 特典・PDF</span>
-        </div>
       </div>
     </div>
   )

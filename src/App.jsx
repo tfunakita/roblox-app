@@ -1,7 +1,6 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { UnlockedProvider } from './hooks/useUnlocked'
 import TopPage from './pages/TopPage'
-import MenuPage from './pages/MenuPage'
 import ItemListPage from './pages/ItemListPage'
 import DetailPage from './pages/DetailPage'
 import GiftPage from './pages/GiftPage'
@@ -15,7 +14,7 @@ export default function App() {
       <BrowserRouter basename={basename}>
         <Routes>
           <Route path="/" element={<TopPage />} />
-          <Route path="/menu" element={<MenuPage />} />
+          <Route path="/menu" element={<Navigate to="/items/bonus" replace />} />
           <Route path="/items/:category" element={<ItemListPage />} />
           <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/gift" element={<GiftPage />} />

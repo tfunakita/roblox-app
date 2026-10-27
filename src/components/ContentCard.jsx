@@ -75,6 +75,19 @@ export default function ContentCard({ item }) {
           {item.description}
         </p>
 
+        {item.videoUrl && (
+          <a
+            href={item.videoUrl}
+            target="_blank"
+            rel="noreferrer"
+            onClick={e => e.stopPropagation()}
+            className="relative z-20 mt-3 flex gap-2 items-start bg-[#0d0d1a] border border-red-900/60 hover:border-red-500 rounded-lg px-3 py-2 text-xs text-gray-300 leading-snug"
+          >
+            <span className="text-red-500 shrink-0">▶</span>
+            <span><span className="text-gray-500">紹介している動画：</span>{item.videoTitle}</span>
+          </a>
+        )}
+
         <div className="mt-4 text-sm font-medium flex items-center gap-1">
           {unlocked
             ? <span className="text-[#00a2ff]">詳細を見る →</span>

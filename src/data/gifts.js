@@ -2,6 +2,7 @@
 // 特典データ
 // status: 'public' | 'locked' | 'coming_soon'
 // type:   'video' | 'pdf' | 'script'
+// videoTitle / videoUrl: この特典を紹介している動画（カードに表示）
 // ============================================================
 
 export const gifts = [
@@ -17,6 +18,8 @@ export const gifts = [
     pdfUrl: '/assets/pdfs/fps-scripts.pdf',
     linkedVideoTitle: '第1回動画の最後で発表しています！',
     linkedVideoUrl: 'https://youtu.be/mM_ICFs0DCs',
+    videoTitle: '【2026年最新】ロブロックスって何？現役講師が未経験でもFPSゲームを作れる方法を徹底解説します。',
+    videoUrl: 'https://youtu.be/mM_ICFs0DCs',
   },
   {
     id: 'gift_002',
@@ -30,6 +33,8 @@ export const gifts = [
     pdfUrl: '/assets/pdfs/roblox-studio-guide.pdf',
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【完全解説】これさえ見れば『ロブロックススタジオ』の基本が分かります【タブ＆メニュー編】',
+    videoUrl: 'https://youtu.be/lPsdCwh8GMI',
   },
   {
     id: 'gift_004',
@@ -43,6 +48,8 @@ export const gifts = [
     pdfUrl: '/assets/pdfs/roblox_spec.ai_guide.pdf',
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【2026年最新】ロブロックス制作に必要なパソコンのスペックを現役講師が徹底解説します。',
+    videoUrl: 'https://youtu.be/0BW6oXgvXiA',
   },
   {
     id: 'gift_005',
@@ -57,6 +64,8 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【RobloxStudio】初心者が一気に上達する練習ゲーム10選｜ロブロックス｜ゲーム制作｜個人開発',
+    videoUrl: 'https://youtu.be/0_p9bzpwzBY',
   },
   {
     id: 'gift_006',
@@ -85,6 +94,8 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【誰でもできる】現役講師が「ブレインロットを盗め」の作り方を徹底解説します。【RobloxStudio】',
+    videoUrl: 'https://youtu.be/6fr1plfksJc',
   },
   {
     id: 'gift_008',
@@ -100,6 +111,8 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【誰でもできる】現役講師が「grow a garden」の作り方を徹底解説します。【RobloxStudioでグロウアガーデンを作る】',
+    videoUrl: 'https://youtu.be/leUGBhJS8Ks',
   },
   {
     id: 'gift_011',
@@ -115,6 +128,8 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【Roblox】シングルゲームをマルチ対応にする方法｜初心者でもわかるマルチプレイヤー実装',
+    videoUrl: 'https://youtu.be/Ty5RlHAohvI',
   },
   {
     id: 'gift_010',
@@ -130,6 +145,8 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【ゲーム開発】マリオカートをロブロックスで作る方法を58歳現役講師が徹底解説。【Roblox Studio】',
+    videoUrl: 'https://youtu.be/tj6aaX6aoA4',
   },
   {
     id: 'gift_009',
@@ -145,5 +162,7 @@ export const gifts = [
     pdfUrl: null,
     linkedVideoTitle: null,
     linkedVideoUrl: null,
+    videoTitle: '【解説】現役講師がマリオカートをロブロックスで作る方法を徹底解説します。【Roblox Studio】',
+    videoUrl: 'https://youtu.be/9g7oi0FpSwo',
   },
 ]
